@@ -1,0 +1,105 @@
+# Largely inspired from (pointing to precise version)
+# https://github.com/thejohnfreeman/project-template-python/tree/6d04c7b3b00460bb7473246096c52cc22d403226
+
+# black support portion inspired from (pointing to precise version)
+# https://github.com/python/black/blob/4a953b7241ce5f8bcac985fa33fdf3af4f42c0de/pyproject.toml
+
+[tool.poetry]
+name = "pyadr"
+version = "0.0.0"
+description = "CLI to help with an ADR process lifecycle (proposal/approval/rejection/deprecation/superseeding), which used git."
+license = "MIT"
+homepage = "https://gitlab.com/opinionated-digital-center/pyadr"
+authors = ["Emmanuel Sciara <emmanuel.sciara@gmail.com>"]
+packages = [
+    { include = "pyadr" },
+]
+keywords = ["pyadr", "adr"]
+classifiers = [
+    'Development Status :: 2 - Pre-Alpha',
+    'Intended Audience :: Developers',
+    'License :: OSI Approved :: MIT License',
+    'Natural Language :: English',
+    'Operating System :: POSIX',
+    'Operating System :: MacOS :: MacOS X',
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Topic :: Software Development :: Libraries',
+    'Topic :: Software Development :: Libraries :: Python Modules',
+]
+
+[tool.poetry.dependencies]
+python = "^3.6"
+# Optional dependencies to be part of `test` extra
+pytest = {version = "^5.1", optional = true}
+pytest-cov = {version = "^2.8.1", optional = true}
+pytest-mock = {version = "^1.13.0", optional = true}
+pytest-html = {version = "^2.0.1", optional = true}
+pytest-asyncio = {version = "^0.10.0", optional = true}
+# Optional dependencies to be part of `bdd` extra
+behave = {version = "^1.2", optional = true}
+behave4cli = {version = "^1.0", optional = true}
+PyHamcrest = {version = "^2.0", optional = true}
+# Optional dependencies to be part of `lint` extra
+flake8 = {version = "^3.7", optional = true}
+flake8-bugbear = {version = "^19.8.0", optional = true}
+pydocstyle = {version = "^3.0", optional = true}
+pylint = {version = "^2.3", optional = true}
+yapf = {version = "^0.27.0", optional = true}
+# Optional dependencies to be part of `type` extra
+mypy = {version = "^0.740.0", optional = true}
+# Optional dependencies to be part of `format` extra
+isort = {version = "^4.3", optional = true}
+seed-isort-config = {version = "^1.9.3", optional = true}
+black = {version = "stable", optional = true, allow-prereleases = true}
+# Optional dependencies to be part of `docs` extra
+sphinx = {version = "^2.3.0", optional = true}
+sphinx-autodoc-typehints = {version = "^1.10.3", optional = true}
+sphinx-autobuild = {version = "^0.7.1", optional = true}
+sphinx_rtd_theme = {version = "^0.4.3", optional = true}
+# Optional dependencies to be part of `repl` extra
+bpython = {version = "^0.18", optional = true}
+# Non optional dependendies
+cleo = "^0.7.6"
+#############################
+# Add you dependencies here #
+#############################
+
+[tool.poetry.dev-dependencies]
+tox = "^3.14"
+tox-pyenv = "^1.1"
+rope = "^0.14.0"
+
+[tool.poetry.extras]
+test = ["pytest", "pytest-cov", "pytest-mock", "pytest-html", "pytest-asyncio", "PyHamcrest"]
+bdd = ["behave", "behave4cli", "PyHamcrest"]
+lint = ["flake8", "flake8-bugbear", "pydocstyle", "pylint", "yapf"]
+type = ["mypy"]
+format = ["isort", "seed-isort-config", "black"]
+docs= ["sphinx", "sphinx-autodoc-typehints", "sphinx-autobuild", "sphinx_rtd_theme"]
+repl = ["bpython"]
+
+[tool.poetry.scripts]
+pyadr = 'pyadr.cli:main'
+
+[tool.isort]
+# following black's doc for compatibility
+# See https://github.com/psf/black#how-black-wraps-lines
+multi_line_output = 3
+include_trailing_comma = true
+use_parentheses = true
+force_grid_wrap = 0
+line_length = 88
+known_third_party = []
+
+
+[tool.black]
+line-length = 88
+target_version = ['py37']
+
+[build-system]
+requires = ["poetry==1.0.5"]
+build-backend = "poetry.masonry.api"

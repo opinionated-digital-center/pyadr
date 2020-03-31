@@ -1,0 +1,28 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/exec",
+      {
+        "verifyConditionsCmd": "./scripts/verify_git_tags_one_version_tag_present.sh",
+        "verifyReleaseCmd": "./scripts/semantic_release_exec_verify_release.sh ${nextRelease.version}",
+        "prepareCmd": "make bump NEW_VERSION=${nextRelease.version}",
+        "publishCmd": "make publish"
+      }
+    ],
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "pyproject.toml",
+          "pyadr/__version__.py"
+        ],
+        "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
+      }
+    ],
+    "@semantic-release/gitlab"
+  ]
+}

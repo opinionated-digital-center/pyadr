@@ -1,0 +1,10 @@
+[flake8]
+# Setup of for black compatibility
+# (see https://black.readthedocs.io/en/stable/the_black_code_style.html#line-length)
+max-line-length = 80
+select = C,E,F,W,B,B950
+ignore =
+    B011,
+    E501,   # see https://github.com/PyCQA/flake8-bugbear/issues/66#issuecomment-487056589
+    E203,
+    W503    # see https://github.com/psf/black/issues/43#issuecomment-374738892
