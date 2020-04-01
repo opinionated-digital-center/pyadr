@@ -57,6 +57,12 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
+# Behave / coverage reports
+cucumber-report.json
+
+# behave4cli
+__WORKDIR__/
+
 # Translations
 *.mo
 *.pot

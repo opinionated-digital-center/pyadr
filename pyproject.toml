@@ -68,6 +68,7 @@ cleo = "^0.7.6"
 # Add you dependencies here #
 #############################
 
+python-slugify = "^4.0.0"
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
 tox-pyenv = "^1.1"
@@ -93,7 +94,7 @@ include_trailing_comma = true
 use_parentheses = true
 force_grid_wrap = 0
 line_length = 88
-known_third_party = []
+known_third_party = ["behave", "behave4cli", "cleo", "hamcrest", "pytest", "six", "slugify", "toml"]
 
 
 [tool.black]

@@ -107,7 +107,7 @@ description = "This project provides an extension (testing domain) of behave to 
 name = "behave4cli"
 optional = true
 python-versions = ">=3.6,<4.0"
-version = "1.0.2"
+version = "1.1.0"
 
 [package.dependencies]
 PyHamcrest = ">=2.0.2,<3.0.0"
@@ -119,7 +119,7 @@ docs = ["sphinx (>=2.3.0,<3.0.0)", "sphinx-autodoc-typehints (>=1.10.3,<2.0.0)",
 format = ["isort (>=4.3,<5.0)", "seed-isort-config (>=1.9.3,<2.0.0)", "black"]
 lint = ["flake8 (>=3.7,<4.0)", "flake8-bugbear (>=19.8.0,<20.0.0)", "pydocstyle (>=3.0,<4.0)", "pylint (>=2.3,<3.0)", "yapf (>=0.27.0,<0.28.0)"]
 repl = ["bpython (>=0.18,<0.19)"]
-test = ["pytest (>=5.1,<6.0)", "pytest-cov (>=2.8.1,<3.0.0)", "pytest-mock (>=1.13.0,<2.0.0)", "pytest-html (>=2.0.1,<3.0.0)", "pytest-asyncio (>=0.10.0,<0.11.0)"]
+test = ["pytest (>=5.1,<6.0)", "pytest-cov (>=2.8.1,<3.0.0)", "pytest-mock (>=1.13.0,<2.0.0)", "pytest-html (>=2.0.1,<3.0.0)", "pytest-asyncio (>=0.10.0,<0.11.0)", "mock (>=4.0.2,<5.0.0)"]
 type = ["mypy (>=0.740.0,<0.741.0)"]
 
 [[package]]
@@ -735,6 +735,20 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 category = "main"
+description = "A Python Slugify application that handles Unicode"
+name = "python-slugify"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "4.0.0"
+
+[package.dependencies]
+text-unidecode = ">=1.3"
+
+[package.extras]
+unidecode = ["Unidecode (>=1.1.1)"]
+
+[[package]]
+category = "main"
 description = "World timezone definitions, modern and historical"
 name = "pytz"
 optional = true
@@ -957,6 +971,14 @@ test = ["pytest"]
 
 [[package]]
 category = "main"
+description = "The most basic Text::Unidecode port"
+name = "text-unidecode"
+optional = false
+python-versions = "*"
+version = "1.3"
+
+[[package]]
+category = "main"
 description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
 optional = false
@@ -1124,7 +1146,7 @@ test = ["pytest", "pytest-cov", "pytest-mock", "pytest-html", "pytest-asyncio", 
 type = ["mypy"]
 
 [metadata]
-content-hash = "8534f9eaa51d62038384bb7f6ee23896f8dd0444b945e5dd31c017d63f318aef"
+content-hash = "fe08c978c1f69bc1a1ff39acf8e858fff898673963ff401dd02b8337e8317b71"
 python-versions = "^3.6"
 
 [metadata.files]
@@ -1165,8 +1187,8 @@ behave = [
     {file = "behave-1.2.6.tar.gz", hash = "sha256:b9662327aa53294c1351b0a9c369093ccec1d21026f050c3bd9b3e5cccf81a86"},
 ]
 behave4cli = [
-    {file = "behave4cli-1.0.2-py3-none-any.whl", hash = "sha256:b8d2e1ba74b23bc2dc0584849c32ca25e3c447b1b214172c7ce94ccbe85c898b"},
-    {file = "behave4cli-1.0.2.tar.gz", hash = "sha256:da8b80c445050dfa6f26168bf1a692e50f9cfde0dd3ecfc1a90ddaf3d53c379e"},
+    {file = "behave4cli-1.1.0-py3-none-any.whl", hash = "sha256:8f0740097c2d2d3d2226a09fc305f024b8c61caf64d879c859a7ff79dcd4e665"},
+    {file = "behave4cli-1.1.0.tar.gz", hash = "sha256:a4455b6b56be8eaf15f526c0d275e832d0d39ea7a5c682579802283bf59c8799"},
 ]
 black = [
     {file = "black-19.10b0-py36-none-any.whl", hash = "sha256:1b30e59be925fafc1ee4565e5e08abef6b03fe455102883820fe5ee2e4734e0b"},
@@ -1494,6 +1516,9 @@ pytest-mock = [
     {file = "pytest-mock-1.13.0.tar.gz", hash = "sha256:e24a911ec96773022ebcc7030059b57cd3480b56d4f5d19b7c370ec635e6aed5"},
     {file = "pytest_mock-1.13.0-py2.py3-none-any.whl", hash = "sha256:67e414b3caef7bff6fc6bd83b22b5bc39147e4493f483c2679bc9d4dc485a94d"},
 ]
+python-slugify = [
+    {file = "python-slugify-4.0.0.tar.gz", hash = "sha256:a8fc3433821140e8f409a9831d13ae5deccd0b033d4744d94b31fea141bdd84c"},
+]
 pytz = [
     {file = "pytz-2019.3-py2.py3-none-any.whl", hash = "sha256:1c557d7d0e871de1f5ccd5833f60fb2550652da6be2693c1e02300743d21500d"},
     {file = "pytz-2019.3.tar.gz", hash = "sha256:b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be"},
@@ -1594,6 +1619,10 @@ sphinxcontrib-qthelp = [
 sphinxcontrib-serializinghtml = [
     {file = "sphinxcontrib-serializinghtml-1.1.4.tar.gz", hash = "sha256:eaa0eccc86e982a9b939b2b82d12cc5d013385ba5eadcc7e4fed23f4405f77bc"},
     {file = "sphinxcontrib_serializinghtml-1.1.4-py2.py3-none-any.whl", hash = "sha256:f242a81d423f59617a8e5cf16f5d4d74e28ee9a66f9e5b637a18082991db5a9a"},
+]
+text-unidecode = [
+    {file = "text-unidecode-1.3.tar.gz", hash = "sha256:bad6603bb14d279193107714b288be206cac565dfa49aa5b105294dd5c4aab93"},
+    {file = "text_unidecode-1.3-py2.py3-none-any.whl", hash = "sha256:1311f10e8b895935241623731c2ba64f4c455287888b18189350b67134a822e8"},
 ]
 toml = [
     {file = "toml-0.10.0-py2.7.egg", hash = "sha256:f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"},
