@@ -14,7 +14,7 @@ superseeding) based on Markdown files and git.
 
 * Free software license: MIT
 
-**This tools is in pre-alpha state. Sphinx do to be updated.**
+*This tools is in pre-alpha state. Sphinx doc to be updated.*
 
 Features
 --------
