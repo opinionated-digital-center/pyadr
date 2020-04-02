@@ -45,7 +45,6 @@ Feature: Approve or reject proposed ADR
         Then the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-title.md" should exist
 
-    @wip
     Scenario: Ensure filename corresponds to title of accepted (same code for rejected, no need to duplicate test) ADR
         Given an empty file named "docs/adr/0001-my-first-adr.md"
         And a file named "docs/adr/XXXX-my-adr-title.md" with:
