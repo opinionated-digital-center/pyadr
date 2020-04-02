@@ -1,12 +1,7 @@
 from pathlib import Path
 
 from .exceptions import PyadrNoPreviousAdrError
-from .text_utils import (
-    change_adr_text_to_accepted,
-    change_adr_text_to_rejected,
-    change_adr_text_to_status,
-    get_adr_title_slug_from_stream,
-)
+from .text_utils import change_adr_text_to_status, get_adr_title_slug_from_stream
 
 
 def rename_reviewed_adr_file(file: Path, adr_path) -> Path:
@@ -19,23 +14,9 @@ def rename_reviewed_adr_file(file: Path, adr_path) -> Path:
     return renamed_file
 
 
-def change_adr_file_content_to_status(file: Path, status: str) -> None:
+def update_adr_file_content_to_status(file: Path, status: str) -> None:
     with file.open() as f:
         changed_text = change_adr_text_to_status(f.read(), status)
-    with file.open("w") as f:
-        f.write(changed_text)
-
-
-def change_adr_file_content_to_accepted(file: Path) -> None:
-    with file.open() as f:
-        changed_text = change_adr_text_to_accepted(f.read())
-    with file.open("w") as f:
-        f.write(changed_text)
-
-
-def change_adr_file_content_to_rejected(file: Path) -> None:
-    with file.open() as f:
-        changed_text = change_adr_text_to_rejected(f.read())
     with file.open("w") as f:
         f.write(changed_text)
 

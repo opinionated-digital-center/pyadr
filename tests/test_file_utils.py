@@ -53,37 +53,3 @@ def test_determine_next_id_fail_when_no_previous_adr(adr_tmp_path):
         calling(calculate_next_id).with_args(adr_tmp_path),
         raises(PyadrNoPreviousAdrError),
     )
-
-
-# def test_sync_adr_filename_with_adr_title(adr_tmp_path):
-#     # Given
-#     adr_file = adr_tmp_path / "XXXX-an-adr.md"
-#     with adr_file.open("w") as f:
-#         f.write("""# My ADR Updated Title
-#
-# * Status: any_status
-# * Date: any_date
-#
-# ## Context and Problem Statement
-#
-# [..]
-# """)
-#
-#     # When
-#     # sync_adr_filename_with_adr_title(adr_file)
-#     with adr_file.open() as f:
-#         title_line = ""
-#         while not title_line.startswith("# "):
-#             title_line = f.readline()
-#     title_slug = slugify(title_line[2:])
-#     new_file_name = adr_file.stem.split("-", 1)[0] + title_slug + adr_file.suffix
-#     renamed_file = adr_file.with_name(new_file_name)
-#     adr_file.rename(renamed_file)
-#
-#
-#     # Then
-#     assert_that(
-#         calling(calculate_next_id).with_args(adr_tmp_path),
-#         raises(PyadrNoPreviousAdrError),
-#     )
-#
