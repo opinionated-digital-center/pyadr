@@ -14,12 +14,15 @@ superseeding) based on Markdown files and git.
 
 * Free software license: MIT
 
-**This tools is in pre-alpha state. Sphinx do to be updated.**
+*This tools is in pre-alpha state. Sphinx doc to be updated.*
 
 Features
 --------
 
 * Accept or reject a proposed ADR.
+* Generate a table of content (in format ``index.md``)
+
+Help for all commands is available through ``pyadr help``.
 
 Process Details
 +++++++++++++++
