@@ -1,3 +1,10 @@
+# [0.3.0](https://gitlab.com/opinionated-digital-center/pyadr/compare/v0.2.0...v0.3.0) (2020-04-03)
+
+
+### Features
+
+* initialise an adr repository ([565159b](https://gitlab.com/opinionated-digital-center/pyadr/commit/565159b928ba2500241ac4211ecf345f75310842))
+
 # [0.2.0](https://gitlab.com/opinionated-digital-center/pyadr/compare/v0.1.0...v0.2.0) (2020-04-03)
 
 
