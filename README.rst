@@ -10,7 +10,7 @@ ADR Process Tool
     :alt: Linux build
 
 CLI to help with an ADR process lifecycle (proposal/approval/rejection/deprecation/
-superseeding) based on Markdown files and git.
+superseding) based on Markdown files and git.
 
 * Free software license: MIT
 
