@@ -1,15 +1,82 @@
 """Console script for pyadr."""
-
+import re
+import shutil
 import sys
+from datetime import datetime
 
 import cleo
 
 from pyadr.core import generate_toc
 
+from . import assets  # relative-import the *package* containing the templates
 from . import __version__
 from .const import ADR_REPO_ABS_PATH, CWD, STATUS_ACCEPTED, STATUS_REJECTED
 from .exceptions import PyadrNoPreviousAdrError
 from .file_utils import rename_reviewed_adr_file, update_adr_file_content_to_status
+
+try:
+    import importlib.resources as pkg_resources
+except ImportError:
+    # Try backported to PY<37 `importlib_resources`.
+    import importlib_resources as pkg_resources  # type: ignore
+
+
+class InitCommand(cleo.Command):
+    """
+    Initialise an ADR repository
+
+    init
+        {--f|force : If set, will erase existing repository is exists}
+    """
+
+    def handle(self):
+        if self.option("force"):
+            if ADR_REPO_ABS_PATH.exists():
+                self.line(
+                    f"Repository directory exists at `{ADR_REPO_ABS_PATH}/`. Erasing..."
+                )
+                shutil.rmtree(ADR_REPO_ABS_PATH)
+                self.line("... Erased.")
+
+        else:
+            if ADR_REPO_ABS_PATH.exists():
+                self.line_error(
+                    f"Error: directory `{ADR_REPO_ABS_PATH}/` already exists. "
+                    "Please erase (with -f) or backup before proceeding."
+                )
+                sys.exit(1)
+
+        ADR_REPO_ABS_PATH.mkdir(parents=True)
+
+        template_path = ADR_REPO_ABS_PATH / "template.md"
+        with (template_path).open("w") as f:
+            f.write(pkg_resources.read_text(assets, "madr-template.md"))
+        self.line(f"Copied MADR template to `{template_path.relative_to(CWD)}`.")
+
+        adr_0000_filename = "0000-record-architecture-decisions.md"
+        adr_0000_path = ADR_REPO_ABS_PATH / adr_0000_filename
+        with adr_0000_path.open("w") as f:
+            today = datetime.today().strftime("%Y-%m-%d")
+            f.write(
+                re.sub(
+                    r"^Date: .*$",
+                    f"Date: {today}",
+                    pkg_resources.read_text(assets, adr_0000_filename),
+                    1,
+                    re.MULTILINE,
+                )
+            )
+        self.line(f"Created ADR `{adr_0000_path.relative_to(CWD)}`.")
+
+        adr_madr_filename = "XXXX-use-markdown-architectural-decision-records.md"
+        adr_madr_path = ADR_REPO_ABS_PATH / adr_madr_filename
+        with (adr_madr_path).open("w") as f:
+            f.write(pkg_resources.read_text(assets, adr_madr_filename))
+        reviewed_adr = rename_reviewed_adr_file(adr_madr_path, ADR_REPO_ABS_PATH)
+        update_adr_file_content_to_status(reviewed_adr, STATUS_ACCEPTED)
+        self.line(f"Created ADR `{reviewed_adr.relative_to(CWD)}`.")
+
+        self.line(f"ADR repository successfully initialised at `{ADR_REPO_ABS_PATH}/`.")
 
 
 class BaseReviewCommand(cleo.Command):
@@ -93,6 +160,7 @@ class Application(cleo.Application):
     def __init__(self):
         super().__init__("ADR Process Tool", __version__)
 
+        self.add(InitCommand())
         self.add(ApproveCommand())
         self.add(RejectCommand())
         self.add(GenerateTocCommand())

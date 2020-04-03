@@ -19,6 +19,7 @@ superseeding) based on Markdown files and git.
 Features
 --------
 
+* Initialise an ADR repository
 * Accept or reject a proposed ADR.
 * Generate a table of content (in format ``index.md``)
 
