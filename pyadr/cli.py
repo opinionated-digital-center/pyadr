@@ -26,7 +26,7 @@ class InitCommand(cleo.Command):
     Initialise an ADR repository
 
     init
-        {--f|force : If set, will erase existing repository is exists}
+        {--f|force : If set, will erase existing repository}
     """
 
     def handle(self):
@@ -49,7 +49,7 @@ class InitCommand(cleo.Command):
         ADR_REPO_ABS_PATH.mkdir(parents=True)
 
         template_path = ADR_REPO_ABS_PATH / "template.md"
-        with (template_path).open("w") as f:
+        with template_path.open("w") as f:
             f.write(pkg_resources.read_text(assets, "madr-template.md"))
         self.line(f"Copied MADR template to `{template_path.relative_to(CWD)}`.")
 
@@ -70,7 +70,7 @@ class InitCommand(cleo.Command):
 
         adr_madr_filename = "XXXX-use-markdown-architectural-decision-records.md"
         adr_madr_path = ADR_REPO_ABS_PATH / adr_madr_filename
-        with (adr_madr_path).open("w") as f:
+        with adr_madr_path.open("w") as f:
             f.write(pkg_resources.read_text(assets, adr_madr_filename))
         reviewed_adr = rename_reviewed_adr_file(adr_madr_path, ADR_REPO_ABS_PATH)
         update_adr_file_content_to_status(reviewed_adr, STATUS_ACCEPTED)
