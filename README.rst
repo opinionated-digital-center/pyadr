@@ -20,6 +20,9 @@ Features
 --------
 
 * Accept or reject a proposed ADR.
+* Generate a table of content (in format ``index.md``)
+
+Help for all commands is available through ``pyadr help``.
 
 Process Details
 +++++++++++++++

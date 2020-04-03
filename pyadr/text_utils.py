@@ -1,6 +1,6 @@
 import re
 from datetime import datetime
-from typing import TextIO
+from typing import Optional, TextIO, Tuple
 
 from slugify import slugify
 
@@ -28,8 +28,57 @@ def change_adr_text_to_rejected(text: str) -> str:
 
 
 def get_adr_title_slug_from_stream(stream: TextIO) -> str:
-    title_line = ""
-    while not title_line.startswith("# "):
-        title_line = stream.readline()
-    title_slug = slugify(title_line[1:])
+    title, _, _ = find_title_status_and_date_in_madr_content(stream)
+    title_slug = slugify(title)
     return title_slug
+
+
+def find_title_status_and_date_in_madr_content(
+    stream: TextIO,
+) -> Tuple[str, Tuple[str, Optional[str]], str]:
+    """
+    Extracts the title, the status (and phrase following status if exists) and date
+    out of and MADR content. The content is expected to be well formed.
+
+    Args:
+        stream: TextIO
+
+    Returns:
+        Tuple[str, Tuple[str, Optional[str]]]: (title, (status, status phrase),
+        date)
+    """
+    title = extract_next_line_content_starting_with_suffix(stream, "# ")
+
+    full_status = extract_next_line_content_starting_with_suffix(stream, "* Status:")
+    try:
+        status_phrase: Optional[str]
+        status, status_phrase = full_status.split(" ", 1)
+    except ValueError:
+        status = full_status
+        status_phrase = None
+    else:
+        status_phrase = status_phrase.strip()
+
+    date = extract_next_line_content_starting_with_suffix(stream, "* Date:")
+
+    return title, (status, status_phrase), date
+
+
+def extract_next_line_content_starting_with_suffix(stream: TextIO, suffix: str) -> str:
+    """
+    Looks for the next line starting with suffix in a text stream and returns the line
+    content without the suffix
+
+    Args:
+        stream (TextIO): content stream to extract from
+        suffix (str): suffix to look for
+
+    Returns:
+        str: line content without the suffix
+
+    """
+    line = ""
+    while not line.startswith(suffix):
+        line = stream.readline()
+    title = line[len(suffix) :].strip()
+    return title
