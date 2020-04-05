@@ -5,9 +5,8 @@ ADR Process Tool
 .. image:: https://img.shields.io/pypi/v/pyadr.svg
         :target: https://pypi.python.org/pypi/pyadr
 
-.. image:: https://gitlab.com/opinionated-digital-center/pyadr/badges/master/pipeline.svg
-    :target: https://gitlab.com/opinionated-digital-center/pyadr/pipelines
-    :alt: Linux build
+.. image:: https://github.com/opinionated-digital-center/pyadr/workflows/Test%20and%20make%20release/badge.svg
+    :target: https://github.com/opinionated-digital-center/pyadr/pipelines
 
 CLI to help with an ADR process lifecycle (proposal/approval/rejection/deprecation/
 superseding) based on Markdown files and git.
