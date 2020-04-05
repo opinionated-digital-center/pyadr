@@ -1,94 +1,99 @@
 import os
 import sys
 
-ENV_VAR_PYPI_REPOSITORY_NAME = "PYPI_REPOSITORY_NAME"
-ENV_VAR_PYPI_REPOSITORY_URL_TEMPLATE = "POETRY_REPOSITORIES_{}_URL"
-ENV_VAR_PYPI_REPOSITORY_USERNAME_TEMPLATE = "POETRY_HTTP_BASIC_{}_USERNAME"
-ENV_VAR_PYPI_REPOSITORY_PASSWORD_TEMPLATE = "POETRY_HTTP_BASIC_{}_PASSWORD"
-ENV_VAR_PYPI_REPOSITORY_API_TOKEN_TEMPLATE = "POETRY_PYPI_TOKEN_{}"
+PYPI_REPOSITORY_NAME_ENV_VAR = "PYPI_REPOSITORY_NAME"
+PYPI_REPOSITORY_URL_ENV_VAR_TEMPLATE = "POETRY_REPOSITORIES_{}_URL"
+PYPI_REPOSITORY_USERNAME_ENV_VAR_TEMPLATE = "POETRY_HTTP_BASIC_{}_USERNAME"
+PYPI_REPOSITORY_PASSWORD_ENV_VAR_TEMPLATE = "POETRY_HTTP_BASIC_{}_PASSWORD"
+PYPI_REPOSITORY_API_TOKEN_ENV_VAR_TEMPLATE = "POETRY_PYPI_TOKEN_{}"
 
 pypi_name = "pypi"
-pypi_url = pypi_usename = pypi_password = pypi_api_token = None
+pypi_url = pypi_username = pypi_password = pypi_api_token = None
 
 exit_code = 0
 
 try:
-    pypi_name = os.environ[ENV_VAR_PYPI_REPOSITORY_NAME]
+    pypi_name = os.environ[PYPI_REPOSITORY_NAME_ENV_VAR]
 except KeyError:
     pass
 
 print(f"Target pypi repository: '{pypi_name}'")
 
 
-def format_pypi_name(name):
+def to_env_var_name(name):
     return name.replace(".", "_").replace("-", "_").upper()
 
 
-env_var_pypi_repository_url = ENV_VAR_PYPI_REPOSITORY_URL_TEMPLATE.format(
-    format_pypi_name(pypi_name)
+pypi_repository_url_env_var = PYPI_REPOSITORY_URL_ENV_VAR_TEMPLATE.format(
+    to_env_var_name(pypi_name)
 )
-env_var_pypi_repository_username = ENV_VAR_PYPI_REPOSITORY_USERNAME_TEMPLATE.format(
-    format_pypi_name(pypi_name)
+pypi_repository_username_env_var = PYPI_REPOSITORY_USERNAME_ENV_VAR_TEMPLATE.format(
+    to_env_var_name(pypi_name)
 )
-env_var_pypi_repository_password = ENV_VAR_PYPI_REPOSITORY_PASSWORD_TEMPLATE.format(
-    format_pypi_name(pypi_name)
+pypi_repository_password_env_var = PYPI_REPOSITORY_PASSWORD_ENV_VAR_TEMPLATE.format(
+    to_env_var_name(pypi_name)
 )
-env_var_pypi_repository_api_token = ENV_VAR_PYPI_REPOSITORY_API_TOKEN_TEMPLATE.format(
-    format_pypi_name(pypi_name)
+pypi_repository_api_token_env_var = PYPI_REPOSITORY_API_TOKEN_ENV_VAR_TEMPLATE.format(
+    to_env_var_name(pypi_name)
 )
+
+# This line is only to avoid confusion in the code formatting error message by having
+# all variables in lower case
+pypi_repository_name_env_var = PYPI_REPOSITORY_NAME_ENV_VAR
+
 try:
-    pypi_url = os.environ[env_var_pypi_repository_url]
+    pypi_url = os.environ[pypi_repository_url_env_var]
 except KeyError:
     pass
 try:
-    pypi_usename = os.environ[env_var_pypi_repository_username]
+    pypi_username = os.environ[pypi_repository_username_env_var]
 except KeyError:
     pass
 try:
-    pypi_password = os.environ[env_var_pypi_repository_password]
+    pypi_password = os.environ[pypi_repository_password_env_var]
 except KeyError:
     pass
 try:
-    pypi_api_token = os.environ[env_var_pypi_repository_api_token]
+    pypi_api_token = os.environ[pypi_repository_api_token_env_var]
 except KeyError:
     pass
 
 print(pypi_url)
-print(pypi_usename)
+print(pypi_username)
 print(pypi_password)
 print(pypi_api_token)
 
 if pypi_name == "pypi":
     if pypi_url:
         print(
-            f"ERROR: ({ENV_VAR_PYPI_REPOSITORY_NAME} = '{pypi_name}', "
-            f"{env_var_pypi_repository_url} = '{pypi_url}') "
-            f"When the environment variable {ENV_VAR_PYPI_REPOSITORY_NAME} is 'pypi', "
+            f"ERROR: ({pypi_repository_name_env_var} = '{pypi_name}', "
+            f"{pypi_repository_url_env_var} = '{pypi_url}') "
+            f"When the environment variable {PYPI_REPOSITORY_NAME_ENV_VAR} is 'pypi', "
             f"empty or not defined, you must NOT define the environment variable "
-            f"{env_var_pypi_repository_url}."
+            f"{pypi_repository_url_env_var}."
         )
         exit_code = 1
 else:
     if not pypi_url:
         print(
-            f"ERROR: ({ENV_VAR_PYPI_REPOSITORY_NAME} = '{pypi_name}', "
-            f"{env_var_pypi_repository_url} = '{pypi_url}') "
-            f"When the environment variable {ENV_VAR_PYPI_REPOSITORY_NAME} "
+            f"ERROR: ({pypi_repository_name_env_var} = '{pypi_name}', "
+            f"{pypi_repository_url_env_var} = '{pypi_url}') "
+            f"When the environment variable {PYPI_REPOSITORY_NAME_ENV_VAR} "
             f"is NOT 'pypi', you must define the environment variable "
-            f"{env_var_pypi_repository_url}."
+            f"{pypi_repository_url_env_var}."
         )
         exit_code = 1
-if pypi_usename is None and pypi_api_token is None:
+if pypi_username is None and pypi_api_token is None:
     print(
-        f"ERROR: Either {env_var_pypi_repository_username} or "
-        f"{env_var_pypi_repository_api_token} environment variables "
+        f"ERROR: Either {pypi_repository_username_env_var} or "
+        f"{pypi_repository_api_token_env_var} environment variables "
         f"must be set."
     )
     exit_code = 1
-if pypi_usename and pypi_password is None:
+if pypi_username and pypi_password is None:
     print(
-        f"ERROR: No {env_var_pypi_repository_api_token} environment variable set "
-        f"for {env_var_pypi_repository_username} = '{pypi_usename}'."
+        f"ERROR: No {pypi_repository_api_token_env_var} environment variable set "
+        f"for {pypi_repository_username_env_var} = '{pypi_username}'."
     )
     exit_code = 1
 

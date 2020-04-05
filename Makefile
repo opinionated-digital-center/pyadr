@@ -110,12 +110,17 @@ setup-dev-host:
 setup-pre-commit-hooks:
 	pre-commit install --hook-type pre-commit
 
-setup-release-tools:
+setup-release-tools-common:
 	npm install -g semantic-release@"^17.0.4"
-	npm install -g @semantic-release/changelog@"^5.0.0"
+	npm install -g @semantic-release/changelog@"^5.0.1"
 	npm install -g @semantic-release/exec@"^5.0.0"
 	npm install -g @semantic-release/git@"^9.0.0"
-	npm install -g @semantic-release/gitlab@"^6.0.2"
+
+setup-release-tools-gitlab: setup-release-tools-common
+	npm install -g @semantic-release/gitlab@"^6.0.3"
+
+setup-release-tools-github: setup-release-tools-common
+	npm install -g @semantic-release/github@"^7.0.5"
 
 setup-cicd-python3:
 	update-alternatives --install /usr/bin/python python /usr/bin/python3 1
@@ -215,7 +220,10 @@ type:
 # unit testing
 #################################################################
 
-test: py37
+test: py
+
+py:
+	poetry run tox -e py
 
 py37:
 	poetry run tox -e py37
@@ -284,7 +292,7 @@ cicd-release:
 bump:
 	$(call check_defined, NEW_VERSION)
 	poetry version $(NEW_VERSION)
-	pip install toml
+	poetry run pip install toml
 	poetry run python ./scripts/generate_version_file.py
 
 # To use/adjust when we start using coverage. Use Poetry.
@@ -294,6 +302,7 @@ bump:
 #	ls -l dist
 
 publish: clean
+	poetry run python scripts/verify_pypi_env_variables.py
 	[ -z $$PYPI_REPOSITORY_NAME ] || repo_arg="-r $$PYPI_REPOSITORY_NAME" && poetry publish --build $$repo_arg
 
 #################################################################
