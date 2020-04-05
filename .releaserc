@@ -8,8 +8,7 @@
       {
         "verifyConditionsCmd": "./scripts/verify_git_tags_one_version_tag_present.sh",
         "verifyReleaseCmd": "./scripts/semantic_release_exec_verify_release.sh ${nextRelease.version}",
-        "prepareCmd": "make bump NEW_VERSION=${nextRelease.version}",
-        "publishCmd": "make publish"
+        "prepareCmd": "make bump NEW_VERSION=${nextRelease.version}"
       }
     ],
     [
@@ -23,6 +22,6 @@
         "message": "chore(release): ${nextRelease.version}\n\n${nextRelease.notes}"
       }
     ],
-    "@semantic-release/gitlab"
+    "@semantic-release/github"
   ]
 }

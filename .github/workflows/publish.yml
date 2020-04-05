@@ -1,0 +1,27 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Publish Python package to Pypi
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  publish:
+    name: Publish release
+    runs-on: ubuntu-latest
+    env:
+      POETRY_HTTP_BASIC_PYPI_PASSWORD: ${{ secrets.POETRY_HTTP_BASIC_PYPI_PASSWORD }}
+      POETRY_HTTP_BASIC_PYPI_USERNAME: ${{ secrets.POETRY_HTTP_BASIC_PYPI_USERNAME }}
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+      - name: Install tools (Poetry)
+        uses: Gr1N/setup-poetry@v2
+      - name: Publish to repository
+        run: make publish
