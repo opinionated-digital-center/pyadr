@@ -5,14 +5,22 @@ import sys
 from datetime import datetime
 
 import cleo
+from slugify import slugify
 
 from pyadr.core import generate_toc
 
 from . import assets  # relative-import the *package* containing the templates
 from . import __version__
-from .const import ADR_REPO_ABS_PATH, CWD, STATUS_ACCEPTED, STATUS_REJECTED
+from .const import (
+    ADR_REPO_ABS_PATH,
+    ADR_REPO_REL_PATH,
+    CWD,
+    STATUS_ACCEPTED,
+    STATUS_PROPOSED,
+    STATUS_REJECTED,
+)
 from .exceptions import PyadrNoPreviousAdrError
-from .file_utils import rename_reviewed_adr_file, update_adr_file_content_to_status
+from .file_utils import rename_reviewed_adr_file, update_adr_file_content
 
 try:
     import importlib.resources as pkg_resources
@@ -73,10 +81,36 @@ class InitCommand(cleo.Command):
         with adr_madr_path.open("w") as f:
             f.write(pkg_resources.read_text(assets, adr_madr_filename))
         reviewed_adr = rename_reviewed_adr_file(adr_madr_path, ADR_REPO_ABS_PATH)
-        update_adr_file_content_to_status(reviewed_adr, STATUS_ACCEPTED)
+        update_adr_file_content(reviewed_adr, status=STATUS_ACCEPTED)
         self.line(f"Created ADR `{reviewed_adr.relative_to(CWD)}`.")
 
         self.line(f"ADR repository successfully initialised at `{ADR_REPO_ABS_PATH}/`.")
+
+
+class NewCommand(cleo.Command):
+    """
+    Create an new ADR
+
+    new
+        {words* : Words in the title}
+    """
+
+    def handle(self):
+        if not ADR_REPO_ABS_PATH.exists():
+            self.line_error(
+                f"Directory `{ADR_REPO_REL_PATH}/` does not exist. "
+                "Initialise your ADR repo first."
+            )
+            sys.exit(1)
+
+        title = " ".join(self.argument("words"))
+        adr_path = ADR_REPO_ABS_PATH / f"XXXX-{slugify(title)}.md"
+
+        with adr_path.open("w") as f:
+            f.write(pkg_resources.read_text(assets, "madr-template.md"))
+        update_adr_file_content(adr_path, title=title, status=STATUS_PROPOSED)
+
+        self.line(f"Created ADR `{adr_path.relative_to(CWD)}`.")
 
 
 class BaseReviewCommand(cleo.Command):
@@ -118,7 +152,7 @@ class BaseReviewCommand(cleo.Command):
             sys.exit(1)
         self.line(f"Renamed ADR to: {reviewed_adr}")
 
-        update_adr_file_content_to_status(reviewed_adr, status)
+        update_adr_file_content(reviewed_adr, status=status)
         self.line(f"Change ADR status to: {status}")
 
 
@@ -161,6 +195,7 @@ class Application(cleo.Application):
         super().__init__("ADR Process Tool", __version__)
 
         self.add(InitCommand())
+        self.add(NewCommand())
         self.add(ApproveCommand())
         self.add(RejectCommand())
         self.add(GenerateTocCommand())

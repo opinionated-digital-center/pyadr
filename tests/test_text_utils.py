@@ -5,7 +5,6 @@ import pytest
 from hamcrest import assert_that, contains_string, equal_to, none, not_
 
 from pyadr import text_utils
-from pyadr.const import STATUS_ACCEPTED, STATUS_REJECTED
 from pyadr.text_utils import (
     find_title_status_and_date_in_madr_content,
     get_adr_title_slug_from_stream,
@@ -14,7 +13,8 @@ from pyadr.text_utils import (
 
 @pytest.fixture()
 def source_adr_text():
-    yield """# [short title of solved problem and solution]
+    yield """<!-- comment -->
+# [short title of solved problem and solution]
 
 * Status: any_status
 * Date: any_date
@@ -25,53 +25,41 @@ def source_adr_text():
 """
 
 
-def test_date_changed_when_change_adr_str_content_to_status(source_adr_text):
+def test_change_adr_text_date(source_adr_text):
     # Given
 
     # When
     today = datetime.today().strftime("%Y-%m-%d")
-    result_text = text_utils.change_adr_text_to_status(
-        source_adr_text, "another_status"
-    )
+    result_text = text_utils.change_adr_text(source_adr_text, status="another_status")
 
     # Then
     assert_that(result_text, not_(contains_string("\n* Date: any_date\n")))
     assert_that(result_text, contains_string(f"\n* Date: {today}\n"))
 
 
-def test_status_changed_when_change_adr_str_content_to_status(source_adr_text):
+def test_change_adr_text_title(source_adr_text):
     # Given
 
     # When
-    result_text = text_utils.change_adr_text_to_status(
-        source_adr_text, "another_status"
+    result_text = text_utils.change_adr_text(source_adr_text, "My New Title")
+
+    # Then
+    assert_that(
+        result_text,
+        not_(contains_string("\n# [short title of solved problem and solution]\n")),
     )
+    assert_that(result_text, contains_string("\n# My New Title\n"))
+
+
+def test_change_adr_text_status(source_adr_text):
+    # Given
+
+    # When
+    result_text = text_utils.change_adr_text(source_adr_text, status="another_status")
 
     # Then
     assert_that(result_text, not_(contains_string("\n* Status: any_status\n")))
     assert_that(result_text, contains_string("\n* Status: another_status\n"))
-
-
-def test_status_changed_when_change_adr_str_content_to_accepted(source_adr_text):
-    # Given
-
-    # When
-    result_text = text_utils.change_adr_text_to_accepted(source_adr_text)
-
-    # Then
-    assert_that(result_text, not_(contains_string("\n* Status: any_status\n")))
-    assert_that(result_text, contains_string(f"\n* Status: {STATUS_ACCEPTED}\n"))
-
-
-def test_status_changed_when_change_adr_str_content_to_rejected(source_adr_text):
-    # Given
-
-    # When
-    result_text = text_utils.change_adr_text_to_rejected(source_adr_text)
-
-    # Then
-    assert_that(result_text, not_(contains_string("\n* Status: any_status\n")))
-    assert_that(result_text, contains_string(f"\n* Status: {STATUS_REJECTED}\n"))
 
 
 def test_get_adr_title_slug_from_stream():
