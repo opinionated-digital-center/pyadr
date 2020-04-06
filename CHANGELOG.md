@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.3.0...v0.4.0) (2020-04-06)
+
+
+### Features
+
+* create a new proposed adr ([f00936f](https://github.com/opinionated-digital-center/pyadr/commit/f00936f5757e66c3af9817914af4960e163d6c54))
+
 <<<<<<< HEAD
 # [0.3.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.2.0...v0.3.0) (2020-04-03)
 
