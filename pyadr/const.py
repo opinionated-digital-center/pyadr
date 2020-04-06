@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 
+STATUS_PROPOSED = "proposed"
 STATUS_ACCEPTED = "accepted"
 STATUS_REJECTED = "rejected"
 
