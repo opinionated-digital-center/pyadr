@@ -176,4 +176,20 @@ Feature: Generate a table of content in markdown
             ## Accepted Records
 
             * [An ADR](docs/adr/0001-an-adr.md)
+
+            ## Rejected Records
+
+            * None
+
+            ## Superseded Records
+
+            * None
+
+            ## Deprecated Records
+
+            * None
+
+            ## Records with non-standard statuses
+
+            * None
             """
