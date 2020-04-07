@@ -3,7 +3,7 @@ Feature: Initialise an ADR repository
     Background:
         Given a new working directory
 
-    Scenario: Should fail if a repo already exists
+    Scenario: Fail when a repo already exists
         Given a directory named "docs/adr"
         When I run "pyadr init"
         Then it should fail with:
@@ -11,7 +11,7 @@ Feature: Initialise an ADR repository
             Error: directory '{__WORKDIR__}/docs/adr/' already exists. Please erase (with -f) or backup before proceeding.
             """
 
-    Scenario: Should succeed when force init the repo
+    Scenario: Force init the repo
         Given a directory named "docs/adr"
         And an empty file named "docs/adr/to-be-erased"
         When I run "pyadr init -f"
@@ -22,14 +22,14 @@ Feature: Initialise an ADR repository
             """
         And the file named "docs/adr/to-be-erased" should not exist
 
-    Scenario: Should succeed with a success message
+    Scenario: Succeed with a success message
         When I run "pyadr init"
         Then it should pass with:
             """
             ADR repository successfully initialised at '{__WORKDIR__}/docs/adr/'.
             """
 
-    Scenario: Should create the repo directory
+    Scenario: Create the repo directory
         When I run "pyadr init"
         Then it should pass
         And the directory "docs/adr" exists
@@ -48,7 +48,7 @@ Feature: Initialise an ADR repository
         * Status: [proposed | rejected | accepted | deprecated | ... | superseded by [ADR-0005](0005-example.md)]
         """
 
-    Scenario: Should create the ADR to record architecture decisions
+    Scenario: Create the ADR to record architecture decisions
         When I run "pyadr init"
         Then it should pass with:
             """
@@ -78,7 +78,7 @@ Feature: Initialise an ADR repository
         See Michael Nygard's article, linked above.
         """
 
-    Scenario: Should create the ADR to use MADR
+    Scenario: Create the ADR to use MADR
         When I run "pyadr init"
         Then it should pass with:
             """
