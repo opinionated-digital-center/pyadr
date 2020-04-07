@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.4.0...v0.4.1) (2020-04-07)
+
+
+### Bug Fixes
+
+* add './' and add consistency to messages displayed ([ce6d20a](https://github.com/opinionated-digital-center/pyadr/commit/ce6d20adc2497249bbbe5bafbcca1b60a4b5189a))
+
 # [0.4.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.3.0...v0.4.0) (2020-04-06)
 
 
