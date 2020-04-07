@@ -1,6 +1,6 @@
 from hamcrest import assert_that, calling, equal_to, raises
 
-from pyadr.exceptions import PyadrNoPreviousAdrError
+from pyadr.exceptions import PyadrNoNumberedAdrError
 from pyadr.file_utils import calculate_next_id, rename_reviewed_adr_file
 
 
@@ -51,5 +51,5 @@ def test_determine_next_id_fail_when_no_previous_adr(adr_tmp_path):
     # Then
     assert_that(
         calling(calculate_next_id).with_args(adr_tmp_path),
-        raises(PyadrNoPreviousAdrError),
+        raises(PyadrNoNumberedAdrError),
     )

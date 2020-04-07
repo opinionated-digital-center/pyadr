@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from .const import ADR_REPO_ABS_PATH, ADR_REPO_REL_PATH
-from .text_utils import find_title_status_and_date_in_madr_content
+from .content_utils import retrieve_title_status_and_date_from_madr_content_stream
 
 
 def generate_toc() -> Path:
@@ -66,7 +66,7 @@ def _extract_adrs_by_status(adr_paths):
                 title,
                 (status, status_phrase),
                 date,
-            ) = find_title_status_and_date_in_madr_content(f)
+            ) = retrieve_title_status_and_date_from_madr_content_stream(f)
         try:
             status_supplement = ""
             if status_phrase:

@@ -82,13 +82,7 @@ def test_build_toc_content_from_adrs_by_status():
 def test_build_toc_content_from_adrs_by_status_no_adr():
     # Given
     adrs_by_status = {
-        "accepted": {
-            "status-title": "Accepted Records",
-            "adrs": [
-                f"* [ADR Title](docs/adr/adr.md)\n",
-                f"* [ADR Title](docs/adr/adr.md)\n",
-            ],
-        },
+        "accepted": {"status-title": "Accepted Records", "adrs": []},
         "rejected": {"status-title": "Rejected Records", "adrs": []},
         "superseded": {"status-title": "Superseded Records", "adrs": []},
         "deprecated": {"status-title": "Deprecated Records", "adrs": []},
@@ -109,8 +103,7 @@ def test_build_toc_content_from_adrs_by_status_no_adr():
         "\n",
         "## Accepted Records\n",
         "\n",
-        "* [ADR Title](docs/adr/adr.md)\n",
-        "* [ADR Title](docs/adr/adr.md)\n",
+        "* None\n",
         "\n",
         "## Rejected Records\n",
         "\n",

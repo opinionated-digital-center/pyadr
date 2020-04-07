@@ -19,7 +19,7 @@ from .const import (
     STATUS_PROPOSED,
     STATUS_REJECTED,
 )
-from .exceptions import PyadrNoPreviousAdrError
+from .exceptions import PyadrNoNumberedAdrError
 from .file_utils import rename_reviewed_adr_file, update_adr_file_content
 
 try:
@@ -144,7 +144,7 @@ class BaseReviewCommand(cleo.Command):
         proposed_adr = found_proposed_adrs[0]
         try:
             reviewed_adr = rename_reviewed_adr_file(proposed_adr, ADR_REPO_ABS_PATH)
-        except PyadrNoPreviousAdrError:
+        except PyadrNoNumberedAdrError:
             self.line_error(
                 "There should be at least one initial reviewed ADR "
                 "(usually './docs/adr/0000-record-architecture-decisions.md')."
