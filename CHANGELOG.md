@@ -1,3 +1,15 @@
+# [0.5.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.4.1...v0.5.0) (2020-04-07)
+
+
+### Bug Fixes
+
+* proposed adrs removed from index ([95850ad](https://github.com/opinionated-digital-center/pyadr/commit/95850adbd2843ef6114c5ea5903feb9773f82799))
+
+
+### Features
+
+* option --toc generates toc when accept or reject ([7dc6067](https://github.com/opinionated-digital-center/pyadr/commit/7dc60675d2c47036cb244d7a42eaf76f8539ce6a))
+
 ## [0.4.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.4.0...v0.4.1) (2020-04-07)
 
 
