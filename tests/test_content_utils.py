@@ -30,7 +30,7 @@ def test_update_adr_content_date(sample_adr_content):
 
     # When
     today = datetime.today().strftime("%Y-%m-%d")
-    result_text = content_utils.update_adr_content(
+    result_text = content_utils.update_adr_content_title_status(
         sample_adr_content, status="another_status"
     )
 
@@ -43,7 +43,9 @@ def test_update_adr_content_title(sample_adr_content):
     # Given
 
     # When
-    result_text = content_utils.update_adr_content(sample_adr_content, "My New Title")
+    result_text = content_utils.update_adr_content_title_status(
+        sample_adr_content, "My New Title"
+    )
 
     # Then
     assert_that(
@@ -57,7 +59,7 @@ def test_update_adr_content_status(sample_adr_content):
     # Given
 
     # When
-    result_text = content_utils.update_adr_content(
+    result_text = content_utils.update_adr_content_title_status(
         sample_adr_content, status="another_status"
     )
 
