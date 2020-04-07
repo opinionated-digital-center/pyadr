@@ -152,6 +152,12 @@ class BaseReviewCommand(cleo.Command):
             sys.exit(1)
         self.line(f"Renamed ADR to: {reviewed_adr}")
 
+        if self.option("toc"):
+            path = generate_toc()
+            self.line(
+                f"Markdown table of content generated in './{path.relative_to(CWD)}'"
+            )
+
         update_adr_file_content(reviewed_adr, status=status)
         self.line(f"Change ADR status to: {status}")
 
@@ -161,6 +167,7 @@ class ApproveCommand(BaseReviewCommand):
     Approve a proposed ADR
 
     approve
+        {--t|toc : If set, generates also the table of content}
     """
 
     def handle(self):
@@ -172,6 +179,7 @@ class RejectCommand(BaseReviewCommand):
     Reject a proposed ADR
 
     reject
+        {--t|toc : If set, generates also the table of content}
     """
 
     def handle(self):
@@ -186,8 +194,8 @@ class GenerateTocCommand(cleo.Command):
     """
 
     def handle(self):
-        generate_toc()
-        self.line("Markdown table of content generated in './docs/adr/index.md'")
+        path = generate_toc()
+        self.line(f"Markdown table of content generated in './{path.relative_to(CWD)}'")
 
 
 class Application(cleo.Application):

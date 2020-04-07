@@ -73,8 +73,8 @@ def extract_next_line_content_starting_with_suffix(stream: TextIO, suffix: str) 
         str: line content without the suffix
 
     """
-    line = ""
-    while not line.startswith(suffix):
+    line = "bootstrap string"
+    while not line.startswith(suffix) and len(line) != 0:
         line = stream.readline()
     title = line[len(suffix) :].strip()
     return title

@@ -135,3 +135,51 @@ Feature: Approve or reject proposed ADR
 
             Decision outcome.
             """
+
+    Scenario: Generate index when approving if requested
+        Given an accepted adr file named "docs/adr/0000-record-architecture-decisions.md"
+        Given a file named "docs/adr/XXXX-my-adr-title.md" with:
+            """
+            # My ADR Title
+
+            * Status: proposed
+            * Date: 2020-03-26
+
+            ## Context and Problem Statement
+
+            Context and problem statement.
+
+            ## Decision Outcome
+
+            Decision outcome.
+            """
+        When I run "pyadr approve --toc"
+        Then it should pass with:
+            """
+            Markdown table of content generated in './docs/adr/index.md'
+            """
+        And the file named "docs/adr/index.md" should exist
+
+    Scenario: Generate index whe rejecting if requested
+        Given an accepted adr file named "docs/adr/0000-record-architecture-decisions.md"
+        Given a file named "docs/adr/XXXX-my-adr-title.md" with:
+            """
+            # My ADR Title
+
+            * Status: proposed
+            * Date: 2020-03-26
+
+            ## Context and Problem Statement
+
+            Context and problem statement.
+
+            ## Decision Outcome
+
+            Decision outcome.
+            """
+        When I run "pyadr reject --toc"
+        Then it should pass with:
+            """
+            Markdown table of content generated in './docs/adr/index.md'
+            """
+        And the file named "docs/adr/index.md" should exist
