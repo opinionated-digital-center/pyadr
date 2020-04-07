@@ -142,7 +142,6 @@ Feature: Generate a table of content in markdown
             * None
             """
 
-    @skip
     Scenario: Do not include proposed ADRs in table of content
         Given a new working directory
         And a file named "docs/adr/0001-an-adr.md" with:
