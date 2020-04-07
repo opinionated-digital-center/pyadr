@@ -1,20 +1,22 @@
+from pathlib import Path
+
 from .const import ADR_REPO_ABS_PATH, ADR_REPO_REL_PATH
 from .text_utils import find_title_status_and_date_in_madr_content
 
 
-def generate_toc():
+def generate_toc() -> Path:
     # Initialise variables
     adr_paths = sorted(ADR_REPO_ABS_PATH.glob("[0-9X][0-9X][0-9X][0-9X]-*"))
 
     adrs_by_status = _extract_adrs_by_status(adr_paths)
-
-    print(adrs_by_status)
 
     toc_content = _build_toc_content_from_adrs_by_status(adrs_by_status)
 
     toc_path = ADR_REPO_ABS_PATH / "index.md"
     with toc_path.open("w") as f:
         f.writelines(toc_content)
+
+    return toc_path
 
 
 def _build_toc_content_from_adrs_by_status(adrs_by_status):
