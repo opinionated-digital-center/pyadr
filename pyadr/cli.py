@@ -117,14 +117,14 @@ class BaseReviewCommand(cleo.Command):
 
         if not len(found_proposed_adrs):
             self.line_error(
-                "There is no ADR to approve/reject "
+                "There is no ADR to accept/reject "
                 "(should be of format './docs/adr/XXXX-adr-title.md')"
             )
             sys.exit(1)
 
         elif len(found_proposed_adrs) > 1:
             self.line_error(
-                f"There should be only one ADR to approve/reject but there are "
+                f"There should be only one ADR to accept/reject but there are "
                 f"{len(found_proposed_adrs)}:"
             )
             for adr in found_proposed_adrs:
@@ -152,11 +152,11 @@ class BaseReviewCommand(cleo.Command):
         self.line(f"Change ADR status to: {status}")
 
 
-class ApproveCommand(BaseReviewCommand):
+class AcceptCommand(BaseReviewCommand):
     """
-    Approve a proposed ADR
+    Accept a proposed ADR
 
-    approve
+    accept
         {--t|toc : If set, generates also the table of content}
     """
 
@@ -194,7 +194,7 @@ class Application(cleo.Application):
 
         self.add(InitCommand())
         self.add(NewCommand())
-        self.add(ApproveCommand())
+        self.add(AcceptCommand())
         self.add(RejectCommand())
         self.add(GenerateTocCommand())
 
