@@ -59,11 +59,8 @@ Feature: Initialise an ADR repository
         """
         # Record architecture decisions
 
-        Date: {__TODAY_YYYY_MM_DD__}
-
-        ## Status
-
-        Accepted
+        * Status: accepted
+        * Date: {__TODAY_YYYY_MM_DD__}
 
         ## Context
 

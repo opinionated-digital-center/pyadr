@@ -1,6 +1,9 @@
 from pathlib import Path
 
-from .content_utils import build_adr_title_slug_from_content_stream, update_adr_content
+from .content_utils import (
+    build_adr_title_slug_from_content_stream,
+    update_adr_content_title_status,
+)
 from .exceptions import PyadrNoNumberedAdrError
 
 
@@ -14,9 +17,11 @@ def rename_reviewed_adr_file(file: Path, adr_path) -> Path:
     return renamed_file
 
 
-def update_adr_file_content(file: Path, title: str = None, status: str = None) -> None:
+def update_adr_title_status(file: Path, title: str = None, status: str = None) -> None:
     with file.open() as f:
-        updated_content = update_adr_content(f.read(), title=title, status=status)
+        updated_content = update_adr_content_title_status(
+            f.read(), title=title, status=status
+        )
     with file.open("w") as f:
         f.write(updated_content)
 

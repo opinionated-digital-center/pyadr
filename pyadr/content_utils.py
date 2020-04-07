@@ -7,7 +7,9 @@ from slugify import slugify
 from pyadr.exceptions import PyadrNoLineWithSuffixError
 
 
-def update_adr_content(content: str, title: str = None, status: str = None) -> str:
+def update_adr_content_title_status(
+    content: str, title: str = None, status: str = None
+) -> str:
     if not title and not status:
         raise TypeError("argument 'title' of 'status' has to be given")
 
