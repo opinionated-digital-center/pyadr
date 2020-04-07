@@ -8,7 +8,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should fail with:
             """
-            Error: directory `{__WORKDIR__}/docs/adr/` already exists. Please erase (with -f) or backup before proceeding.
+            Error: directory '{__WORKDIR__}/docs/adr/' already exists. Please erase (with -f) or backup before proceeding.
             """
 
     Scenario: Should succeed when force init the repo
@@ -17,7 +17,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init -f"
         Then it should pass with:
             """
-            Repository directory exists at `{__WORKDIR__}/docs/adr/`. Erasing...
+            Repository directory exists at '{__WORKDIR__}/docs/adr/'. Erasing...
             ... Erased.
             """
         And the file named "docs/adr/to-be-erased" should not exist
@@ -26,7 +26,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            ADR repository successfully initialised at `{__WORKDIR__}/docs/adr/`.
+            ADR repository successfully initialised at '{__WORKDIR__}/docs/adr/'.
             """
 
     Scenario: Should create the repo directory
@@ -38,7 +38,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            Copied MADR template to `docs/adr/template.md`.
+            Copied MADR template to './docs/adr/template.md'.
             """
         And the file named "docs/adr/template.md" should exist
         And the file "docs/adr/template.md" should contain:
@@ -52,7 +52,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            Created ADR `docs/adr/0000-record-architecture-decisions.md`.
+            Created ADR './docs/adr/0000-record-architecture-decisions.md'.
             """
         And the file named "docs/adr/0000-record-architecture-decisions.md" should exist
         And the file "docs/adr/0000-record-architecture-decisions.md" should contain:
@@ -82,7 +82,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            Created ADR `docs/adr/0001-use-markdown-architectural-decision-records.md`.
+            Created ADR './docs/adr/0001-use-markdown-architectural-decision-records.md'.
             """
         And the file named "docs/adr/0001-use-markdown-architectural-decision-records.md" should exist
         And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should contain:

@@ -60,7 +60,7 @@ Feature: Generate a table of content in markdown
         When I run "pyadr generate-toc"
         Then it should pass with:
             """
-            Markdown table of content generated in `docs/adr/index.md`
+            Markdown table of content generated in './docs/adr/index.md'
             """
         And the file "docs/adr/index.md" should contain:
             """
