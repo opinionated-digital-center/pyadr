@@ -1,3 +1,15 @@
+# [0.6.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.5.0...v0.6.0) (2020-04-07)
+
+
+### Bug Fixes
+
+* change initial adr to fit content expectations ([7e386c9](https://github.com/opinionated-digital-center/pyadr/commit/7e386c98bab14cff16c39fca9f160412baa40ea0))
+
+
+### Features
+
+* changed command approve to accept ([fd4ae50](https://github.com/opinionated-digital-center/pyadr/commit/fd4ae50e4c5a13eba8c5f3df27a8d6bae911df2f))
+
 # [0.5.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.4.1...v0.5.0) (2020-04-07)
 
 
