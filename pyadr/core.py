@@ -6,7 +6,7 @@ from .content_utils import retrieve_title_status_and_date_from_madr_content_stre
 
 def generate_toc() -> Path:
     # Initialise variables
-    adr_paths = sorted(ADR_REPO_ABS_PATH.glob("[0-9X][0-9X][0-9X][0-9X]-*"))
+    adr_paths = sorted(ADR_REPO_ABS_PATH.glob("[0-9][0-9][0-9][0-9]-*"))
 
     adrs_by_status = _extract_adrs_by_status(adr_paths)
 
