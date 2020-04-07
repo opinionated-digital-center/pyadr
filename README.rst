@@ -32,7 +32,7 @@ to accept it (``pyadr accept``) or to reject it (``pyadr reject``), which will:
 
 * Update the ADR content by:
 
-  * Changing the ADR status (``approved`` or ``rejected``)
+  * Changing the ADR status (``accepted`` or ``rejected``)
   * Changing the ADR date to current date
 
 * Change the ADR file name from ``XXXX-<whatever-is-here>`` to

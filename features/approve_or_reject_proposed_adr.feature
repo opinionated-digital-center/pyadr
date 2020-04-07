@@ -1,4 +1,4 @@
-Feature: Approve or reject proposed ADR
+Feature: Accept or reject proposed ADR
 
     Background:
         Given a new working directory
@@ -20,7 +20,7 @@ Feature: Approve or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr approve"
+        When I run "pyadr accept"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0001-my-adr-title.md" should exist
@@ -42,7 +42,7 @@ Feature: Approve or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr approve"
+        When I run "pyadr accept"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-title.md" should exist
@@ -64,12 +64,12 @@ Feature: Approve or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr approve"
+        When I run "pyadr accept"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-updated-title.md" should exist
 
-    Scenario: Update Status and Date for approved ADR
+    Scenario: Update Status and Date for accepted ADR
         Given an empty file named "docs/adr/0000-record-architecture-decisions.md"
         And a file named "docs/adr/XXXX-my-adr-title.md" with:
             """
@@ -86,7 +86,7 @@ Feature: Approve or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr approve"
+        When I run "pyadr accept"
         Then it should pass
         And the file "docs/adr/0001-my-adr-title.md" should contain:
             """
@@ -158,7 +158,7 @@ Feature: Approve or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr approve --toc"
+        When I run "pyadr accept --toc"
         Then it should pass with:
             """
             Markdown table of content generated in './docs/adr/index.md'
