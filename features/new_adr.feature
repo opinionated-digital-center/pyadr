@@ -7,7 +7,7 @@ Feature: Create a new ADR
         When I run "pyadr new My ADR Title"
         Then it should fail with:
             """
-            Directory `docs/adr/` does not exist. Initialise your ADR repo first.
+            Directory './docs/adr/' does not exist. Initialise your ADR repo first.
             """
 
     Scenario: Create a new ADR
@@ -15,7 +15,7 @@ Feature: Create a new ADR
         When I run "pyadr new My ADR Title"
         Then it should pass with:
             """
-            Created ADR `docs/adr/XXXX-my-adr-title.md`.
+            Created ADR './docs/adr/XXXX-my-adr-title.md'.
             """
         And the file named "docs/adr/XXXX-my-adr-title.md" should exist
         And the file "docs/adr/XXXX-my-adr-title.md" should contain:

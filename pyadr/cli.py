@@ -41,7 +41,7 @@ class InitCommand(cleo.Command):
         if self.option("force"):
             if ADR_REPO_ABS_PATH.exists():
                 self.line(
-                    f"Repository directory exists at `{ADR_REPO_ABS_PATH}/`. Erasing..."
+                    f"Repository directory exists at '{ADR_REPO_ABS_PATH}/'. Erasing..."
                 )
                 shutil.rmtree(ADR_REPO_ABS_PATH)
                 self.line("... Erased.")
@@ -49,7 +49,7 @@ class InitCommand(cleo.Command):
         else:
             if ADR_REPO_ABS_PATH.exists():
                 self.line_error(
-                    f"Error: directory `{ADR_REPO_ABS_PATH}/` already exists. "
+                    f"Error: directory '{ADR_REPO_ABS_PATH}/' already exists. "
                     "Please erase (with -f) or backup before proceeding."
                 )
                 sys.exit(1)
@@ -59,7 +59,7 @@ class InitCommand(cleo.Command):
         template_path = ADR_REPO_ABS_PATH / "template.md"
         with template_path.open("w") as f:
             f.write(pkg_resources.read_text(assets, "madr-template.md"))
-        self.line(f"Copied MADR template to `{template_path.relative_to(CWD)}`.")
+        self.line(f"Copied MADR template to './{template_path.relative_to(CWD)}'.")
 
         adr_0000_filename = "0000-record-architecture-decisions.md"
         adr_0000_path = ADR_REPO_ABS_PATH / adr_0000_filename
@@ -74,7 +74,7 @@ class InitCommand(cleo.Command):
                     re.MULTILINE,
                 )
             )
-        self.line(f"Created ADR `{adr_0000_path.relative_to(CWD)}`.")
+        self.line(f"Created ADR './{adr_0000_path.relative_to(CWD)}'.")
 
         adr_madr_filename = "XXXX-use-markdown-architectural-decision-records.md"
         adr_madr_path = ADR_REPO_ABS_PATH / adr_madr_filename
@@ -82,9 +82,9 @@ class InitCommand(cleo.Command):
             f.write(pkg_resources.read_text(assets, adr_madr_filename))
         reviewed_adr = rename_reviewed_adr_file(adr_madr_path, ADR_REPO_ABS_PATH)
         update_adr_file_content(reviewed_adr, status=STATUS_ACCEPTED)
-        self.line(f"Created ADR `{reviewed_adr.relative_to(CWD)}`.")
+        self.line(f"Created ADR './{reviewed_adr.relative_to(CWD)}'.")
 
-        self.line(f"ADR repository successfully initialised at `{ADR_REPO_ABS_PATH}/`.")
+        self.line(f"ADR repository successfully initialised at '{ADR_REPO_ABS_PATH}/'.")
 
 
 class NewCommand(cleo.Command):
@@ -98,7 +98,7 @@ class NewCommand(cleo.Command):
     def handle(self):
         if not ADR_REPO_ABS_PATH.exists():
             self.line_error(
-                f"Directory `{ADR_REPO_REL_PATH}/` does not exist. "
+                f"Directory './{ADR_REPO_REL_PATH}/' does not exist. "
                 "Initialise your ADR repo first."
             )
             sys.exit(1)
@@ -110,7 +110,7 @@ class NewCommand(cleo.Command):
             f.write(pkg_resources.read_text(assets, "madr-template.md"))
         update_adr_file_content(adr_path, title=title, status=STATUS_PROPOSED)
 
-        self.line(f"Created ADR `{adr_path.relative_to(CWD)}`.")
+        self.line(f"Created ADR './{adr_path.relative_to(CWD)}'.")
 
 
 class BaseReviewCommand(cleo.Command):
@@ -122,13 +122,13 @@ class BaseReviewCommand(cleo.Command):
         raise NotImplementedError()
 
     def _accept_or_reject(self, status: str):
-        self.line(f"Current Working Directory is: {CWD}")
+        self.line(f"Current Working Directory is: '{CWD}'")
         found_proposed_adrs = sorted(ADR_REPO_ABS_PATH.glob("XXXX-*"))
 
         if not len(found_proposed_adrs):
             self.line_error(
                 "There is no ADR to approve/reject "
-                "(should be of format 'docs/adr/XXXX-adr-title.md')"
+                "(should be of format './docs/adr/XXXX-adr-title.md')"
             )
             sys.exit(1)
 
@@ -138,7 +138,7 @@ class BaseReviewCommand(cleo.Command):
                 f"{len(found_proposed_adrs)}:"
             )
             for adr in found_proposed_adrs:
-                self.line_error(f"    => '{adr.relative_to(CWD)}'")
+                self.line_error(f"    => './{adr.relative_to(CWD)}'")
             sys.exit(1)
 
         proposed_adr = found_proposed_adrs[0]
@@ -147,7 +147,7 @@ class BaseReviewCommand(cleo.Command):
         except PyadrNoPreviousAdrError:
             self.line_error(
                 "There should be at least one initial reviewed ADR "
-                "(usually 'docs/adr/0000-record-architecture-decisions.md')."
+                "(usually './docs/adr/0000-record-architecture-decisions.md')."
             )
             sys.exit(1)
         self.line(f"Renamed ADR to: {reviewed_adr}")
@@ -187,7 +187,7 @@ class GenerateTocCommand(cleo.Command):
 
     def handle(self):
         generate_toc()
-        self.line("Markdown table of content generated in `docs/adr/index.md`")
+        self.line("Markdown table of content generated in './docs/adr/index.md'")
 
 
 class Application(cleo.Application):
