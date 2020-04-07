@@ -21,7 +21,8 @@ Feature: Approve or reject proposed ADR
             Decision outcome.
             """
         When I run "pyadr approve"
-        Then the file named "docs/adr/XXXX-my-adr-title.md" should not exist
+        Then it should pass
+        And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0001-my-adr-title.md" should exist
 
     Scenario: Increment ID for subsequent accepted (same code for rejected, no need to duplicate test) ADR
@@ -42,7 +43,8 @@ Feature: Approve or reject proposed ADR
             Decision outcome.
             """
         When I run "pyadr approve"
-        Then the file named "docs/adr/XXXX-my-adr-title.md" should not exist
+        Then it should pass
+        And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-title.md" should exist
 
     Scenario: Ensure filename corresponds to title of accepted (same code for rejected, no need to duplicate test) ADR
@@ -63,7 +65,8 @@ Feature: Approve or reject proposed ADR
             Decision outcome.
             """
         When I run "pyadr approve"
-        Then the file named "docs/adr/XXXX-my-adr-title.md" should not exist
+        Then it should pass
+        And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-updated-title.md" should exist
 
     Scenario: Update Status and Date for approved ADR
@@ -84,7 +87,8 @@ Feature: Approve or reject proposed ADR
             Decision outcome.
             """
         When I run "pyadr approve"
-        Then the file "docs/adr/0001-my-adr-title.md" should contain:
+        Then it should pass
+        And the file "docs/adr/0001-my-adr-title.md" should contain:
             """
             # My ADR Title
 
@@ -118,7 +122,8 @@ Feature: Approve or reject proposed ADR
             Decision outcome.
             """
         When I run "pyadr reject"
-        Then the file named "docs/adr/XXXX-my-adr-title.md" should not exist
+        Then it should pass
+        And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0001-my-adr-title.md" should exist
         And the file "docs/adr/0001-my-adr-title.md" should contain:
             """

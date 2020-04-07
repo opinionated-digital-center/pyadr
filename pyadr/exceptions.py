@@ -5,5 +5,9 @@ class PyadrError(Exception):
     """Base exception for errors raised by pyadr"""
 
 
-class PyadrNoPreviousAdrError(PyadrError):
-    pass
+class PyadrNoNumberedAdrError(PyadrError):
+    """No numbered ADR was found"""
+
+
+class PyadrNoLineWithSuffixError(PyadrError):
+    """No numbered ADR was found"""
