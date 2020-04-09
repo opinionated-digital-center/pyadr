@@ -1,35 +1,101 @@
-from importlib import resources as pkg_resources
+import shutil
+import sys
 from pathlib import Path
 
+from loguru import logger
 from slugify import slugify
 
 from . import assets
-from .const import ADR_REPO_ABS_PATH, ADR_REPO_REL_PATH, CWD, STATUS_PROPOSED
+from .const import (
+    ADR_REPO_ABS_PATH,
+    ADR_REPO_REL_PATH,
+    CWD,
+    STATUS_ACCEPTED,
+    STATUS_PROPOSED,
+)
 from .content_utils import retrieve_title_status_and_date_from_madr_content_stream
-from .file_utils import update_adr_title_status
+from .file_utils import rename_reviewed_adr_file, update_adr_title_status
+
+try:
+    import importlib.resources as pkg_resources
+except ImportError:
+    # Try backported to PY<37 `importlib_resources`.
+    import importlib_resources as pkg_resources  # type: ignore
 
 
-def verify_before_new_adr(stdout=print, stderr=print):
+def verify_before_new_adr():
     if not ADR_REPO_ABS_PATH.exists():
-        stderr(
+        logger.error(
             f"Directory './{ADR_REPO_REL_PATH}/' does not exist. "
             "Initialise your ADR repo first."
         )
-        # raise PyadrNoRepoDirectoryError(
-        #     f"Directory './{ADR_REPO_REL_PATH}/' does not exist. "
-        #     "Initialise your ADR repo first."
-        # )
 
 
-def new_adr(title: str, verify: bool = True, stdout=print, stderr=print):
+def init_adr_repo(force: bool = False) -> None:
+    if force:
+        if ADR_REPO_ABS_PATH.exists():
+            logger.warning(
+                f"Directory '{ADR_REPO_ABS_PATH}/' already exists. "
+                f"Used '--force' option => Erasing..."
+            )
+            shutil.rmtree(ADR_REPO_ABS_PATH)
+            logger.warning("... Erased.")
+
+    else:
+        if ADR_REPO_ABS_PATH.exists():
+            logger.error(
+                f"Directory '{ADR_REPO_ABS_PATH}/' already exists. "
+                "You can use '--force' option to erase."
+            )
+            sys.exit(1)
+
+    ADR_REPO_ABS_PATH.mkdir(parents=True)
+    logger.info(f"Created ADR repo directory './{ADR_REPO_ABS_PATH.relative_to(CWD)}'.")
+
+    _init_adr_template()
+
+    _init_adr_0000()
+
+    _init_adr_0001()
+
+    logger.info(f"ADR repository successfully initialised at '{ADR_REPO_ABS_PATH}/'.")
+
+
+def _init_adr_template():
+    template_path = ADR_REPO_ABS_PATH / "template.md"
+    with template_path.open("w") as f:
+        f.write(pkg_resources.read_text(assets, "madr-template.md"))
+    logger.info(f"Copied MADR template to './{template_path.relative_to(CWD)}'.")
+
+
+def _init_adr_0000():
+    adr_0000_filename = "0000-record-architecture-decisions.md"
+    adr_0000_path = ADR_REPO_ABS_PATH / adr_0000_filename
+    with adr_0000_path.open("w") as f:
+        f.write(pkg_resources.read_text(assets, adr_0000_filename))
+    update_adr_title_status(adr_0000_path, status=STATUS_ACCEPTED)
+    logger.info(f"Created ADR './{adr_0000_path.relative_to(CWD)}'.")
+
+
+def _init_adr_0001():
+    adr_madr_filename = "XXXX-use-markdown-architectural-decision-records.md"
+    adr_madr_path = ADR_REPO_ABS_PATH / adr_madr_filename
+    with adr_madr_path.open("w") as f:
+        f.write(pkg_resources.read_text(assets, adr_madr_filename))
+    reviewed_adr = rename_reviewed_adr_file(adr_madr_path, ADR_REPO_ABS_PATH)
+    update_adr_title_status(reviewed_adr, status=STATUS_ACCEPTED)
+    logger.info(f"Created ADR './{reviewed_adr.relative_to(CWD)}'.")
+
+
+def new_adr(title: str, verify: bool = True) -> Path:
     if verify:
-        verify_before_new_adr(stdout, stderr)
+        verify_before_new_adr()
 
     adr_path = ADR_REPO_ABS_PATH / f"XXXX-{slugify(title)}.md"
     with adr_path.open("w") as f:
         f.write(pkg_resources.read_text(assets, "madr-template.md"))
     update_adr_title_status(adr_path, title=title, status=STATUS_PROPOSED)
-    stdout(f"Created ADR './{adr_path.relative_to(CWD)}'.")
+    logger.warning(f"Created ADR './{adr_path.relative_to(CWD)}'.")
     return adr_path
 
 
