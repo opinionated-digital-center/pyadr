@@ -3,22 +3,12 @@ import shutil
 import sys
 
 import cleo
-from slugify import slugify
 
-from pyadr.core import generate_toc
-
-from . import assets  # relative-import the *package* containing the templates
-from . import __version__
-from .const import (
-    ADR_REPO_ABS_PATH,
-    ADR_REPO_REL_PATH,
-    CWD,
-    STATUS_ACCEPTED,
-    STATUS_PROPOSED,
-    STATUS_REJECTED,
-)
-from .exceptions import PyadrNoNumberedAdrError
-from .file_utils import rename_reviewed_adr_file, update_adr_title_status
+from .. import assets  # relative-import the *package* containing the templates
+from ..const import ADR_REPO_ABS_PATH, CWD, STATUS_ACCEPTED, STATUS_REJECTED
+from ..core import generate_toc, new_adr
+from ..exceptions import PyadrNoNumberedAdrError
+from ..file_utils import rename_reviewed_adr_file, update_adr_title_status
 
 try:
     import importlib.resources as pkg_resources
@@ -86,21 +76,9 @@ class NewCommand(cleo.Command):
     """
 
     def handle(self):
-        if not ADR_REPO_ABS_PATH.exists():
-            self.line_error(
-                f"Directory './{ADR_REPO_REL_PATH}/' does not exist. "
-                "Initialise your ADR repo first."
-            )
-            sys.exit(1)
-
         title = " ".join(self.argument("words"))
-        adr_path = ADR_REPO_ABS_PATH / f"XXXX-{slugify(title)}.md"
 
-        with adr_path.open("w") as f:
-            f.write(pkg_resources.read_text(assets, "madr-template.md"))
-        update_adr_title_status(adr_path, title=title, status=STATUS_PROPOSED)
-
-        self.line(f"Created ADR './{adr_path.relative_to(CWD)}'.")
+        new_adr(title)
 
 
 class BaseReviewCommand(cleo.Command):
@@ -186,22 +164,3 @@ class GenerateTocCommand(cleo.Command):
     def handle(self):
         path = generate_toc()
         self.line(f"Markdown table of content generated in './{path.relative_to(CWD)}'")
-
-
-class Application(cleo.Application):
-    def __init__(self):
-        super().__init__("ADR Process Tool", __version__)
-
-        self.add(InitCommand())
-        self.add(NewCommand())
-        self.add(AcceptCommand())
-        self.add(RejectCommand())
-        self.add(GenerateTocCommand())
-
-
-def main(args=None):
-    return Application().run()
-
-
-if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
