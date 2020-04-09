@@ -8,7 +8,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should fail with:
             """
-            Error: directory '{__WORKDIR__}/docs/adr/' already exists. Please erase (with -f) or backup before proceeding.
+            Directory '{__WORKDIR__}/docs/adr/' already exists. You can use '--force' option to erase.
             """
 
     Scenario: Force init the repo
@@ -17,7 +17,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init -f"
         Then it should pass with:
             """
-            Repository directory exists at '{__WORKDIR__}/docs/adr/'. Erasing...
+            Directory '{__WORKDIR__}/docs/adr/' already exists. Used '--force' option => Erasing...
             ... Erased.
             """
         And the file named "docs/adr/to-be-erased" should not exist
