@@ -1,10 +1,10 @@
 import sys
 
-from .application import Application
+from .application import App, LoggingAppConfig
 
 
 def main(args=None):
-    return Application().run()
+    return App(config=LoggingAppConfig()).run()
 
 
 if __name__ == "__main__":
