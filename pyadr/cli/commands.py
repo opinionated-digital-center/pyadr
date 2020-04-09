@@ -1,11 +1,10 @@
 """Console script for pyadr."""
-import sys
 
 import cleo
 
 from ..const import ADR_REPO_ABS_PATH, CWD, STATUS_ACCEPTED, STATUS_REJECTED
-from ..core import generate_toc, init_adr_repo, new_adr
-from ..exceptions import PyadrNoNumberedAdrError
+from ..core import generate_toc, init_adr_repo, new_adr, verify_adr_dir_exists
+from ..exceptions import PyadrError, PyadrNoNumberedAdrError
 from ..file_utils import rename_reviewed_adr_file, update_adr_title_status
 
 
@@ -18,7 +17,10 @@ class InitCommand(cleo.Command):
     """
 
     def handle(self):
-        init_adr_repo(self.option("force"))
+        try:
+            init_adr_repo(force=self.option("force"))
+        except PyadrError:
+            return 1
 
 
 class NewCommand(cleo.Command):
@@ -30,7 +32,11 @@ class NewCommand(cleo.Command):
     """
 
     def handle(self):
-        new_adr(title=" ".join(self.argument("words")))
+        try:
+            verify_adr_dir_exists()
+            new_adr(title=" ".join(self.argument("words")))
+        except PyadrError:
+            return 1
 
 
 class BaseReviewCommand(cleo.Command):
@@ -41,7 +47,7 @@ class BaseReviewCommand(cleo.Command):
     def handle(self):
         raise NotImplementedError()
 
-    def _accept_or_reject(self, status: str):
+    def _accept_or_reject(self, status: str) -> int:
         self.line(f"Current Working Directory is: '{CWD}'")
         found_proposed_adrs = sorted(ADR_REPO_ABS_PATH.glob("XXXX-*"))
 
@@ -50,7 +56,7 @@ class BaseReviewCommand(cleo.Command):
                 "There is no ADR to accept/reject "
                 "(should be of format './docs/adr/XXXX-adr-title.md')"
             )
-            sys.exit(1)
+            return 1
 
         elif len(found_proposed_adrs) > 1:
             self.line_error(
@@ -59,7 +65,7 @@ class BaseReviewCommand(cleo.Command):
             )
             for adr in found_proposed_adrs:
                 self.line_error(f"    => './{adr.relative_to(CWD)}'")
-            sys.exit(1)
+            return 1
 
         proposed_adr = found_proposed_adrs[0]
         try:
@@ -69,7 +75,7 @@ class BaseReviewCommand(cleo.Command):
                 "There should be at least one initial reviewed ADR "
                 "(usually './docs/adr/0000-record-architecture-decisions.md')."
             )
-            sys.exit(1)
+            return 1
         self.line(f"Renamed ADR to: {reviewed_adr}")
 
         if self.option("toc"):
@@ -80,6 +86,7 @@ class BaseReviewCommand(cleo.Command):
 
         update_adr_title_status(reviewed_adr, status=status)
         self.line(f"Change ADR status to: {status}")
+        return 0
 
 
 class AcceptCommand(BaseReviewCommand):
@@ -91,7 +98,7 @@ class AcceptCommand(BaseReviewCommand):
     """
 
     def handle(self):
-        self._accept_or_reject(STATUS_ACCEPTED)
+        return self._accept_or_reject(STATUS_ACCEPTED)
 
 
 class RejectCommand(BaseReviewCommand):
@@ -103,7 +110,7 @@ class RejectCommand(BaseReviewCommand):
     """
 
     def handle(self):
-        self._accept_or_reject(STATUS_REJECTED)
+        return self._accept_or_reject(STATUS_REJECTED)
 
 
 class GenerateTocCommand(cleo.Command):
@@ -114,5 +121,11 @@ class GenerateTocCommand(cleo.Command):
     """
 
     def handle(self):
-        path = generate_toc()
-        self.line(f"Markdown table of content generated in './{path.relative_to(CWD)}'")
+        try:
+            verify_adr_dir_exists()
+            path = generate_toc()
+            self.line(
+                f"Markdown table of content generated in './{path.relative_to(CWD)}'"
+            )
+        except PyadrError:
+            return 1

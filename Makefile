@@ -55,6 +55,7 @@ help:
 	@echo "MAIN TARGETS:"
 	@echo "\tclean - remove all build, test, coverage and Python artifacts"
 	@echo "\ttox - run tox default targets, usually all tests and checks (see tox.ini)"
+	@echo "\ttoxp - same as 'tox', but with parallel runs"
 	@echo "\trepl - run the repl tool (bpython in our case)"
 	@echo "\tlint - check style with flake8 (uses tox)"
 	@echo "\tformat-check - check format for correctness with isort and black (uses tox)"
@@ -178,6 +179,9 @@ clean-venv:
 
 tox:
 	poetry run tox
+
+toxp:
+	poetry run tox -p auto
 
 #################################################################
 # repl
