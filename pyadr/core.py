@@ -1,7 +1,36 @@
+from importlib import resources as pkg_resources
 from pathlib import Path
 
-from .const import ADR_REPO_ABS_PATH, ADR_REPO_REL_PATH
+from slugify import slugify
+
+from . import assets
+from .const import ADR_REPO_ABS_PATH, ADR_REPO_REL_PATH, CWD, STATUS_PROPOSED
 from .content_utils import retrieve_title_status_and_date_from_madr_content_stream
+from .file_utils import update_adr_title_status
+
+
+def verify_before_new_adr(stdout=print, stderr=print):
+    if not ADR_REPO_ABS_PATH.exists():
+        stderr(
+            f"Directory './{ADR_REPO_REL_PATH}/' does not exist. "
+            "Initialise your ADR repo first."
+        )
+        # raise PyadrNoRepoDirectoryError(
+        #     f"Directory './{ADR_REPO_REL_PATH}/' does not exist. "
+        #     "Initialise your ADR repo first."
+        # )
+
+
+def new_adr(title: str, verify: bool = True, stdout=print, stderr=print):
+    if verify:
+        verify_before_new_adr(stdout, stderr)
+
+    adr_path = ADR_REPO_ABS_PATH / f"XXXX-{slugify(title)}.md"
+    with adr_path.open("w") as f:
+        f.write(pkg_resources.read_text(assets, "madr-template.md"))
+    update_adr_title_status(adr_path, title=title, status=STATUS_PROPOSED)
+    stdout(f"Created ADR './{adr_path.relative_to(CWD)}'.")
+    return adr_path
 
 
 def generate_toc() -> Path:
