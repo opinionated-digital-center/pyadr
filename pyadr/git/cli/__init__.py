@@ -1,7 +1,7 @@
 import sys
 
-from pyadr.cli.application import App
 from pyadr.cli.config import LoggingAppConfig
+from pyadr.git.cli.application import App
 
 
 def main(args=None):

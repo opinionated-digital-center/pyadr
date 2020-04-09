@@ -70,6 +70,7 @@ cleo = "^0.7.6"
 python-slugify = "^4.0.0"
 importlib_resources = { version = "^1.4.0", python = "<3.7" }
 loguru = "^0.4.1"
+gitpython = "^3.1.0"
 
 [tool.poetry.dev-dependencies]
 tox = "^3.14"
@@ -87,6 +88,7 @@ repl = ["bpython"]
 
 [tool.poetry.scripts]
 pyadr = 'pyadr.cli:main'
+git-adr = 'pyadr.git.cli:main'
 
 [tool.isort]
 # following black's doc for compatibility
@@ -96,7 +98,7 @@ include_trailing_comma = true
 use_parentheses = true
 force_grid_wrap = 0
 line_length = 88
-known_third_party = ["behave", "behave4cli", "cleo", "clikit", "hamcrest", "loguru", "pytest", "six", "slugify", "toml"]
+known_third_party = ["behave", "behave4cli", "cleo", "clikit", "git", "hamcrest", "loguru", "pytest", "six", "slugify", "toml"]
 
 
 [tool.black]

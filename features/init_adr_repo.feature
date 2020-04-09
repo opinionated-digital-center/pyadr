@@ -34,7 +34,7 @@ Feature: Initialise an ADR repository
         Then it should pass
         And the directory "docs/adr" exists
 
-    Scenario: Should copy the MADR template to the repo
+    Scenario: Copy the MADR template to the repo
         When I run "pyadr init"
         Then it should pass with:
             """
