@@ -14,6 +14,8 @@ Feature: Initialise an ADR repository
     Scenario: Force init the repo
         Given a directory named "docs/adr"
         And an empty file named "docs/adr/to-be-erased"
+        And an empty file named "docs/to-be-kept"
+        And a directory named "docs/dir-to-be-kept"
         When I run "pyadr init -f"
         Then it should pass with:
             """
@@ -21,6 +23,8 @@ Feature: Initialise an ADR repository
             ... Erased.
             """
         And the file named "docs/adr/to-be-erased" should not exist
+        And the file named "docs/to-be-kept" should exist
+        And the directory "docs/dir-to-be-kept" should exist
 
     Scenario: Succeed with a success message
         When I run "pyadr init"
