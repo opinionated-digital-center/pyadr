@@ -20,7 +20,7 @@ Feature: Initialise an ADR repository
         Then it should pass with:
             """
             Directory '{__WORKDIR__}/docs/adr/' already exists. Used '--force' option => Erasing...
-            ... Erased.
+            ... erased.
             """
         And the file named "docs/adr/to-be-erased" should not exist
         And the file named "docs/to-be-kept" should exist
@@ -30,7 +30,7 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            ADR repository successfully initialised at '{__WORKDIR__}/docs/adr/'.
+            ADR repository successfully created at '{__WORKDIR__}/docs/adr/'.
             """
 
     Scenario: Create the repo directory
@@ -42,7 +42,8 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            Copied MADR template to './docs/adr/template.md'.
+            Copying MADR template to 'docs/adr/template.md'...
+            ... done.
             """
         And the file named "docs/adr/template.md" should exist
         And the file "docs/adr/template.md" should contain:
@@ -56,7 +57,8 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            Created ADR './docs/adr/0000-record-architecture-decisions.md'.
+            Creating ADR 'docs/adr/0000-record-architecture-decisions.md'...
+            ... done.
             """
         And the file named "docs/adr/0000-record-architecture-decisions.md" should exist
         And the file "docs/adr/0000-record-architecture-decisions.md" should contain:
@@ -83,7 +85,8 @@ Feature: Initialise an ADR repository
         When I run "pyadr init"
         Then it should pass with:
             """
-            Created ADR './docs/adr/0001-use-markdown-architectural-decision-records.md'.
+            Creating ADR 'docs/adr/0001-use-markdown-architectural-decision-records.md'...
+            ... done.
             """
         And the file named "docs/adr/0001-use-markdown-architectural-decision-records.md" should exist
         And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should contain:

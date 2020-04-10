@@ -5,20 +5,20 @@ from typing import List
 from loguru import logger
 from slugify import slugify
 
-from . import assets
-from .const import (
+from pyadr import assets
+from pyadr.const import (
     ADR_REPO_ABS_PATH,
     ADR_REPO_REL_PATH,
     CWD,
     STATUS_ACCEPTED,
     STATUS_PROPOSED,
 )
-from .content_utils import retrieve_title_status_and_date_from_madr_content_stream
-from .exceptions import (
+from pyadr.content_utils import retrieve_title_status_and_date_from_madr_content_stream
+from pyadr.exceptions import (
     PyadrAdrDirectoryAlreadyExistsError,
     PyadrAdrDirectoryDoesNotExistsError,
 )
-from .file_utils import rename_reviewed_adr_file, update_adr_title_status
+from pyadr.file_utils import update_adr_title_status
 
 try:
     import importlib.resources as pkg_resources
@@ -35,7 +35,7 @@ def init_adr_repo(force: bool = False) -> List[Path]:
                 f"Used '--force' option => Erasing..."
             )
             shutil.rmtree(ADR_REPO_ABS_PATH)
-            logger.warning("... Erased.")
+            logger.warning("... erased.")
 
     else:
         if ADR_REPO_ABS_PATH.exists():
@@ -47,8 +47,9 @@ def init_adr_repo(force: bool = False) -> List[Path]:
 
     created_files: List[Path] = []
 
+    logger.info(f"Creating ADR repo directory '{ADR_REPO_ABS_PATH.relative_to(CWD)}'.")
     ADR_REPO_ABS_PATH.mkdir(parents=True)
-    logger.info(f"Created ADR repo directory './{ADR_REPO_ABS_PATH.relative_to(CWD)}'.")
+    logger.info(f"... done.")
 
     created_files.append(_init_adr_template())
 
@@ -56,7 +57,7 @@ def init_adr_repo(force: bool = False) -> List[Path]:
 
     created_files.append(_init_adr_0001())
 
-    logger.info(f"ADR repository successfully initialised at '{ADR_REPO_ABS_PATH}/'.")
+    logger.info(f"ADR repository successfully created at '{ADR_REPO_ABS_PATH}/'.")
 
     return created_files
 
@@ -64,44 +65,38 @@ def init_adr_repo(force: bool = False) -> List[Path]:
 def _init_adr_template() -> Path:
     template_path = ADR_REPO_ABS_PATH / "template.md"
 
+    logger.info(f"Copying MADR template to '{template_path.relative_to(CWD)}'...")
     with template_path.open("w") as f:
         f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
 
-    logger.info(f"Copied MADR template to './{template_path.relative_to(CWD)}'.")
+    logger.info(f"... done.")
     return template_path
 
 
 def _init_adr_0000() -> Path:
-    adr_0000_filename = "0000-record-architecture-decisions.md"
-    adr_0000_path = ADR_REPO_ABS_PATH / adr_0000_filename
-
-    with adr_0000_path.open("w") as f:
-        f.write(pkg_resources.read_text(assets, adr_0000_filename))  # type: ignore
-
-    update_adr_title_status(adr_0000_path, status=STATUS_ACCEPTED)
-
-    logger.info(f"Created ADR './{adr_0000_path.relative_to(CWD)}'.")
-    return adr_0000_path
+    return _init_adr_file("0000-record-architecture-decisions.md")
 
 
 def _init_adr_0001() -> Path:
-    adr_madr_filename = "XXXX-use-markdown-architectural-decision-records.md"
-    adr_madr_path = ADR_REPO_ABS_PATH / adr_madr_filename
+    return _init_adr_file("0001-use-markdown-architectural-decision-records.md")
 
-    with adr_madr_path.open("w") as f:
-        f.write(pkg_resources.read_text(assets, adr_madr_filename))  # type: ignore
 
-    renamed_adr_path = rename_reviewed_adr_file(adr_madr_path, ADR_REPO_ABS_PATH)
-    update_adr_title_status(renamed_adr_path, status=STATUS_ACCEPTED)
+def _init_adr_file(filename: Path) -> Path:
+    path = ADR_REPO_ABS_PATH / filename
 
-    logger.info(f"Created ADR './{renamed_adr_path.relative_to(CWD)}'.")
-    return renamed_adr_path
+    logger.info(f"Creating ADR '{path.relative_to(CWD)}'...")
+    with path.open("w") as f:
+        f.write(pkg_resources.read_text(assets, filename))  # type: ignore
+    update_adr_title_status(path, status=STATUS_ACCEPTED)
+
+    logger.info(f"... done.")
+    return path
 
 
 def verify_adr_dir_exists():
     if not ADR_REPO_ABS_PATH.exists():
         logger.error(
-            f"Directory './{ADR_REPO_REL_PATH}/' does not exist. "
+            f"Directory '{ADR_REPO_REL_PATH}/' does not exist. "
             "Initialise your ADR repo first."
         )
         raise PyadrAdrDirectoryDoesNotExistsError()
@@ -112,7 +107,7 @@ def new_adr(title: str) -> Path:
     with adr_path.open("w") as f:
         f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
     update_adr_title_status(adr_path, title=title, status=STATUS_PROPOSED)
-    logger.warning(f"Created ADR './{adr_path.relative_to(CWD)}'.")
+    logger.warning(f"Created ADR '{adr_path.relative_to(CWD)}'.")
     return adr_path
 
 
