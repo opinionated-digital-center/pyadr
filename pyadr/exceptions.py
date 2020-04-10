@@ -21,6 +21,14 @@ class PyadrAdrDirectoryDoesNotExistsError(PyadrError):
     """ADR directory does not exist"""
 
 
+class PyadrNoProposedAdrError(PyadrError):
+    """Could not find a proposed ADR"""
+
+
+class PyadrTooManyProposedAdrError(PyadrError):
+    """Too many proposed ADR found"""
+
+
 ################################################
 # Git related Errors
 ################################################

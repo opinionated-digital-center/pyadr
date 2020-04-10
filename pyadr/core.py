@@ -17,8 +17,11 @@ from pyadr.content_utils import retrieve_title_status_and_date_from_madr_content
 from pyadr.exceptions import (
     PyadrAdrDirectoryAlreadyExistsError,
     PyadrAdrDirectoryDoesNotExistsError,
+    PyadrNoNumberedAdrError,
+    PyadrNoProposedAdrError,
+    PyadrTooManyProposedAdrError,
 )
-from pyadr.file_utils import update_adr_title_status
+from pyadr.file_utils import rename_reviewed_adr_file, update_adr_title_status
 
 try:
     import importlib.resources as pkg_resources
@@ -111,7 +114,7 @@ def new_adr(title: str) -> Path:
     return adr_path
 
 
-def generate_toc() -> Path:
+def generate_toc(workdir: Path) -> None:
     # Initialise variables
     adr_paths = sorted(ADR_REPO_ABS_PATH.glob("[0-9][0-9][0-9][0-9]-*"))
 
@@ -123,7 +126,9 @@ def generate_toc() -> Path:
     with toc_path.open("w") as f:
         f.writelines(toc_content)
 
-    return toc_path
+    logger.info(
+        f"Markdown table of content generated in '{toc_path.relative_to(workdir)}'"
+    )
 
 
 def _build_toc_content_from_adrs_by_status(adrs_by_status):
@@ -192,3 +197,41 @@ def _extract_adrs_by_status(adr_paths):
             )
         # adr_list.append(f"* [{title}]({ADR_REPO_REL_PATH / adr.name})\n")
     return adrs_by_status
+
+
+def accept_or_reject(workdir: Path, status: str, toc: bool = False) -> None:
+    logger.info(f"Current Working Directory is: '{workdir}'")
+    found_proposed_adrs = sorted(ADR_REPO_ABS_PATH.glob("XXXX-*"))
+
+    if not len(found_proposed_adrs):
+        logger.error(
+            "Could not find a proposed ADR "
+            "(should be of format 'docs/adr/XXXX-adr-title.md')."
+        )
+        raise PyadrNoProposedAdrError()
+
+    elif len(found_proposed_adrs) > 1:
+        logger.error(
+            f"Can handle only 1 proposed ADR but found {len(found_proposed_adrs)}:"
+        )
+        for adr in found_proposed_adrs:
+            logger.error(f"    => '{adr.relative_to(workdir)}'")
+        raise PyadrTooManyProposedAdrError()
+
+    proposed_adr = found_proposed_adrs[0]
+    try:
+        reviewed_adr = rename_reviewed_adr_file(proposed_adr, ADR_REPO_ABS_PATH)
+    except PyadrNoNumberedAdrError as e:
+        logger.error(
+            "There should be at least one initial reviewed ADR "
+            "(usually 'docs/adr/0000-record-architecture-decisions.md')."
+        )
+        raise PyadrNoNumberedAdrError(e)
+
+    logger.info(f"Renamed ADR to: {reviewed_adr}")
+
+    if toc:
+        generate_toc(workdir)
+
+    update_adr_title_status(reviewed_adr, status=status)
+    logger.info(f"Changed ADR status to: {status}")
