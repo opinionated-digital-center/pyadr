@@ -81,7 +81,7 @@ def _init_adr_0001() -> Path:
     return _init_adr_file("0001-use-markdown-architectural-decision-records.md")
 
 
-def _init_adr_file(filename: Path) -> Path:
+def _init_adr_file(filename: str) -> Path:
     path = ADR_REPO_ABS_PATH / filename
 
     logger.info(f"Creating ADR '{path.relative_to(CWD)}'...")
