@@ -1,3 +1,10 @@
+# [0.7.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.6.0...v0.7.0) (2020-04-10)
+
+
+### Features
+
+* **git:** add command git adr init ([a097271](https://github.com/opinionated-digital-center/pyadr/commit/a09727189029cd7c4d47ea18eb89c9ff353ee3dc))
+
 # [0.6.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.5.0...v0.6.0) (2020-04-07)
 
 
