@@ -161,7 +161,7 @@ Feature: Accept or reject proposed ADR
         When I run "pyadr accept --toc"
         Then it should pass with:
             """
-            Markdown table of content generated in './docs/adr/index.md'
+            Markdown table of content generated in 'docs/adr/index.md'
             """
         And the file named "docs/adr/index.md" should exist
 
@@ -185,6 +185,6 @@ Feature: Accept or reject proposed ADR
         When I run "pyadr reject --toc"
         Then it should pass with:
             """
-            Markdown table of content generated in './docs/adr/index.md'
+            Markdown table of content generated in 'docs/adr/index.md'
             """
         And the file named "docs/adr/index.md" should exist

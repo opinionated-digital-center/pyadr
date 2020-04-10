@@ -8,7 +8,7 @@ Feature: Verify ADR repo state before accepting/rejecting proposed ADR
         When I run "pyadr accept"
         Then it should fail with
             """
-            There should be at least one initial reviewed ADR (usually './docs/adr/0000-record-architecture-decisions.md').
+            There should be at least one initial reviewed ADR (usually 'docs/adr/0000-record-architecture-decisions.md').
             """
 
     Scenario: Fail when there is no proposed ADR in repository
@@ -16,7 +16,7 @@ Feature: Verify ADR repo state before accepting/rejecting proposed ADR
         When I run "pyadr accept"
         Then it should fail with
             """
-            There is no ADR to accept/reject (should be of format './docs/adr/XXXX-adr-title.md')
+            There is no ADR to accept/reject (should be of format 'docs/adr/XXXX-adr-title.md')
             """
 
     Scenario: Fail when too many proposed ADR in repository
@@ -27,6 +27,6 @@ Feature: Verify ADR repo state before accepting/rejecting proposed ADR
         Then it should fail with
             """
             There should be only one ADR to accept/reject but there are 2:
-              => './docs/adr/XXXX-a-first-adr.md'
-              => './docs/adr/XXXX-a-second-adr.md'
+              => 'docs/adr/XXXX-a-first-adr.md'
+              => 'docs/adr/XXXX-a-second-adr.md'
             """

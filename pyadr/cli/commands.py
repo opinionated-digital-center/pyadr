@@ -54,7 +54,7 @@ class BaseReviewCommand(cleo.Command):
         if not len(found_proposed_adrs):
             self.line_error(
                 "There is no ADR to accept/reject "
-                "(should be of format './docs/adr/XXXX-adr-title.md')"
+                "(should be of format 'docs/adr/XXXX-adr-title.md')"
             )
             return 1
 
@@ -64,7 +64,7 @@ class BaseReviewCommand(cleo.Command):
                 f"{len(found_proposed_adrs)}:"
             )
             for adr in found_proposed_adrs:
-                self.line_error(f"    => './{adr.relative_to(CWD)}'")
+                self.line_error(f"    => '{adr.relative_to(CWD)}'")
             return 1
 
         proposed_adr = found_proposed_adrs[0]
@@ -73,7 +73,7 @@ class BaseReviewCommand(cleo.Command):
         except PyadrNoNumberedAdrError:
             self.line_error(
                 "There should be at least one initial reviewed ADR "
-                "(usually './docs/adr/0000-record-architecture-decisions.md')."
+                "(usually 'docs/adr/0000-record-architecture-decisions.md')."
             )
             return 1
         self.line(f"Renamed ADR to: {reviewed_adr}")
@@ -81,7 +81,7 @@ class BaseReviewCommand(cleo.Command):
         if self.option("toc"):
             path = generate_toc()
             self.line(
-                f"Markdown table of content generated in './{path.relative_to(CWD)}'"
+                f"Markdown table of content generated in '{path.relative_to(CWD)}'"
             )
 
         update_adr_title_status(reviewed_adr, status=status)
@@ -125,7 +125,7 @@ class GenerateTocCommand(cleo.Command):
             verify_adr_dir_exists()
             path = generate_toc()
             self.line(
-                f"Markdown table of content generated in './{path.relative_to(CWD)}'"
+                f"Markdown table of content generated in '{path.relative_to(CWD)}'"
             )
         except PyadrError:
             return 1
