@@ -1,10 +1,10 @@
 from pathlib import Path
 
-from .content_utils import (
+from pyadr.content_utils import (
     build_adr_title_slug_from_content_stream,
     update_adr_content_title_status,
 )
-from .exceptions import PyadrNoNumberedAdrError
+from pyadr.exceptions import PyadrNoNumberedAdrError
 
 
 def rename_reviewed_adr_file(file: Path, adr_path) -> Path:
