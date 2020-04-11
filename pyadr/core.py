@@ -16,12 +16,12 @@ from pyadr.const import (
 from pyadr.content_utils import retrieve_title_status_and_date_from_madr_content_stream
 from pyadr.exceptions import (
     PyadrAdrDirectoryAlreadyExistsError,
-    PyadrAdrDirectoryDoesNotExistsError,
     PyadrNoNumberedAdrError,
     PyadrNoProposedAdrError,
     PyadrTooManyProposedAdrError,
 )
 from pyadr.file_utils import rename_reviewed_adr_file, update_adr_title_status
+from pyadr.utils import verify_adr_dir_exists
 
 try:
     import importlib.resources as pkg_resources
@@ -30,7 +30,21 @@ except ImportError:
     import importlib_resources as pkg_resources  # type: ignore
 
 
+###########################################
+# INIT ADR
+###########################################
 def init_adr_repo(force: bool = False) -> List[Path]:
+    verify_and_prepare_pre_init(force)
+    create_adr_repo_dir()
+    created_files: List[Path] = []
+    created_files.append(_init_adr_template())
+    created_files.append(_init_adr_0000())
+    created_files.append(_init_adr_0001())
+    logger.info(f"ADR repository successfully created at '{ADR_REPO_ABS_PATH}/'.")
+    return created_files
+
+
+def verify_and_prepare_pre_init(force: bool = False) -> None:
     if force:
         if ADR_REPO_ABS_PATH.exists():
             logger.warning(
@@ -48,21 +62,11 @@ def init_adr_repo(force: bool = False) -> List[Path]:
             )
             raise PyadrAdrDirectoryAlreadyExistsError()
 
-    created_files: List[Path] = []
 
+def create_adr_repo_dir():
     logger.info(f"Creating ADR repo directory '{ADR_REPO_ABS_PATH.relative_to(CWD)}'.")
     ADR_REPO_ABS_PATH.mkdir(parents=True)
     logger.info(f"... done.")
-
-    created_files.append(_init_adr_template())
-
-    created_files.append(_init_adr_0000())
-
-    created_files.append(_init_adr_0001())
-
-    logger.info(f"ADR repository successfully created at '{ADR_REPO_ABS_PATH}/'.")
-
-    return created_files
 
 
 def _init_adr_template() -> Path:
@@ -96,26 +100,70 @@ def _init_adr_file(filename: str) -> Path:
     return path
 
 
-def verify_adr_dir_exists():
-    if not ADR_REPO_ABS_PATH.exists():
-        logger.error(
-            f"Directory '{ADR_REPO_REL_PATH}/' does not exist. "
-            "Initialise your ADR repo first."
-        )
-        raise PyadrAdrDirectoryDoesNotExistsError()
+###########################################
+# NEW ADR
+###########################################
+def new_adr(title: str, pre_checks: bool = True) -> Path:
+    if pre_checks:
+        verify_adr_dir_exists()
 
-
-def new_adr(title: str) -> Path:
     adr_path = ADR_REPO_ABS_PATH / f"XXXX-{slugify(title)}.md"
+
     with adr_path.open("w") as f:
         f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
     update_adr_title_status(adr_path, title=title, status=STATUS_PROPOSED)
+
     logger.warning(f"Created ADR '{adr_path.relative_to(CWD)}'.")
     return adr_path
 
 
-def generate_toc(workdir: Path) -> None:
-    # Initialise variables
+###########################################
+# ACCEPT / REJECT
+###########################################
+def accept_or_reject(workdir: Path, status: str, toc: bool = False) -> None:
+    found_proposed_adrs = sorted(ADR_REPO_ABS_PATH.glob("XXXX-*"))
+    logger.info(f"Current Working Directory is: '{workdir}'")
+    if not len(found_proposed_adrs):
+        logger.error(
+            "Could not find a proposed ADR "
+            "(should be of format 'docs/adr/XXXX-adr-title.md')."
+        )
+        raise PyadrNoProposedAdrError()
+
+    elif len(found_proposed_adrs) > 1:
+        logger.error(
+            f"Can handle only 1 proposed ADR but found {len(found_proposed_adrs)}:"
+        )
+        for adr in found_proposed_adrs:
+            logger.error(f"    => '{adr.relative_to(workdir)}'")
+        raise PyadrTooManyProposedAdrError()
+
+    proposed_adr = found_proposed_adrs[0]
+    try:
+        reviewed_adr = rename_reviewed_adr_file(proposed_adr, ADR_REPO_ABS_PATH)
+    except PyadrNoNumberedAdrError as e:
+        logger.error(
+            "There should be at least one initial reviewed ADR "
+            "(usually 'docs/adr/0000-record-architecture-decisions.md')."
+        )
+        raise PyadrNoNumberedAdrError(e)
+
+    logger.info(f"Renamed ADR to: {reviewed_adr}")
+
+    if toc:
+        generate_toc(workdir)
+
+    update_adr_title_status(reviewed_adr, status=status)
+    logger.info(f"Changed ADR status to: {status}")
+
+
+###########################################
+# GENERATE TOC
+###########################################
+def generate_toc(workdir: Path, pre_checks: bool = True) -> None:
+    if pre_checks:
+        verify_adr_dir_exists()
+
     adr_paths = sorted(ADR_REPO_ABS_PATH.glob("[0-9][0-9][0-9][0-9]-*"))
 
     adrs_by_status = _extract_adrs_by_status(adr_paths)
@@ -197,41 +245,3 @@ def _extract_adrs_by_status(adr_paths):
             )
         # adr_list.append(f"* [{title}]({ADR_REPO_REL_PATH / adr.name})\n")
     return adrs_by_status
-
-
-def accept_or_reject(workdir: Path, status: str, toc: bool = False) -> None:
-    logger.info(f"Current Working Directory is: '{workdir}'")
-    found_proposed_adrs = sorted(ADR_REPO_ABS_PATH.glob("XXXX-*"))
-
-    if not len(found_proposed_adrs):
-        logger.error(
-            "Could not find a proposed ADR "
-            "(should be of format 'docs/adr/XXXX-adr-title.md')."
-        )
-        raise PyadrNoProposedAdrError()
-
-    elif len(found_proposed_adrs) > 1:
-        logger.error(
-            f"Can handle only 1 proposed ADR but found {len(found_proposed_adrs)}:"
-        )
-        for adr in found_proposed_adrs:
-            logger.error(f"    => '{adr.relative_to(workdir)}'")
-        raise PyadrTooManyProposedAdrError()
-
-    proposed_adr = found_proposed_adrs[0]
-    try:
-        reviewed_adr = rename_reviewed_adr_file(proposed_adr, ADR_REPO_ABS_PATH)
-    except PyadrNoNumberedAdrError as e:
-        logger.error(
-            "There should be at least one initial reviewed ADR "
-            "(usually 'docs/adr/0000-record-architecture-decisions.md')."
-        )
-        raise PyadrNoNumberedAdrError(e)
-
-    logger.info(f"Renamed ADR to: {reviewed_adr}")
-
-    if toc:
-        generate_toc(workdir)
-
-    update_adr_title_status(reviewed_adr, status=status)
-    logger.info(f"Changed ADR status to: {status}")

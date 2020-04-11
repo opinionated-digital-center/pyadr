@@ -3,13 +3,7 @@
 import cleo
 
 from pyadr.const import CWD, STATUS_ACCEPTED, STATUS_REJECTED
-from pyadr.core import (
-    accept_or_reject,
-    generate_toc,
-    init_adr_repo,
-    new_adr,
-    verify_adr_dir_exists,
-)
+from pyadr.core import accept_or_reject, generate_toc, init_adr_repo, new_adr
 from pyadr.exceptions import PyadrError
 
 
@@ -38,22 +32,12 @@ class NewCommand(cleo.Command):
 
     def handle(self):
         try:
-            verify_adr_dir_exists()
             new_adr(title=" ".join(self.argument("words")))
         except PyadrError:
             return 1
 
 
-class BaseReviewCommand(cleo.Command):
-    """
-    Base class for review commands
-    """
-
-    def handle(self):
-        raise NotImplementedError()
-
-
-class AcceptCommand(BaseReviewCommand):
+class AcceptCommand(cleo.Command):
     """
     Accept a proposed ADR
 
@@ -68,7 +52,7 @@ class AcceptCommand(BaseReviewCommand):
             return 1
 
 
-class RejectCommand(BaseReviewCommand):
+class RejectCommand(cleo.Command):
     """
     Reject a proposed ADR
 
@@ -92,7 +76,6 @@ class GenerateTocCommand(cleo.Command):
 
     def handle(self):
         try:
-            verify_adr_dir_exists()
             generate_toc(CWD)
         except PyadrError:
             return 1

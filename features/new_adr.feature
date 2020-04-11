@@ -10,7 +10,14 @@ Feature: Create a new ADR
             Directory 'docs/adr/' does not exist. Initialise your ADR repo first.
             """
 
-    Scenario: Succeed with a success message
+    Scenario: Fail when no title is given
+        When I run "pyadr new"
+        Then it should fail with:
+            """
+            Not enough arguments (missing: "words").
+            """
+
+    Scenario: Create a new ADR and succeed with a success message
         Given a directory named "docs/adr/"
         When I run "pyadr new My ADR Title"
         Then it should pass with:
@@ -28,11 +35,4 @@ Feature: Create a new ADR
             """
             * Date: {__TODAY_YYYY_MM_DD__}
 
-            """
-
-    Scenario: Fail when no title is given
-        When I run "pyadr new"
-        Then it should fail with:
-            """
-            Not enough arguments (missing: "words").
             """
