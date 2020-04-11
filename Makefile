@@ -74,6 +74,15 @@ help:
 	@echo "\tdist - [TO BE IMPLEMENTED] package"
 	@echo "\tinstall - install the package to the active Python's site-packages"
 	@echo ""
+	@echo "TOX TARGETS:"
+	@echo "\ttlint - check style with flake8 (uses tox)"
+	@echo "\ttformat - check format for correctness with isort and black (uses tox)"
+	@echo "\tttype - checks Python typing (uses tox)"
+	@echo "\tttest - run tests quickly with the default Python (3.7 - uses tox)"
+	@echo "\tttest-all - run tests on every Python version declared (uses tox)"
+	@echo "\ttbdd - run bdd tests (uses tox)"
+	@echo "\ttdocs - generate Sphinx HTML documentation, including API docs"
+	@echo "\ttdocs-pdf - generate Sphinx PDF documentation, including API docs"
 	@echo "SECONDARY TARGETS:"
 	@echo "\tclean-build - remove build artifacts"
 	@echo "\tclean-pyc - remove Python file artifacts"
@@ -195,16 +204,14 @@ repl:
 #################################################################
 
 lint:
+	poetry run flake8 $(PACKAGE_DIR) tests features
+
+tlint:
 	poetry run tox -e lint
 
 #################################################################
 # formating
 #################################################################
-
-format-check:
-	poetry run tox -e format
-
-format: seed-isort isort black
 
 seed-isort:
 	-poetry run seed-isort-config
@@ -215,32 +222,47 @@ isort:
 black:
 	poetry run black $(PACKAGE_DIR) tests features
 
+format: seed-isort isort black
+
+format-check:
+	poetry run isort -c -rc $(PACKAGE_DIR) tests features -vb
+	poetry run black --check $(PACKAGE_DIR) tests features
+
+tformat:
+	poetry run tox -e format
+
 #################################################################
 # typing
 #################################################################
 
 type:
+	poetry run mypy -p $(PACKAGE_DIR) -p tests
+
+ttype:
 	poetry run tox -e type
 
 #################################################################
 # unit testing
 #################################################################
 
-test: py
+test:
+	poetry run pytest --cov=pyadr --cov-report=html --cov-report=term tests
 
-py:
+ttest: py
+
+tpy:
 	poetry run tox -e py
 
-py37:
+tpy37:
 	poetry run tox -e py37
 
-py36:
+tpy36:
 	poetry run tox -e py36
 
-py38:
+tpy38:
 	poetry run tox -e py38
 
-test-all:
+ttest-all:
 	poetry run tox -e py37,py36,py38
 
 #################################################################
@@ -248,6 +270,9 @@ test-all:
 #################################################################
 
 bdd:
+	poetry run behave features --format=behave_ext.cucumber_json:PrettyCucumberJSONFormatter -o cucumber-report.json --format=pretty
+
+tbdd:
 	poetry run tox -e bdd
 
 #################################################################
