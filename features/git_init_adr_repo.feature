@@ -1,4 +1,6 @@
 Feature: Initialise a git ADR repository
+    Since 'git adr' makes calls to 'pyadr', some features will be already fully
+    tested in the bdd tests for 'pyadr'.
 
     Background:
         Given a new working directory
