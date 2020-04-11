@@ -29,10 +29,13 @@ def update_adr_content_title_status(
     return updated_content
 
 
-def build_adr_title_slug_from_content_stream(stream: TextIO) -> str:
+def adr_title_slug_from_content_stream(stream: TextIO) -> str:
     title, _, _ = retrieve_title_status_and_date_from_madr_content_stream(stream)
-    title_slug = slugify(title)
-    return title_slug
+    return adr_title_slug(title)
+
+
+def adr_title_slug(title: str) -> str:
+    return slugify(title)
 
 
 def retrieve_title_status_and_date_from_madr_content_stream(

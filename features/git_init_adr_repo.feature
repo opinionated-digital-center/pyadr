@@ -33,20 +33,13 @@ Feature: Initialise a git ADR repository
             """
             feat(adr): initialise adr repository
             """
-        And the head commit should contain 3 files
-        And the head commit should contain the file "docs/adr/template.md"
-        And the head commit should contain the file "docs/adr/0000-record-architecture-decisions.md"
-        And the head commit should contain the file "docs/adr/0001-use-markdown-architectural-decision-records.md"
-
+        And 3 files should have been committed in the last commit
+        And the file "docs/adr/template.md" should have been committed in the last commit
+        And the file "docs/adr/0000-record-architecture-decisions.md" should have been committed in the last commit
+        And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should have been committed in the last commit
 
     Scenario: Create and commit initial ADR files on a non-empty git repo
-        Given an empty git repo
-        And a file named "foo" with
-            """
-            bar
-            """
-        And I add the file "foo" to the git index
-        And I commit the git index with message "foo bar"
+        Given a starting git repo
         When I run "git adr init"
         Then it should pass with
             """
@@ -57,7 +50,7 @@ Feature: Initialise a git ADR repository
         And there should be 1 commit between head and the branch "master"
 
     Scenario: Fail when index dirty
-        Given an empty git repo
+        Given a starting git repo
         And a file named "foo" with
             """
             bar

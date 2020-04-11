@@ -48,3 +48,7 @@ class PyadrGitIndexNotEmptyError(PyadrGitError):
 
 class PyadrGitBranchAlreadyExistsError(PyadrGitError):
     """Branch already exists"""
+
+
+class PyadrGitMainBranchDoesNotExistError(PyadrGitError):
+    """Main branch (master or other specified) does not exist"""
