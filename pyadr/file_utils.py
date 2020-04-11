@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from pyadr.content_utils import (
-    build_adr_title_slug_from_content_stream,
+    adr_title_slug_from_content_stream,
     update_adr_content_title_status,
 )
 from pyadr.exceptions import PyadrNoNumberedAdrError
@@ -10,7 +10,7 @@ from pyadr.exceptions import PyadrNoNumberedAdrError
 def rename_reviewed_adr_file(file: Path, adr_path) -> Path:
     next_id = calculate_next_id(adr_path)
     with file.open() as f:
-        title_slug = build_adr_title_slug_from_content_stream(f)
+        title_slug = adr_title_slug_from_content_stream(f)
 
     renamed_file = file.with_name("-".join([next_id, title_slug]) + file.suffix)
     file.rename(renamed_file)

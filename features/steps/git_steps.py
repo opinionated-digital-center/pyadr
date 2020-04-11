@@ -1,8 +1,29 @@
 from behave import given, then
 from behave4cli import command_util
-from behave4cli.command_steps import step_a_new_working_directory
-from git import Repo
+from behave4cli.command_steps import (
+    step_a_file_named_filename_with,
+    step_a_new_working_directory,
+    step_i_successfully_run_command,
+)
+from git import InvalidGitRepositoryError, Repo
 from hamcrest import assert_that, calling, equal_to, has_item, has_items, not_, raises
+
+from pyadr.git.utils import files_committed_in_commit
+
+
+@given("a starting git repo")
+def step_a_starting_git_repo(context):
+    step_an_empty_git_repo(context)
+    context.surrogate_text = "foo bar"
+    step_a_file_named_filename_with(context, "initial_commit_file")
+    step_add_file_to_index(context, "initial_commit_file")
+    step_commit_index_with_message(context, "chore: initial commit")
+
+
+@given("an initialised git adr repo")
+def step_an_initialised_git_adr_repo(context):
+    step_a_starting_git_repo(context)
+    step_i_successfully_run_command(context, "git adr init")
 
 
 @given("an empty git repo")
@@ -10,6 +31,14 @@ def step_an_empty_git_repo(context):
     step_a_new_working_directory(context)
     repo = Repo.init(context.workdir)
     command_util.ensure_context_attribute_exists(context, "repo", repo)
+
+
+@then("a git repo should exist")
+def step_a_git_repo_should_exist(context):
+    assert_that(
+        calling(Repo).with_args(context.workdir),
+        not_(raises(InvalidGitRepositoryError)),
+    )
 
 
 @then('git head should be on branch "{branch}"')
@@ -41,20 +70,16 @@ def step_current_commit_message_should_be(context):
     assert_that(context.repo.head.commit.message, equal_to(context.text))
 
 
-def files_from_commit(commit):
-    return [item for item in commit.tree.traverse() if item.type == "blob"]
+@then("{count:d} files should have been committed in the last commit")
+def step_x_files_should_have_been_committed_in_last_commit(context, count):
+    assert_that(
+        len(files_committed_in_commit(context.repo.head.commit)), equal_to(count)
+    )
 
 
-@then("the head commit should contain {count:d} files")
-def step_head_commit_should_contain_x_files(context, count):
-    assert_that(len(files_from_commit(context.repo.head.commit)), equal_to(count))
-
-
-@then('the head commit should contain the file "{filepath}"')
+@then('the file "{filepath}" should have been committed in the last commit')
 def step_current_commit_should_contain_file(context, filepath):
-    files = files_from_commit(context.repo.head.commit)
-    paths = [item.path for item in files]
-    assert_that(paths, has_item(filepath))
+    assert_that(files_committed_in_commit(context.repo.head.commit), has_item(filepath))
 
 
 @then("the head commit should contain the files")
@@ -65,7 +90,7 @@ def step_current_commit_should_contain_files(context):
 
     expected = [row["path"] for row in context.table]
 
-    files = files_from_commit(context.repo.head.commit)
+    files = files_committed_in_commit(context.repo.head.commit)
     paths = [item.path for item in files]
     assert_that(paths, has_items(*expected))
 

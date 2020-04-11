@@ -6,7 +6,7 @@ from hamcrest import assert_that, contains_string, equal_to, none, not_
 
 from pyadr import content_utils
 from pyadr.content_utils import (
-    build_adr_title_slug_from_content_stream,
+    adr_title_slug_from_content_stream,
     retrieve_title_status_and_date_from_madr_content_stream,
 )
 
@@ -80,7 +80,7 @@ def test_get_adr_title_slug_from_content_stream():
 [..]
 """
     # When
-    title_slug = build_adr_title_slug_from_content_stream(StringIO(adr_content))
+    title_slug = adr_title_slug_from_content_stream(StringIO(adr_content))
 
     # Then
     assert_that(title_slug, equal_to("my-adr-updated-title"))

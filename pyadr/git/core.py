@@ -1,16 +1,22 @@
 from pathlib import Path
 
-from git import BadName, InvalidGitRepositoryError, Repo
 from loguru import logger
 
-from pyadr.core import init_adr_repo
-from pyadr.exceptions import (
-    PyadrGitBranchAlreadyExistsError,
-    PyadrGitIndexNotEmptyError,
-    PyadrInvalidGitRepositoryError,
+from pyadr.content_utils import adr_title_slug
+from pyadr.core import init_adr_repo, new_adr
+from pyadr.git.utils import (
+    create_feature_branch_and_checkout,
+    get_verified_repo,
+    verify_branch_does_not_exist,
+    verify_index_empty,
+    verify_main_branch_exists,
 )
+from pyadr.utils import verify_adr_dir_exists
 
 
+###########################################
+# GIT INIT ADR
+###########################################
 def git_init_adr_repo(repo_workdir: Path, force: bool = False) -> None:
     repo = get_verified_repo(repo_workdir)
 
@@ -24,13 +30,7 @@ def git_init_adr_repo(repo_workdir: Path, force: bool = False) -> None:
     if "master" not in repo.heads:
         logger.info("Git repo empty. Will commit files to 'master'.")
     else:
-        logger.info(f"Switching to 'master'.")
-        repo.heads.master.checkout()
-
-        logger.info(f"Creating branch '{init_branch_name}'...")
-        repo.create_head(init_branch_name)
-        repo.heads[init_branch_name].checkout()
-        logger.info(f"... done.")
+        create_feature_branch_and_checkout(repo, init_branch_name)
 
     repo.index.add([str(p) for p in created_files])
 
@@ -44,39 +44,32 @@ def git_init_adr_repo(repo_workdir: Path, force: bool = False) -> None:
     logger.info("ADR Git repo initialised.")
 
 
-def get_verified_repo(repo_workdir: Path) -> Repo:
-    try:
-        repo = Repo(repo_workdir)
-    except InvalidGitRepositoryError as e:
-        logger.error(
-            f"No Git repository found in directory '{repo_workdir}/'. "
-            f"Please initialise a Git repository before running command."
-        )
-        raise PyadrInvalidGitRepositoryError(e)
-    return repo
+###########################################
+# GIT NEW ADR
+###########################################
+def git_new_adr(repo_workdir: Path, title: str, pre_checks: bool = True) -> None:
+    repo = get_verified_repo(repo_workdir)
 
+    if pre_checks:
+        verify_adr_dir_exists()
+        verify_main_branch_exists(repo, branch="master")
 
-def verify_index_empty(repo: Repo) -> None:
-    logger.info("Verifying Git index is empty...")
-    try:
-        count_staged_files = len(repo.index.diff("HEAD"))
-    except BadName:
-        # HEAD does not exist => the repo is empty, so must verify index is too
-        count_staged_files = len(list(repo.index.iter_blobs()))
+    verify_index_empty(repo)
 
-    if count_staged_files > 0:
-        logger.error("... files staged in Git index. Clean before running command.")
-        raise PyadrGitIndexNotEmptyError()
+    adr_branch_name = f"adr-{adr_title_slug(title)}"
+    verify_branch_does_not_exist(repo, adr_branch_name)
 
-    logger.info("... done.")
+    new_adr_path = new_adr(title, pre_checks=False)
 
+    create_feature_branch_and_checkout(repo, adr_branch_name)
 
-def verify_branch_does_not_exist(repo: Repo, branch: str) -> None:
-    logger.info(f"Verifying branch '{branch}' does not exist... ")
-    if "master" not in repo.heads or branch not in repo.heads:
-        logger.info("... does not exist.")
-    else:
-        logger.error(
-            f"... branch '{branch}' already exists. Clean before running command."
-        )
-        raise PyadrGitBranchAlreadyExistsError(branch)
+    repo.index.add([str(new_adr_path)])
+
+    message = "feat(adr): adr slug with spaces"
+    repo.index.commit(message)
+
+    logger.info(
+        f"Files committed to branch '{repo.head.ref.name}' "
+        f"with commit message '{message}'."
+    )
+    logger.info("New ADR added to Git repo.")
