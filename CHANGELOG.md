@@ -1,3 +1,10 @@
+# [0.8.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.7.0...v0.8.0) (2020-04-11)
+
+
+### Features
+
+* **git:** command git adr new ([1f3c1cf](https://github.com/opinionated-digital-center/pyadr/commit/1f3c1cff64f81897a33742e619db157a21b96046))
+
 # [0.7.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.6.0...v0.7.0) (2020-04-10)
 
 
