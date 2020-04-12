@@ -53,6 +53,15 @@ def step_there_should_be_x_commit_between_head_and_branch(context, count, branch
     )
 
 
+@then('the branch "{branch}" should be at the same level as branch "{base_branch}"')
+def step_branch_should_be_at_same_level_as_base_branch(context, branch, base_branch):
+    assert_that(
+        context.repo.heads[base_branch].commit,
+        equal_to(context.repo.heads[branch].commit),
+        f"'{branch}' not at same commit as '{base_branch}'",
+    )
+
+
 @then('there should be {count:d} commit in "{branch}"')
 def step_there_should_be_x_commit_in_branch(context, count, branch):
     assert_that(len(list(context.repo.iter_commits(branch))), equal_to(count))
@@ -77,8 +86,16 @@ def step_x_files_should_have_been_committed_in_last_commit(context, count):
     )
 
 
+@then('the file "{filepath}" should have been staged')
+def step_file_should_have_been_staged(context, filepath):
+    assert_that(
+        [d.a_path for d in list(context.repo.index.diff("HEAD").iter_change_type("D"))],
+        has_item(filepath),
+    )
+
+
 @then('the file "{filepath}" should have been committed in the last commit')
-def step_current_commit_should_contain_file(context, filepath):
+def step_file_should_have_been_committed_in_last_commit(context, filepath):
     assert_that(files_committed_in_commit(context.repo.head.commit), has_item(filepath))
 
 
@@ -91,8 +108,7 @@ def step_current_commit_should_contain_files(context):
     expected = [row["path"] for row in context.table]
 
     files = files_committed_in_commit(context.repo.head.commit)
-    paths = [item.path for item in files]
-    assert_that(paths, has_items(*expected))
+    assert_that([item.path for item in files], has_items(*expected))
 
 
 @given('I add the file "{filepath}" to the git index')
