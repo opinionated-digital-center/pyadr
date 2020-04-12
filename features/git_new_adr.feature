@@ -35,17 +35,17 @@ Feature: Create a new ADR - Git included
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should exist
 
-    Scenario: Create feature branch and commit new ADR file
+    Scenario: Create feature branch and stage new ADR file, but don't commit
         Given an initialised git adr repo
         When I run "git adr new My ADR Title"
         Then it should pass with
             """
-            Files committed to branch 'adr-my-adr-title' with commit message
+            File 'docs/adr/XXXX-my-adr-title.md' staged.
             """
         And the branch "adr-my-adr-title" should exist
         And the head should be at branch "adr-my-adr-title"
-        And there should be 1 commit between head and the branch "master"
-        And the file "docs/adr/XXXX-my-adr-title.md" should have been committed in the last commit
+        And the branch "adr-my-adr-title" should be at the same level as branch "master"
+        And the file "docs/adr/XXXX-my-adr-title.md" should have been staged
 
     Scenario: Fail when index dirty
         Given an initialised git adr repo

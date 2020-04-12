@@ -65,11 +65,6 @@ def git_new_adr(repo_workdir: Path, title: str, pre_checks: bool = True) -> None
 
     repo.index.add([str(new_adr_path)])
 
-    message = "feat(adr): adr slug with spaces"
-    repo.index.commit(message)
+    logger.info(f"File '{new_adr_path.relative_to(repo.working_tree_dir)}' staged.")
 
-    logger.info(
-        f"Files committed to branch '{repo.head.ref.name}' "
-        f"with commit message '{message}'."
-    )
     logger.info("New ADR added to Git repo.")
