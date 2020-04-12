@@ -1,3 +1,10 @@
+## [0.8.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.8.0...v0.8.1) (2020-04-12)
+
+
+### Bug Fixes
+
+* **git:** stage instead of commit for git adr new ([f4bcef1](https://github.com/opinionated-digital-center/pyadr/commit/f4bcef1eaef72da8ff9e5a3322b1b1170ad76bce))
+
 # [0.8.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.7.0...v0.8.0) (2020-04-11)
 
 
