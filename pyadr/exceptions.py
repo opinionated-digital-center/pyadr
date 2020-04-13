@@ -30,11 +30,11 @@ class PyadrTooManyProposedAdrError(PyadrError):
 
 
 class PyadrConfigSettingNotSupported(PyadrError):
-    """Config item not supported"""
+    """Config setting not supported"""
 
 
 class PyadrConfigFileSettingsNotSupported(PyadrError):
-    """Config items in the config file not supported"""
+    """Config settings in the config file not supported"""
 
 
 ################################################

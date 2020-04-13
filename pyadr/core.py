@@ -35,7 +35,7 @@ def configure(item: str, value: str) -> None:
 
 def unset_config_item(item: str) -> None:
     del config[item]
-    logger.info(f"Config item '{item}' unset.")
+    logger.info(f"Config setting '{item}' unset.")
 
 
 def list_config():

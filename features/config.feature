@@ -3,14 +3,14 @@ Feature: Configure ADR cli
     Background:
         Given a new working directory
 
-    Scenario: List config items
+    Scenario: List config settings
         When I run "pyadr config --list"
         Then it should pass with
             """
             records-dir = docs/adr
             """
 
-    Scenario: Get config item value
+    Scenario: Get config setting value
         When I run "pyadr config records-dir"
         Then it should pass with
             """
@@ -29,7 +29,7 @@ Feature: Configure ADR cli
             records-dir = another_dir
             """
 
-    Scenario: Write to config file when setting config item
+    Scenario: Write to config file when setting config setting
         Given the file named ".adr" does not exist
         When I run "pyadr config records-dir another_dir"
         Then it should pass
@@ -40,7 +40,7 @@ Feature: Configure ADR cli
             records-dir = another_dir
             """
 
-    Scenario: Set config item: ADR directory
+    Scenario: Set config setting: ADR directory
         When I run "pyadr config records-dir another_dir"
         Then it should pass with
             """
@@ -53,7 +53,7 @@ Feature: Configure ADR cli
             records-dir = another_dir
             """
 
-    Scenario: Unset config items
+    Scenario: Unset config settings
         Given a file named ".adr" with
             """
             [adr]
@@ -62,7 +62,7 @@ Feature: Configure ADR cli
         When I run "pyadr config records-dir --unset"
         Then it should pass with
             """
-            Config item 'records-dir' unset.
+            Config setting 'records-dir' unset.
             """
         And the file ".adr" should not contain
             """
