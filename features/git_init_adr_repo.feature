@@ -31,12 +31,21 @@ Feature: Initialise a git ADR repository
         And there should be 1 commit in "master"
         And the head commit message should be
             """
-            feat(adr): initialise adr repository
+            docs(adr): initialise adr repository
             """
         And 3 files should have been committed in the last commit
         And the file "docs/adr/template.md" should have been committed in the last commit
         And the file "docs/adr/0000-record-architecture-decisions.md" should have been committed in the last commit
         And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should have been committed in the last commit
+
+    Scenario: Initialise for ADR only repo
+        Given an empty git repo
+        When I run "git adr init --adr-only-repo"
+        Then it should pass
+        And the head commit message should be
+            """
+            feat(adr): initialise adr repository
+            """
 
     Scenario: Create and commit initial ADR files on a non-empty git repo
         Given a starting git repo

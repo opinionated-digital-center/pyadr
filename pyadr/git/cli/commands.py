@@ -43,10 +43,15 @@ class GitInitCommand(BaseGitCommand):
     Initialise a Git ADR repository
 
     init
-        {--f|force : If set, will erase existing ADR directory}
+        {--f|force : If set, will erase existing ADR directory.}
+        {--a|adr-only-repo : ADR only repo. This will affect the prefixes of
+                             commit messages}
     """
 
     def handle(self):
+        if self.option("adr-only-repo"):
+            self.git_adr_core.config["adr-only-repo"] = "true"
+
         try:
             self.git_adr_core.git_init_adr_repo(force=self.option("force"))
         except PyadrError:

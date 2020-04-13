@@ -4,6 +4,7 @@ from loguru import logger
 
 from pyadr.content_utils import adr_title_slug
 from pyadr.core import AdrCore
+from pyadr.git.const import GIT_ADR_DEFAULT_SETTINGS
 from pyadr.git.utils import (
     create_feature_branch_and_checkout,
     get_verified_repo,
@@ -14,6 +15,18 @@ from pyadr.git.utils import (
 
 
 class GitAdrCore(AdrCore):
+    def __init__(self):
+        super().__init__(GIT_ADR_DEFAULT_SETTINGS)
+
+    ###########################################
+    # PROPERTIES
+    ###########################################
+    @property
+    def commit_msg_prefix(self) -> str:
+        if self.config.getboolean("adr-only-repo"):
+            return "feat(adr):"
+        else:
+            return "docs(adr):"
 
     ###########################################
     # GIT INIT ADR
@@ -35,7 +48,7 @@ class GitAdrCore(AdrCore):
 
         repo.index.add([str(p) for p in created_files])
 
-        message = "feat(adr): initialise adr repository"
+        message = f"{self.commit_msg_prefix} initialise adr repository"
         repo.index.commit(message)
 
         logger.info(
