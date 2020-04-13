@@ -1,6 +1,6 @@
 import shutil
 from pathlib import Path
-from typing import List
+from typing import Dict, List
 
 from loguru import logger
 from slugify import slugify
@@ -29,8 +29,12 @@ except ImportError:
 
 
 class AdrCore(object):
-    def __init__(self):
-        self.config = Config(ADR_DEFAULT_SETTINGS)["adr"]
+    def __init__(self, default_settings: Dict[str, str] = ADR_DEFAULT_SETTINGS):
+        sorted_default_settings = {}
+        for key in sorted(default_settings.keys()):
+            sorted_default_settings[key] = default_settings[key]
+
+        self.config = Config(sorted_default_settings)["adr"]
 
     ###########################################
     # CONFIGURE ADR

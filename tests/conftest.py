@@ -6,6 +6,7 @@ from git import Repo
 import pyadr
 from pyadr.const import DEFAULT_ADR_PATH, DEFAULT_CONFIG_FILE_NAME
 from pyadr.core import AdrCore
+from pyadr.git.core import GitAdrCore
 
 
 @pytest.fixture()
@@ -39,3 +40,8 @@ def initialise_config(monkeypatch, tmp_path):
 @pytest.fixture()
 def adr_core():
     yield AdrCore()
+
+
+@pytest.fixture()
+def git_adr_core():
+    yield GitAdrCore()

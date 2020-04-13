@@ -2,7 +2,7 @@ from configparser import ConfigParser
 from copy import deepcopy
 from typing import Dict
 
-from pyadr.const import CONFIG_SETTINGS, DEFAULT_CONFIG_FILE_PATH
+from pyadr.const import DEFAULT_CONFIG_FILE_PATH
 from pyadr.exceptions import (
     PyadrConfigFileSettingsNotSupported,
     PyadrConfigSettingNotSupported,
@@ -23,7 +23,8 @@ class Config(ConfigParser):
         self.check_settings_support_post_read()
 
     def set(self, section: str, setting: str, value: str) -> None:
-        self.check_setting_supported(setting)
+        if section != self.default_section:  # type: ignore
+            self.check_setting_supported(setting)
         super().set(section, setting, value)
         if section != self.default_section:  # type: ignore
             self.persist()
@@ -50,15 +51,15 @@ class Config(ConfigParser):
         unsupported_settings = [
             self.optionxform(setting)
             for setting in self["adr"].keys()
-            if self.optionxform(setting) not in CONFIG_SETTINGS
+            if self.optionxform(setting) not in self.defaults()
         ]
         if unsupported_settings:
             raise PyadrConfigFileSettingsNotSupported(
-                f"{unsupported_settings} not in {CONFIG_SETTINGS}"
+                f"{unsupported_settings} not in {list(self.defaults().keys())}"
             )
 
     def check_setting_supported(self, setting: str) -> None:
-        if self.optionxform(setting) not in CONFIG_SETTINGS:
+        if self.optionxform(setting) not in self.defaults():
             raise PyadrConfigSettingNotSupported(
-                f"'{self.optionxform(setting)}' not in {CONFIG_SETTINGS}"
+                f"'{self.optionxform(setting)}' not in {list(self.defaults().keys())}"
             )
