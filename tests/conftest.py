@@ -1,12 +1,11 @@
-import os
 from pathlib import Path
 
 import pytest
 from git import Repo
 
 import pyadr
-from pyadr.config import config
 from pyadr.const import DEFAULT_ADR_PATH, DEFAULT_CONFIG_FILE_NAME
+from pyadr.core import AdrCore
 
 
 @pytest.fixture()
@@ -31,18 +30,12 @@ def tmp_repo(tmp_path):
 
 @pytest.fixture(autouse=True)
 def initialise_config(monkeypatch, tmp_path):
-    # monkeypatch.setattr(
-    #     pyadr.config.config.parser,
-    #     "config_file_path",
-    #     tmp_path / DEFAULT_CONFIG_FILE_PATH,
-    # )
-    monkeypatch.setattr(os, "getcwd", lambda: tmp_path)
     monkeypatch.setattr(
         pyadr.config.Config, "config_file_path", tmp_path / DEFAULT_CONFIG_FILE_NAME,
     )
-    assert (
-        pyadr.config.config.parser.config_file_path
-        == tmp_path / DEFAULT_CONFIG_FILE_NAME
-    )
-    config.parser.__init__()
-    config.parser["adr"] = {}
+    assert pyadr.config.Config.config_file_path == tmp_path / DEFAULT_CONFIG_FILE_NAME
+
+
+@pytest.fixture()
+def adr_core():
+    yield AdrCore()

@@ -1,20 +1,18 @@
 from configparser import ConfigParser
 from copy import deepcopy
+from typing import Dict
 
-from pyadr.const import DEFAULT_ADR_PATH, DEFAULT_CONFIG_FILE_PATH
+from pyadr.const import CONFIG_SETTINGS, DEFAULT_CONFIG_FILE_PATH
 from pyadr.exceptions import (
     PyadrConfigFileSettingsNotSupported,
     PyadrConfigSettingNotSupported,
 )
 
-CONFIG_SETTINGS = ["records-dir"]
-
 
 class Config(ConfigParser):
     config_file_path = DEFAULT_CONFIG_FILE_PATH
 
-    def __init__(self):
-        defaults = {"records-dir": str(DEFAULT_ADR_PATH)}
+    def __init__(self, defaults: Dict[str, str]):
         super().__init__(defaults=defaults)
 
         self.add_section("adr")
@@ -64,6 +62,3 @@ class Config(ConfigParser):
             raise PyadrConfigSettingNotSupported(
                 f"'{self.optionxform(setting)}' not in {CONFIG_SETTINGS}"
             )
-
-
-config = Config()["adr"]

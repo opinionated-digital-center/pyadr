@@ -3,25 +3,22 @@
 import cleo
 
 from pyadr.const import STATUS_ACCEPTED, STATUS_REJECTED
-from pyadr.core import (
-    accept_or_reject,
-    configure,
-    generate_toc,
-    init_adr_repo,
-    list_config,
-    new_adr,
-    print_config_item,
-    unset_config_item,
-)
+from pyadr.core import AdrCore
 from pyadr.exceptions import PyadrError
 
 
-class ConfigCommand(cleo.Command):
+class BaseCommand(cleo.Command):
+    def __init__(self):
+        super().__init__()
+        self.adr_core = AdrCore()
+
+
+class ConfigCommand(BaseCommand):
     """
     Configure an ADR repository
 
     config
-        {item? : Configuration item.}
+        {setting? : Configuration setting.}
         {value? : Configuration value.}
         {--l|list : List configuration settings.}
         {--u|unset : Unset configuration setting.}
@@ -30,18 +27,20 @@ class ConfigCommand(cleo.Command):
     def handle(self):
         try:
             if self.option("list"):
-                list_config()
+                self.adr_core.list_config()
             elif self.option("unset"):
-                unset_config_item(self.argument("item"))
+                self.adr_core.unset_config_setting(self.argument("setting"))
             elif not self.argument("value"):
-                print_config_item(self.argument("item"))
+                self.adr_core.print_config_setting(self.argument("setting"))
             else:
-                configure(self.argument("item"), self.argument("value"))
+                self.adr_core.configure(
+                    self.argument("setting"), self.argument("value")
+                )
         except PyadrError:
             return 1
 
 
-class InitCommand(cleo.Command):
+class InitCommand(BaseCommand):
     """
     Initialise an ADR repository
 
@@ -51,12 +50,12 @@ class InitCommand(cleo.Command):
 
     def handle(self):
         try:
-            init_adr_repo(force=self.option("force"))
+            self.adr_core.init_adr_repo(force=self.option("force"))
         except PyadrError:
             return 1
 
 
-class NewCommand(cleo.Command):
+class NewCommand(BaseCommand):
     """
     Create an new ADR
 
@@ -66,12 +65,12 @@ class NewCommand(cleo.Command):
 
     def handle(self):
         try:
-            new_adr(title=" ".join(self.argument("words")))
+            self.adr_core.new_adr(title=" ".join(self.argument("words")))
         except PyadrError:
             return 1
 
 
-class AcceptCommand(cleo.Command):
+class AcceptCommand(BaseCommand):
     """
     Accept a proposed ADR
 
@@ -81,12 +80,12 @@ class AcceptCommand(cleo.Command):
 
     def handle(self):
         try:
-            accept_or_reject(STATUS_ACCEPTED, self.option("toc"))
+            self.adr_core.accept_or_reject(STATUS_ACCEPTED, self.option("toc"))
         except PyadrError:
             return 1
 
 
-class RejectCommand(cleo.Command):
+class RejectCommand(BaseCommand):
     """
     Reject a proposed ADR
 
@@ -96,12 +95,12 @@ class RejectCommand(cleo.Command):
 
     def handle(self):
         try:
-            accept_or_reject(STATUS_REJECTED, self.option("toc"))
+            self.adr_core.accept_or_reject(STATUS_REJECTED, self.option("toc"))
         except PyadrError:
             return 1
 
 
-class GenerateTocCommand(cleo.Command):
+class GenerateTocCommand(BaseCommand):
     """
     Generate a table of content of the ADRs
 
@@ -110,6 +109,6 @@ class GenerateTocCommand(cleo.Command):
 
     def handle(self):
         try:
-            generate_toc()
+            self.adr_core.generate_toc()
         except PyadrError:
             return 1
