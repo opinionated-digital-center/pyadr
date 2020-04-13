@@ -1,8 +1,12 @@
-from hamcrest import assert_that, equal_to
+from hamcrest import assert_that, calling, equal_to, raises
 
-from pyadr.config import config
+from pyadr.config import Config, config
 from pyadr.const import DEFAULT_ADR_PATH
 from pyadr.core import configure, unset_config_item
+from pyadr.exceptions import (
+    PyadrConfigFileItemsNotSupported,
+    PyadrConfigItemNotSupported,
+)
 
 
 def test_config_write(tmp_path):
@@ -47,3 +51,23 @@ def test_config_unset():
     unset_config_item("records_dir")
     # Then
     assert_that(config["records_dir"], equal_to(str(DEFAULT_ADR_PATH)))
+
+
+def test_config_fail_on_unknown_setting():
+    # Given
+    # When
+    # Then
+    assert_that(
+        calling(config.__setitem__).with_args("unsupported_option", "value"),
+        raises(PyadrConfigItemNotSupported),
+    )
+
+
+def test_config_fail_on_unknown_setting_in_config_file(tmp_path):
+    # Given
+    adr_ini_path = tmp_path / ".adr"
+    with adr_ini_path.open("w") as f:
+        f.write("[adr]\nunsupported_option = value\n\n")
+    # When
+    # Then
+    assert_that(calling(Config), raises(PyadrConfigFileItemsNotSupported))

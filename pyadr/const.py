@@ -8,4 +8,6 @@ STATUS_REJECTED = "rejected"
 
 CWD = Path(os.getcwd())
 DEFAULT_ADR_PATH = Path("docs", "adr")
-DEFAULT_CONFIG_FILE_PATH = Path(".adr")
+
+DEFAULT_CONFIG_FILE_NAME = ".adr"
+DEFAULT_CONFIG_FILE_PATH = Path(DEFAULT_CONFIG_FILE_NAME)

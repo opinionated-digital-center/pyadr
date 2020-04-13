@@ -29,6 +29,14 @@ class PyadrTooManyProposedAdrError(PyadrError):
     """Too many proposed ADR found"""
 
 
+class PyadrConfigItemNotSupported(PyadrError):
+    """Config item not supported"""
+
+
+class PyadrConfigFileItemsNotSupported(PyadrError):
+    """Config items in the config file not supported"""
+
+
 ################################################
 # Git related Errors
 ################################################
