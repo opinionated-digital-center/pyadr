@@ -1,6 +1,6 @@
 from hamcrest import assert_that, equal_to
 
-from pyadr.core import _build_toc_content_from_adrs_by_status
+from pyadr.content_utils import build_toc_content_from_adrs_by_status
 
 
 def test_build_toc_content_from_adrs_by_status():
@@ -41,7 +41,7 @@ def test_build_toc_content_from_adrs_by_status():
     }
 
     # When
-    toc_content = _build_toc_content_from_adrs_by_status(adrs_by_status)
+    toc_content = build_toc_content_from_adrs_by_status(adrs_by_status)
 
     # Then
     expected = [
@@ -93,7 +93,7 @@ def test_build_toc_content_from_adrs_by_status_no_adr():
     }
 
     # When
-    toc_content = _build_toc_content_from_adrs_by_status(adrs_by_status)
+    toc_content = build_toc_content_from_adrs_by_status(adrs_by_status)
 
     # Then
     expected = [

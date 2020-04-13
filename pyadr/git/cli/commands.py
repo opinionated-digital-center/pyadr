@@ -1,17 +1,22 @@
-"""Console script for pyadr."""
+"""Console script for git adr."""
 import cleo
 
-from pyadr.core import configure, list_config, print_config_item, unset_config_item
 from pyadr.exceptions import PyadrError
-from pyadr.git.core import git_init_adr_repo, git_new_adr
+from pyadr.git.core import GitAdrCore
 
 
-class GitConfigCommand(cleo.Command):
+class BaseGitCommand(cleo.Command):
+    def __init__(self):
+        super().__init__()
+        self.git_adr_core = GitAdrCore()
+
+
+class GitConfigCommand(BaseGitCommand):
     """
     Configure an ADR repository
 
     config
-        {item? : Configuration item.}
+        {setting? : Configuration setting.}
         {value? : Configuration value.}
         {--l|list : List configuration settings.}
         {--u|unset : Unset configuration setting.}
@@ -20,18 +25,20 @@ class GitConfigCommand(cleo.Command):
     def handle(self):
         try:
             if self.option("list"):
-                list_config()
+                self.git_adr_core.list_config()
             elif self.option("unset"):
-                unset_config_item(self.argument("item"))
+                self.git_adr_core.unset_config_setting(self.argument("setting"))
             elif not self.argument("value"):
-                print_config_item(self.argument("item"))
+                self.git_adr_core.print_config_setting(self.argument("setting"))
             else:
-                configure(self.argument("item"), self.argument("value"))
+                self.git_adr_core.configure(
+                    self.argument("setting"), self.argument("value")
+                )
         except PyadrError:
             return 1
 
 
-class GitInitCommand(cleo.Command):
+class GitInitCommand(BaseGitCommand):
     """
     Initialise a Git ADR repository
 
@@ -41,12 +48,12 @@ class GitInitCommand(cleo.Command):
 
     def handle(self):
         try:
-            git_init_adr_repo(force=self.option("force"))
+            self.git_adr_core.git_init_adr_repo(force=self.option("force"))
         except PyadrError:
             return 1
 
 
-class GitNewCommand(cleo.Command):
+class GitNewCommand(BaseGitCommand):
     """
     Create an new ADR
 
@@ -56,6 +63,6 @@ class GitNewCommand(cleo.Command):
 
     def handle(self):
         try:
-            git_new_adr(title=" ".join(self.argument("words")))
+            self.git_adr_core.git_new_adr(title=" ".join(self.argument("words")))
         except PyadrError:
             return 1
