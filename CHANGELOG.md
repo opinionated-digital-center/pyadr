@@ -1,3 +1,12 @@
+# [0.9.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.8.1...v0.9.0) (2020-04-13)
+
+
+### Features
+
+* **adr:** command adr config ([50d1e3b](https://github.com/opinionated-digital-center/pyadr/commit/50d1e3b38fe0d022348e88db9a256b8276f1d3c3))
+* **adr:** further setting check, write to config file ([7f862a3](https://github.com/opinionated-digital-center/pyadr/commit/7f862a3121313c11990182ca06e0af5c9be9af31))
+* **adr:** verify config option (setting) name valid setting it ([3d7aef8](https://github.com/opinionated-digital-center/pyadr/commit/3d7aef8f347d8a9a9b9b9c99743f8b12eb5161c7))
+
 ## [0.8.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.8.0...v0.8.1) (2020-04-12)
 
 
