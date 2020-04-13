@@ -1,3 +1,11 @@
+# [0.10.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.9.0...v0.10.0) (2020-04-13)
+
+
+### Features
+
+* **git:** adr-only-repo setting available ([1072550](https://github.com/opinionated-digital-center/pyadr/commit/10725509bffaa50e42ea43a97f2f6d3e189dc193))
+* **git:** command git adr config (basic) ([7703b7b](https://github.com/opinionated-digital-center/pyadr/commit/7703b7b3eafa60d1ab163dab42a3cba1a13ca594))
+
 # [0.9.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.8.1...v0.9.0) (2020-04-13)
 
 
