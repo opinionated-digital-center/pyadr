@@ -5,7 +5,7 @@ Feature: Configure Git ADR cli
         Given a new working directory
 
     @wip
-    Scenario: List config items
+    Scenario: List config settings
         When I run "git adr config --list"
         Then it should pass with
             """
@@ -13,7 +13,7 @@ Feature: Configure Git ADR cli
             """
 
     @wip
-    Scenario: Get config item value
+    Scenario: Get config setting value
         When I run "git adr config records-dir"
         Then it should pass
 
@@ -31,13 +31,13 @@ Feature: Configure Git ADR cli
             """
 
     @wip
-    Scenario: Set config item: ADR directory
+    Scenario: Set config setting: ADR directory
         When I run "git adr config records-dir another_dir"
         Then it should pass
         And a file named ".adr" should exist
 
     @wip
-    Scenario: Unset config items
+    Scenario: Unset config settings
         Given a file named ".adr" with
             """
             [adr]
