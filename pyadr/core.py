@@ -30,7 +30,6 @@ except ImportError:
 ###########################################
 def configure(item: str, value: str) -> None:
     config[item] = value
-    config.parser.write()  # type: ignore
     logger.info(f"Configured '{item}' to '{value}'.")
 
 
