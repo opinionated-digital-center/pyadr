@@ -71,3 +71,12 @@ class GitNewCommand(BaseGitCommand):
             self.git_adr_core.git_new_adr(title=" ".join(self.argument("words")))
         except PyadrError:
             return 1
+
+
+class GitProposeCommand(GitNewCommand):
+    """
+    Create an proposal ADR (same as new... Here for coherence)
+
+    propose
+        {words* : Words in the title}
+    """

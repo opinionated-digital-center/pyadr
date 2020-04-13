@@ -36,3 +36,9 @@ Feature: Create a new ADR
             * Date: {__TODAY_YYYY_MM_DD__}
 
             """
+
+    Scenario: Propose a new ADR (same as create, different command name)
+        Given an initialised git adr repo
+        When I run "git adr propose My ADR Title"
+        Then it should pass
+        And the file named "docs/adr/XXXX-my-adr-title.md" should exist

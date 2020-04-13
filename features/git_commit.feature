@@ -1,11 +1,9 @@
-Feature: Create a new ADR - Git included
-    Since 'git adr' makes calls to 'pyadr', some features will be already fully
-    tested in the bdd tests for 'pyadr'.
+Feature: Git ADR - Commit ADRs
 
     Background:
         Given a new working directory
 
-    Scenario: Fail when no ADR repo directory
+    Scenario: Commit proposal ADR - Take the one starting with "XXXX-" by default
         When I run "git adr new My ADR Title"
         Then it should fail with:
             """
@@ -35,7 +33,8 @@ Feature: Create a new ADR - Git included
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should exist
 
-    Scenario: Propose a new ADR (same as create, different command name)
+    @wip
+    Scenario: Create a new ADR
         Given an initialised git adr repo
         When I run "git adr propose My ADR Title"
         Then it should pass

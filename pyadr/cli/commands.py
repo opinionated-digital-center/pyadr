@@ -70,6 +70,15 @@ class NewCommand(BaseCommand):
             return 1
 
 
+class ProposeCommand(NewCommand):
+    """
+    Propose a new ADR (same as 'new' command... Here for coherence)
+
+    propose
+        {words* : Words in the title}
+    """
+
+
 class AcceptCommand(BaseCommand):
     """
     Accept a proposed ADR
