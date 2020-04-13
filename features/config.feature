@@ -70,7 +70,7 @@ Feature: Configure ADR cli
             """
             Config item 'records-dir' unset.
             """
-        And the file ".adr" should contain
+        And the file ".adr" should not contain
             """
-            [adr]
+            records-dir = another_dir
             """
