@@ -3,21 +3,21 @@ Feature: Initialise an ADR repository
     Background:
         Given a new working directory
 
-    Scenario: Fail when a repo already exists - records_dir config option set
+    Scenario: Fail when a repo already exists - records-dir config option set
         Given a file named ".adr" with
             """
             [adr]
-            records_dir = another_adr_dir
+            records-dir = another_adr_dir
             """
         And a directory named "another_adr_dir"
         When I run "pyadr init"
         Then it should fail
 
-    Scenario: Create the repo directory - records_dir config option set
+    Scenario: Create the repo directory - records-dir config option set
         Given a file named ".adr" with
             """
             [adr]
-            records_dir = another_adr_dir
+            records-dir = another_adr_dir
             """
         When I run "pyadr init"
         Then it should pass

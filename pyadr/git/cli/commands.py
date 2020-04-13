@@ -6,6 +6,18 @@ from pyadr.exceptions import PyadrError
 from pyadr.git.core import git_init_adr_repo, git_new_adr
 
 
+class ConfigCommand(cleo.Command):
+    """
+    Configure an ADR repository
+
+    config
+        {item? : Configuration item.}
+        {value? : Configuration value.}
+        {--l|list : List configuration settings.}
+        {--u|unset : Unset configuration setting.}
+    """
+
+
 class GitInitCommand(cleo.Command):
     """
     Initialise a Git ADR repository

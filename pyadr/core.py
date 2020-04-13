@@ -61,13 +61,13 @@ def init_adr_repo(force: bool = False) -> List[Path]:
     ]
     logger.info(
         f"ADR repository successfully created at "
-        f"'{Path(config['records_dir']).resolve()}/'."
+        f"'{Path(config['records-dir']).resolve()}/'."
     )
     return created_files
 
 
 def verify_and_prepare_pre_init(force: bool = False) -> None:
-    adr_repo_abs_path = Path(config["records_dir"]).resolve()
+    adr_repo_abs_path = Path(config["records-dir"]).resolve()
     if force:
         if adr_repo_abs_path.exists():
             logger.warning(
@@ -87,14 +87,14 @@ def verify_and_prepare_pre_init(force: bool = False) -> None:
 
 
 def create_adr_repo_dir():
-    adr_repo_path = Path(config["records_dir"])
+    adr_repo_path = Path(config["records-dir"])
     logger.info(f"Creating ADR repo directory '{adr_repo_path}'.")
     adr_repo_path.mkdir(parents=True)
     logger.info(f"... done.")
 
 
 def _init_adr_template() -> Path:
-    template_path = Path(config["records_dir"], "template.md")
+    template_path = Path(config["records-dir"], "template.md")
 
     logger.info(f"Copying MADR template to '{template_path}'...")
     with template_path.open("w") as f:
@@ -113,7 +113,7 @@ def _init_adr_0001() -> Path:
 
 
 def _init_adr_file(filename: str) -> Path:
-    path = Path(config["records_dir"], filename)
+    path = Path(config["records-dir"], filename)
 
     logger.info(f"Creating ADR '{path}'...")
     with path.open("w") as f:
@@ -131,7 +131,7 @@ def new_adr(title: str, pre_checks: bool = True) -> Path:
     if pre_checks:
         verify_adr_dir_exists()
 
-    adr_path = Path(config["records_dir"], f"XXXX-{slugify(title)}.md")
+    adr_path = Path(config["records-dir"], f"XXXX-{slugify(title)}.md")
 
     with adr_path.open("w") as f:
         f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
@@ -145,8 +145,8 @@ def new_adr(title: str, pre_checks: bool = True) -> Path:
 # ACCEPT / REJECT
 ###########################################
 def accept_or_reject(status: str, toc: bool = False) -> None:
-    found_proposed_adrs = sorted(Path(config["records_dir"]).glob("XXXX-*"))
-    logger.info(f"Current Working Directory is: '{Path(config['records_dir'])}'")
+    found_proposed_adrs = sorted(Path(config["records-dir"]).glob("XXXX-*"))
+    logger.info(f"Current Working Directory is: '{Path(config['records-dir'])}'")
     if not len(found_proposed_adrs):
         logger.error(
             "Could not find a proposed ADR "
@@ -165,7 +165,7 @@ def accept_or_reject(status: str, toc: bool = False) -> None:
     proposed_adr = found_proposed_adrs[0]
     try:
         reviewed_adr = rename_reviewed_adr_file(
-            proposed_adr, Path(config["records_dir"])
+            proposed_adr, Path(config["records-dir"])
         )
     except PyadrNoNumberedAdrError as e:
         logger.error(
@@ -190,13 +190,13 @@ def generate_toc(pre_checks: bool = True) -> None:
     if pre_checks:
         verify_adr_dir_exists()
 
-    adr_paths = sorted(Path(config["records_dir"]).glob("[0-9][0-9][0-9][0-9]-*"))
+    adr_paths = sorted(Path(config["records-dir"]).glob("[0-9][0-9][0-9][0-9]-*"))
 
     adrs_by_status = _extract_adrs_by_status(adr_paths)
 
     toc_content = _build_toc_content_from_adrs_by_status(adrs_by_status)
 
-    toc_path = Path(config["records_dir"], "index.md")
+    toc_path = Path(config["records-dir"], "index.md")
     with toc_path.open("w") as f:
         f.writelines(toc_content)
 
@@ -256,7 +256,7 @@ def _extract_adrs_by_status(adr_paths):
             if status_phrase:
                 status_supplement = f": {status} {status_phrase}"
             adrs_by_status[status]["adrs"].append(
-                f"* [{title}]({Path(config['records_dir']) / adr.name})"
+                f"* [{title}]({Path(config['records-dir']) / adr.name})"
                 f"{status_supplement}\n"
             )
         except KeyError:
@@ -266,7 +266,7 @@ def _extract_adrs_by_status(adr_paths):
                     "adrs": [],
                 }
             adrs_by_status["non-standard"]["adrs-by-status"][status]["adrs"].append(
-                f"* [{title}]({Path(config['records_dir']) / adr.name})"
+                f"* [{title}]({Path(config['records-dir']) / adr.name})"
                 f"{status_supplement}\n"
             )
     return adrs_by_status
