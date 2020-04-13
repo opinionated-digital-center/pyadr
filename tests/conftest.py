@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 import pytest
@@ -35,11 +36,7 @@ def initialise_config(monkeypatch, tmp_path):
     #     "config_file_path",
     #     tmp_path / DEFAULT_CONFIG_FILE_PATH,
     # )
-    # monkeypatch.setattr(
-    #     pyadr.config,
-    #     "DEFAULT_CONFIG_FILE_PATH",
-    #     tmp_path / DEFAULT_CONFIG_FILE_NAME,
-    # )
+    monkeypatch.setattr(os, "getcwd", lambda: tmp_path)
     monkeypatch.setattr(
         pyadr.config.Config, "config_file_path", tmp_path / DEFAULT_CONFIG_FILE_NAME,
     )

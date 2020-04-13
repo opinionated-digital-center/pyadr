@@ -17,8 +17,8 @@ from pyadr.utils import verify_adr_dir_exists
 ###########################################
 # GIT INIT ADR
 ###########################################
-def git_init_adr_repo(repo_workdir: Path, force: bool = False) -> None:
-    repo = get_verified_repo(repo_workdir)
+def git_init_adr_repo(force: bool = False) -> None:
+    repo = get_verified_repo(Path.cwd())
 
     verify_index_empty(repo)
 
@@ -47,8 +47,8 @@ def git_init_adr_repo(repo_workdir: Path, force: bool = False) -> None:
 ###########################################
 # GIT NEW ADR
 ###########################################
-def git_new_adr(repo_workdir: Path, title: str, pre_checks: bool = True) -> None:
-    repo = get_verified_repo(repo_workdir)
+def git_new_adr(title: str, pre_checks: bool = True) -> None:
+    repo = get_verified_repo(Path.cwd())
 
     if pre_checks:
         verify_adr_dir_exists()
