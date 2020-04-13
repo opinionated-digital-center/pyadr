@@ -2,7 +2,12 @@ import cleo
 
 from pyadr import __version__
 from pyadr.cli import LoggingAppConfig
-from pyadr.git.cli.commands import GitConfigCommand, GitInitCommand, GitNewCommand
+from pyadr.git.cli.commands import (
+    GitConfigCommand,
+    GitInitCommand,
+    GitNewCommand,
+    GitProposeCommand,
+)
 
 
 class App(cleo.Application):
@@ -14,3 +19,4 @@ class App(cleo.Application):
         self.add(GitConfigCommand())
         self.add(GitInitCommand())
         self.add(GitNewCommand())
+        self.add(GitProposeCommand())

@@ -7,6 +7,7 @@ from pyadr.cli.commands import (
     GenerateTocCommand,
     InitCommand,
     NewCommand,
+    ProposeCommand,
     RejectCommand,
 )
 from pyadr.cli.config import LoggingAppConfig
@@ -21,6 +22,7 @@ class App(cleo.Application):
         self.add(ConfigCommand())
         self.add(InitCommand())
         self.add(NewCommand())
+        self.add(ProposeCommand())
         self.add(AcceptCommand())
         self.add(RejectCommand())
         self.add(GenerateTocCommand())
