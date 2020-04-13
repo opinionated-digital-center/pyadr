@@ -6,13 +6,8 @@ from loguru import logger
 from slugify import slugify
 
 from pyadr import assets
-from pyadr.const import (
-    ADR_REPO_ABS_PATH,
-    ADR_REPO_REL_PATH,
-    CWD,
-    STATUS_ACCEPTED,
-    STATUS_PROPOSED,
-)
+from pyadr.config import config
+from pyadr.const import STATUS_ACCEPTED, STATUS_PROPOSED
 from pyadr.content_utils import retrieve_title_status_and_date_from_madr_content_stream
 from pyadr.exceptions import (
     PyadrAdrDirectoryAlreadyExistsError,
@@ -31,48 +26,77 @@ except ImportError:
 
 
 ###########################################
+# CONFIGURE ADR
+###########################################
+def configure(item: str, value: str) -> None:
+    config[item] = value
+    config.parser.write()  # type: ignore
+    logger.info(f"Configured '{item}' to '{value}'.")
+
+
+def unset_config_item(item: str) -> None:
+    del config[item]
+    logger.info(f"Config item '{item}' unset.")
+
+
+def list_config():
+    for key in config.keys():
+        print_config_item(key)
+
+
+def print_config_item(key: str):
+    logger.info(f"{key} = {config[key]}")
+
+
+###########################################
 # INIT ADR
 ###########################################
 def init_adr_repo(force: bool = False) -> List[Path]:
     verify_and_prepare_pre_init(force)
     create_adr_repo_dir()
-    created_files: List[Path] = []
-    created_files.append(_init_adr_template())
-    created_files.append(_init_adr_0000())
-    created_files.append(_init_adr_0001())
-    logger.info(f"ADR repository successfully created at '{ADR_REPO_ABS_PATH}/'.")
+    created_files = [
+        _init_adr_template(),
+        _init_adr_0000(),
+        _init_adr_0001(),
+    ]
+    logger.info(
+        f"ADR repository successfully created at "
+        f"'{Path(config['records_dir']).resolve()}/'."
+    )
     return created_files
 
 
 def verify_and_prepare_pre_init(force: bool = False) -> None:
+    adr_repo_abs_path = Path(config["records_dir"]).resolve()
     if force:
-        if ADR_REPO_ABS_PATH.exists():
+        if adr_repo_abs_path.exists():
             logger.warning(
-                f"Directory '{ADR_REPO_ABS_PATH}/' already exists. "
+                f"Directory '{adr_repo_abs_path}/' already exists. "
                 f"Used '--force' option => Erasing..."
             )
-            shutil.rmtree(ADR_REPO_ABS_PATH)
+            shutil.rmtree(adr_repo_abs_path)
             logger.warning("... erased.")
 
     else:
-        if ADR_REPO_ABS_PATH.exists():
+        if adr_repo_abs_path.exists():
             logger.error(
-                f"Directory '{ADR_REPO_ABS_PATH}/' already exists. "
+                f"Directory '{adr_repo_abs_path}/' already exists. "
                 "You can use '--force' option to erase."
             )
             raise PyadrAdrDirectoryAlreadyExistsError()
 
 
 def create_adr_repo_dir():
-    logger.info(f"Creating ADR repo directory '{ADR_REPO_ABS_PATH.relative_to(CWD)}'.")
-    ADR_REPO_ABS_PATH.mkdir(parents=True)
+    adr_repo_path = Path(config["records_dir"])
+    logger.info(f"Creating ADR repo directory '{adr_repo_path}'.")
+    adr_repo_path.mkdir(parents=True)
     logger.info(f"... done.")
 
 
 def _init_adr_template() -> Path:
-    template_path = ADR_REPO_ABS_PATH / "template.md"
+    template_path = Path(config["records_dir"], "template.md")
 
-    logger.info(f"Copying MADR template to '{template_path.relative_to(CWD)}'...")
+    logger.info(f"Copying MADR template to '{template_path}'...")
     with template_path.open("w") as f:
         f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
 
@@ -89,9 +113,9 @@ def _init_adr_0001() -> Path:
 
 
 def _init_adr_file(filename: str) -> Path:
-    path = ADR_REPO_ABS_PATH / filename
+    path = Path(config["records_dir"], filename)
 
-    logger.info(f"Creating ADR '{path.relative_to(CWD)}'...")
+    logger.info(f"Creating ADR '{path}'...")
     with path.open("w") as f:
         f.write(pkg_resources.read_text(assets, filename))  # type: ignore
     update_adr_title_status(path, status=STATUS_ACCEPTED)
@@ -107,22 +131,22 @@ def new_adr(title: str, pre_checks: bool = True) -> Path:
     if pre_checks:
         verify_adr_dir_exists()
 
-    adr_path = ADR_REPO_ABS_PATH / f"XXXX-{slugify(title)}.md"
+    adr_path = Path(config["records_dir"], f"XXXX-{slugify(title)}.md")
 
     with adr_path.open("w") as f:
         f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
     update_adr_title_status(adr_path, title=title, status=STATUS_PROPOSED)
 
-    logger.warning(f"Created ADR '{adr_path.relative_to(CWD)}'.")
+    logger.warning(f"Created ADR '{adr_path}'.")
     return adr_path
 
 
 ###########################################
 # ACCEPT / REJECT
 ###########################################
-def accept_or_reject(workdir: Path, status: str, toc: bool = False) -> None:
-    found_proposed_adrs = sorted(ADR_REPO_ABS_PATH.glob("XXXX-*"))
-    logger.info(f"Current Working Directory is: '{workdir}'")
+def accept_or_reject(status: str, toc: bool = False) -> None:
+    found_proposed_adrs = sorted(Path(config["records_dir"]).glob("XXXX-*"))
+    logger.info(f"Current Working Directory is: '{Path(config['records_dir'])}'")
     if not len(found_proposed_adrs):
         logger.error(
             "Could not find a proposed ADR "
@@ -135,12 +159,14 @@ def accept_or_reject(workdir: Path, status: str, toc: bool = False) -> None:
             f"Can handle only 1 proposed ADR but found {len(found_proposed_adrs)}:"
         )
         for adr in found_proposed_adrs:
-            logger.error(f"    => '{adr.relative_to(workdir)}'")
+            logger.error(f"    => '{adr}'")
         raise PyadrTooManyProposedAdrError()
 
     proposed_adr = found_proposed_adrs[0]
     try:
-        reviewed_adr = rename_reviewed_adr_file(proposed_adr, ADR_REPO_ABS_PATH)
+        reviewed_adr = rename_reviewed_adr_file(
+            proposed_adr, Path(config["records_dir"])
+        )
     except PyadrNoNumberedAdrError as e:
         logger.error(
             "There should be at least one initial reviewed ADR "
@@ -151,7 +177,7 @@ def accept_or_reject(workdir: Path, status: str, toc: bool = False) -> None:
     logger.info(f"Renamed ADR to: {reviewed_adr}")
 
     if toc:
-        generate_toc(workdir)
+        generate_toc()
 
     update_adr_title_status(reviewed_adr, status=status)
     logger.info(f"Changed ADR status to: {status}")
@@ -160,23 +186,21 @@ def accept_or_reject(workdir: Path, status: str, toc: bool = False) -> None:
 ###########################################
 # GENERATE TOC
 ###########################################
-def generate_toc(workdir: Path, pre_checks: bool = True) -> None:
+def generate_toc(pre_checks: bool = True) -> None:
     if pre_checks:
         verify_adr_dir_exists()
 
-    adr_paths = sorted(ADR_REPO_ABS_PATH.glob("[0-9][0-9][0-9][0-9]-*"))
+    adr_paths = sorted(Path(config["records_dir"]).glob("[0-9][0-9][0-9][0-9]-*"))
 
     adrs_by_status = _extract_adrs_by_status(adr_paths)
 
     toc_content = _build_toc_content_from_adrs_by_status(adrs_by_status)
 
-    toc_path = ADR_REPO_ABS_PATH / "index.md"
+    toc_path = Path(config["records_dir"], "index.md")
     with toc_path.open("w") as f:
         f.writelines(toc_content)
 
-    logger.info(
-        f"Markdown table of content generated in '{toc_path.relative_to(workdir)}'"
-    )
+    logger.info(f"Markdown table of content generated in '{toc_path}'")
 
 
 def _build_toc_content_from_adrs_by_status(adrs_by_status):
@@ -232,7 +256,8 @@ def _extract_adrs_by_status(adr_paths):
             if status_phrase:
                 status_supplement = f": {status} {status_phrase}"
             adrs_by_status[status]["adrs"].append(
-                f"* [{title}]({ADR_REPO_REL_PATH / adr.name}){status_supplement}\n"
+                f"* [{title}]({Path(config['records_dir']) / adr.name})"
+                f"{status_supplement}\n"
             )
         except KeyError:
             if status not in adrs_by_status["non-standard"]["adrs-by-status"].keys():
@@ -241,7 +266,7 @@ def _extract_adrs_by_status(adr_paths):
                     "adrs": [],
                 }
             adrs_by_status["non-standard"]["adrs-by-status"][status]["adrs"].append(
-                f"* [{title}]({ADR_REPO_REL_PATH / adr.name}){status_supplement}\n"
+                f"* [{title}]({Path(config['records_dir']) / adr.name})"
+                f"{status_supplement}\n"
             )
-        # adr_list.append(f"* [{title}]({ADR_REPO_REL_PATH / adr.name})\n")
     return adrs_by_status

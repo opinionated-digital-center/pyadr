@@ -3,6 +3,7 @@ import cleo
 from pyadr import __version__
 from pyadr.cli.commands import (
     AcceptCommand,
+    ConfigCommand,
     GenerateTocCommand,
     InitCommand,
     NewCommand,
@@ -17,6 +18,7 @@ class App(cleo.Application):
             config=config or LoggingAppConfig("ADR Process Tool", __version__)
         )
 
+        self.add(ConfigCommand())
         self.add(InitCommand())
         self.add(NewCommand())
         self.add(AcceptCommand())

@@ -3,14 +3,16 @@ from pathlib import Path
 import pytest
 from git import Repo
 
-from pyadr.const import ADR_REPO_REL_PATH
+import pyadr
+from pyadr.config import config
+from pyadr.const import DEFAULT_ADR_PATH, DEFAULT_CONFIG_FILE_PATH
 
 
 @pytest.fixture()
 def adr_tmp_path(tmp_path):
-    path = tmp_path / ADR_REPO_REL_PATH
+    path = tmp_path / DEFAULT_ADR_PATH
     path.mkdir(parents=True)
-    return path
+    yield path
 
 
 @pytest.fixture()
@@ -23,4 +25,18 @@ def tmp_repo(tmp_path):
     repo.index.add([str(file)])
     repo.index.commit("initial commit")
 
-    return repo
+    yield repo
+
+
+@pytest.fixture(autouse=True)
+def initialise_config(monkeypatch, tmp_path):
+    monkeypatch.setattr(
+        pyadr.config.config.parser,
+        "config_file_path",
+        tmp_path / DEFAULT_CONFIG_FILE_PATH,
+    )
+    assert (
+        pyadr.config.config.parser.config_file_path
+        == tmp_path / DEFAULT_CONFIG_FILE_PATH
+    )
+    config.parser["adr"] = {}
