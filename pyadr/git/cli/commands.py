@@ -1,12 +1,12 @@
 """Console script for pyadr."""
 import cleo
 
-from pyadr.const import CWD
+from pyadr.core import configure, list_config, print_config_item, unset_config_item
 from pyadr.exceptions import PyadrError
 from pyadr.git.core import git_init_adr_repo, git_new_adr
 
 
-class ConfigCommand(cleo.Command):
+class GitConfigCommand(cleo.Command):
     """
     Configure an ADR repository
 
@@ -16,6 +16,19 @@ class ConfigCommand(cleo.Command):
         {--l|list : List configuration settings.}
         {--u|unset : Unset configuration setting.}
     """
+
+    def handle(self):
+        try:
+            if self.option("list"):
+                list_config()
+            elif self.option("unset"):
+                unset_config_item(self.argument("item"))
+            elif not self.argument("value"):
+                print_config_item(self.argument("item"))
+            else:
+                configure(self.argument("item"), self.argument("value"))
+        except PyadrError:
+            return 1
 
 
 class GitInitCommand(cleo.Command):
@@ -28,7 +41,7 @@ class GitInitCommand(cleo.Command):
 
     def handle(self):
         try:
-            git_init_adr_repo(CWD, force=self.option("force"))
+            git_init_adr_repo(force=self.option("force"))
         except PyadrError:
             return 1
 
@@ -43,6 +56,6 @@ class GitNewCommand(cleo.Command):
 
     def handle(self):
         try:
-            git_new_adr(CWD, title=" ".join(self.argument("words")))
+            git_new_adr(title=" ".join(self.argument("words")))
         except PyadrError:
             return 1
