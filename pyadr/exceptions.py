@@ -29,11 +29,11 @@ class PyadrTooManyProposedAdrError(PyadrError):
     """Too many proposed ADR found"""
 
 
-class PyadrConfigItemNotSupported(PyadrError):
+class PyadrConfigSettingNotSupported(PyadrError):
     """Config item not supported"""
 
 
-class PyadrConfigFileItemsNotSupported(PyadrError):
+class PyadrConfigFileSettingsNotSupported(PyadrError):
     """Config items in the config file not supported"""
 
 

@@ -7,7 +7,7 @@ from pyadr.exceptions import PyadrAdrDirectoryDoesNotExistsError
 
 
 def verify_adr_dir_exists():
-    adr_repo_path = Path(config["records_dir"])
+    adr_repo_path = Path(config["records-dir"])
     if not adr_repo_path.exists():
         logger.error(
             f"Directory '{adr_repo_path}/' does not exist. "

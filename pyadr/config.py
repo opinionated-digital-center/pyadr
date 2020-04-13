@@ -3,18 +3,18 @@ from copy import deepcopy
 
 from pyadr.const import DEFAULT_ADR_PATH, DEFAULT_CONFIG_FILE_PATH
 from pyadr.exceptions import (
-    PyadrConfigFileItemsNotSupported,
-    PyadrConfigItemNotSupported,
+    PyadrConfigFileSettingsNotSupported,
+    PyadrConfigSettingNotSupported,
 )
 
-CONFIG_OPTIONS = ["records_dir"]
+CONFIG_SETTINGS = ["records-dir"]
 
 
 class Config(ConfigParser):
     config_file_path = DEFAULT_CONFIG_FILE_PATH
 
     def __init__(self):
-        defaults = {"records_dir": str(DEFAULT_ADR_PATH)}
+        defaults = {"records-dir": str(DEFAULT_ADR_PATH)}
         super().__init__(defaults=defaults)
 
         self.add_section("adr")
@@ -22,22 +22,22 @@ class Config(ConfigParser):
         if self.config_file_path.exists():
             self.read(self.config_file_path)
 
-        unsupported_options = [
-            self.optionxform(o)
-            for o in self["adr"].keys()
-            if self.optionxform(o) not in CONFIG_OPTIONS
+        unsupported_settings = [
+            self.optionxform(setting)
+            for setting in self["adr"].keys()
+            if self.optionxform(setting) not in CONFIG_SETTINGS
         ]
-        if unsupported_options:
-            raise PyadrConfigFileItemsNotSupported(
-                f"{unsupported_options} not in {CONFIG_OPTIONS}"
+        if unsupported_settings:
+            raise PyadrConfigFileSettingsNotSupported(
+                f"{unsupported_settings} not in {CONFIG_SETTINGS}"
             )
 
-    def set(self, section, option, value=None):
-        if self.optionxform(option) not in CONFIG_OPTIONS:
-            raise PyadrConfigItemNotSupported(
-                f"'{self.optionxform(option)}' not in {CONFIG_OPTIONS}"
+    def set(self, section, setting, value=None):
+        if self.optionxform(setting) not in CONFIG_SETTINGS:
+            raise PyadrConfigSettingNotSupported(
+                f"'{self.optionxform(setting)}' not in {CONFIG_SETTINGS}"
             )
-        super().set(section, option, value)
+        super().set(section, setting, value)
 
     def write(self):
         defaults = deepcopy(self.defaults())

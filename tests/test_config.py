@@ -4,8 +4,8 @@ from pyadr.config import Config, config
 from pyadr.const import DEFAULT_ADR_PATH
 from pyadr.core import configure, unset_config_item
 from pyadr.exceptions import (
-    PyadrConfigFileItemsNotSupported,
-    PyadrConfigItemNotSupported,
+    PyadrConfigFileSettingsNotSupported,
+    PyadrConfigSettingNotSupported,
 )
 
 
@@ -14,7 +14,7 @@ def test_config_write(tmp_path):
     adr_ini_path = tmp_path / ".adr"
 
     # When
-    config["records_dir"] = "doc/adr"
+    config["records-dir"] = "doc/adr"
     config.parser.write()
 
     # Then
@@ -22,7 +22,7 @@ def test_config_write(tmp_path):
         content = f.read()
 
     expected = """[adr]
-records_dir = doc/adr
+records-dir = doc/adr
 
 """
     assert_that(content, equal_to(expected))
@@ -32,25 +32,25 @@ def test_config_defaults():
     # Given
     # When
     # Then
-    assert_that(config["records_dir"], equal_to(str(DEFAULT_ADR_PATH)))
+    assert_that(config["records-dir"], equal_to(str(DEFAULT_ADR_PATH)))
 
 
 def test_config_configure():
     # Given
     # When
-    configure("records_dir", "another")
+    configure("records-dir", "another")
     # Then
-    assert_that(config["records_dir"], equal_to("another"))
+    assert_that(config["records-dir"], equal_to("another"))
 
 
 def test_config_unset():
     # Given
-    config["records_dir"] = "another"
+    config["records-dir"] = "another"
 
     # When
-    unset_config_item("records_dir")
+    unset_config_item("records-dir")
     # Then
-    assert_that(config["records_dir"], equal_to(str(DEFAULT_ADR_PATH)))
+    assert_that(config["records-dir"], equal_to(str(DEFAULT_ADR_PATH)))
 
 
 def test_config_fail_on_unknown_setting():
@@ -59,7 +59,7 @@ def test_config_fail_on_unknown_setting():
     # Then
     assert_that(
         calling(config.__setitem__).with_args("unsupported_option", "value"),
-        raises(PyadrConfigItemNotSupported),
+        raises(PyadrConfigSettingNotSupported),
     )
 
 
@@ -70,4 +70,4 @@ def test_config_fail_on_unknown_setting_in_config_file(tmp_path):
         f.write("[adr]\nunsupported_option = value\n\n")
     # When
     # Then
-    assert_that(calling(Config), raises(PyadrConfigFileItemsNotSupported))
+    assert_that(calling(Config), raises(PyadrConfigFileSettingsNotSupported))
