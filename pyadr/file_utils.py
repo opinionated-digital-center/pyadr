@@ -7,8 +7,8 @@ from pyadr.content_utils import (
 from pyadr.exceptions import PyadrNoNumberedAdrError
 
 
-def rename_reviewed_adr_file(file: Path, adr_path) -> Path:
-    next_id = calculate_next_id(adr_path)
+def rename_reviewed_adr_file(file: Path, adr_repo_path) -> Path:
+    next_id = calculate_next_id(adr_repo_path)
     with file.open() as f:
         title_slug = adr_title_slug_from_content_stream(f)
 

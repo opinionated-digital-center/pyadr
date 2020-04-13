@@ -6,6 +6,6 @@ STATUS_PROPOSED = "proposed"
 STATUS_ACCEPTED = "accepted"
 STATUS_REJECTED = "rejected"
 
-CWD = os.getcwd()
-ADR_REPO_REL_PATH = Path("docs", "adr")
-ADR_REPO_ABS_PATH = Path(CWD) / ADR_REPO_REL_PATH
+CWD = Path(os.getcwd())
+DEFAULT_ADR_PATH = Path("docs", "adr")
+DEFAULT_CONFIG_FILE_PATH = Path(".adr")

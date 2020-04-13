@@ -1,13 +1,16 @@
+from pathlib import Path
+
 from loguru import logger
 
-from pyadr.const import ADR_REPO_ABS_PATH, ADR_REPO_REL_PATH
+from pyadr.config import config
 from pyadr.exceptions import PyadrAdrDirectoryDoesNotExistsError
 
 
 def verify_adr_dir_exists():
-    if not ADR_REPO_ABS_PATH.exists():
+    adr_repo_path = Path(config["records_dir"])
+    if not adr_repo_path.exists():
         logger.error(
-            f"Directory '{ADR_REPO_REL_PATH}/' does not exist. "
+            f"Directory '{adr_repo_path}/' does not exist. "
             "Initialise your ADR repo first."
         )
         raise PyadrAdrDirectoryDoesNotExistsError()

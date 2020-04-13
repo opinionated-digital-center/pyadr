@@ -65,6 +65,6 @@ def git_new_adr(repo_workdir: Path, title: str, pre_checks: bool = True) -> None
 
     repo.index.add([str(new_adr_path)])
 
-    logger.info(f"File '{new_adr_path.relative_to(repo.working_tree_dir)}' staged.")
+    logger.info(f"File '{new_adr_path}' staged.")
 
     logger.info("New ADR added to Git repo.")
