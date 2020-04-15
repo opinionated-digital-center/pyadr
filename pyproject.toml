@@ -100,7 +100,6 @@ force_grid_wrap = 0
 line_length = 88
 known_third_party = ["behave", "behave4cli", "cleo", "clikit", "git", "gitdb", "hamcrest", "loguru", "pytest", "six", "slugify", "toml"]
 
-
 [tool.black]
 line-length = 88
 target_version = ['py37']
