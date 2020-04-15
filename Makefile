@@ -137,6 +137,29 @@ setup-release-tools-github: setup-release-tools-common
 	npm install -g @semantic-release/github@"^7.0.5"
 
 #################################################################
+# setting dependencies for automation (tox, cicd)
+#################################################################
+
+deps-test:
+	poetry install --no-dev --no-root -E test
+
+deps-bdd:
+	poetry install --no-dev -E bdd
+
+deps-format:
+	poetry install --no-dev --no-root -E format
+
+deps-lint:
+	poetry install --no-dev --no-root -E lint
+
+deps-type:
+	poetry install --no-dev --no-root -E type
+
+deps-docs:
+	poetry install --no-dev --no-root -E docs
+
+
+#################################################################
 # setting up ci-cd env
 #################################################################
 
@@ -144,21 +167,21 @@ setup-cicd-python3:
 	update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 	curl -sSL  https://bootstrap.pypa.io/get-pip.py | python
 
-setup-cicd-tox:
-	pip install tox
-
 setup-cicd-poetry:
 	curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python
 	. $(HOME)/.poetry/env && poetry config virtualenvs.create false
 	echo "WARNING: you still need to source $$HOME/.poetry/env to access poetry's executable"
 
-setup-cicd-test-stage-gitlab: setup-cicd-tox setup-cicd-poetry
-
-setup-cicd-test-stage-github: setup-cicd-tox
+setup-cicd-test-stage-gitlab: setup-cicd-poetry
 
 setup-cicd-release-stage-gitlab: setup-cicd-python3 setup-cicd-poetry setup-release-tools-gitlab
 
-setup-cicd-release-stage-github: setup-release-tools-gitlab
+setup-cicd-common-github:
+	pip install --upgrade pip
+
+setup-cicd-test-stage-github: setup-cicd-common-github
+
+setup-cicd-release-stage-github: setup-cicd-common-github
 
 
 #################################################################
@@ -280,7 +303,7 @@ tox-test-all:
 #################################################################
 
 bdd:
-	poetry run behave features --format=behave_ext.cucumber_json:PrettyCucumberJSONFormatter -o cucumber-report.json --format=pretty
+	poetry run behave features --format=pretty
 
 tox-bdd:
 	poetry run tox -e bdd
