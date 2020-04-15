@@ -108,7 +108,7 @@ help:
 #################################################################
 
 dev-env-minimal = -E format
-dev-env-full = $(dev-env-minimal) -E test -E bdd -E type -E format -E lint -E repl
+dev-env-full = $(dev-env-minimal) -E test -E bdd -E type -E lint -E repl
 
 setup-dev-env-minimal: clean
 	poetry install --no-root $(dev-env-minimal)
