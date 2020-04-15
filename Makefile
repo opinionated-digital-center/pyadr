@@ -130,9 +130,6 @@ setup-release-tools-common:
 	npm install -g @semantic-release/exec@"^5.0.0"
 	npm install -g @semantic-release/git@"^9.0.0"
 
-setup-release-tools-gitlab: setup-release-tools-common
-	npm install -g @semantic-release/gitlab@"^6.0.3"
-
 setup-release-tools-github: setup-release-tools-common
 	npm install -g @semantic-release/github@"^7.0.5"
 
@@ -247,7 +244,7 @@ tox-lint:
 #################################################################
 
 seed-isort:
-	-poetry run seed-isort-config
+	poetry run seed-isort-config
 
 isort:
 	poetry run isort -rc $(PACKAGE_DIR) tests features -vb
