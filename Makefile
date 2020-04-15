@@ -49,13 +49,15 @@ help:
 	@echo "\tsetup-dev-host - setup dev requirements"
 	@echo "\tsetup-pre-commit-hooks - setup pre-commit hooks"
 	@echo "\tsetup-release-tools: - setup tools needed for releasing package"
-	@echo "\tsetup-cicd-test-stage: - setup tools needed for CI/CD test stage"
-	@echo "\tsetup-cicd-release-stage: - setup tools needed for CI/CD release stage"
+	@echo "\tsetup-cicd-test-stage-github: - setup tools needed for CI/CD test stage (GitHub)"
+	@echo "\tsetup-cicd-release-stage-github: - setup tools needed for CI/CD release stage (GitHub)"
+	@echo "\tsetup-cicd-test-stage-gitlab: - setup tools needed for CI/CD test stage (GitLab)"
+	@echo "\tsetup-cicd-release-stage-gitlab: - setup tools needed for CI/CD release stage (GitLab)"
 	@echo ""
 	@echo "MAIN TARGETS:"
 	@echo "\tclean - remove all build, test, coverage and Python artifacts"
 	@echo "\ttox - run tox default targets, usually all tests and checks (see tox.ini)"
-	@echo "\ttoxp - same as 'tox', but with parallel runs"
+	@echo "\ttox-p - same as 'tox', but with parallel runs"
 	@echo "\trepl - run the repl tool (bpython in our case)"
 	@echo "\tlint - check style with flake8 (uses tox)"
 	@echo "\tformat-check - check format for correctness with isort and black (uses tox)"
@@ -75,14 +77,14 @@ help:
 	@echo "\tinstall - install the package to the active Python's site-packages"
 	@echo ""
 	@echo "TOX TARGETS:"
-	@echo "\ttlint - check style with flake8 (uses tox)"
-	@echo "\ttformat - check format for correctness with isort and black (uses tox)"
-	@echo "\tttype - checks Python typing (uses tox)"
-	@echo "\tttest - run tests quickly with the default Python (3.7 - uses tox)"
-	@echo "\tttest-all - run tests on every Python version declared (uses tox)"
-	@echo "\ttbdd - run bdd tests (uses tox)"
-	@echo "\ttdocs - generate Sphinx HTML documentation, including API docs"
-	@echo "\ttdocs-pdf - generate Sphinx PDF documentation, including API docs"
+	@echo "\ttox-lint - check style with flake8 (uses tox)"
+	@echo "\ttox-format - check format for correctness with isort and black (uses tox)"
+	@echo "\ttox-type - checks Python typing (uses tox)"
+	@echo "\ttox-test - run tests quickly with the default Python (3.7 - uses tox)"
+	@echo "\ttox-test-all - run tests on every Python version declared (uses tox)"
+	@echo "\ttox-bdd - run bdd tests (uses tox)"
+	@echo "\ttox-docs - generate Sphinx HTML documentation, including API docs"
+	@echo "\ttox-docs-pdf - generate Sphinx PDF documentation, including API docs"
 	@echo "SECONDARY TARGETS:"
 	@echo "\tclean-build - remove build artifacts"
 	@echo "\tclean-pyc - remove Python file artifacts"
@@ -134,6 +136,10 @@ setup-release-tools-gitlab: setup-release-tools-common
 setup-release-tools-github: setup-release-tools-common
 	npm install -g @semantic-release/github@"^7.0.5"
 
+#################################################################
+# setting up ci-cd env
+#################################################################
+
 setup-cicd-python3:
 	update-alternatives --install /usr/bin/python python /usr/bin/python3 1
 	curl -sSL  https://bootstrap.pypa.io/get-pip.py | python
@@ -146,9 +152,13 @@ setup-cicd-poetry:
 	. $(HOME)/.poetry/env && poetry config virtualenvs.create false
 	echo "WARNING: you still need to source $$HOME/.poetry/env to access poetry's executable"
 
-setup-cicd-test-stage: setup-cicd-tox setup-cicd-poetry
+setup-cicd-test-stage-gitlab: setup-cicd-tox setup-cicd-poetry
 
-setup-cicd-release-stage: setup-cicd-python3 setup-cicd-poetry setup-release-tools
+setup-cicd-test-stage-github: setup-cicd-tox
+
+setup-cicd-release-stage-gitlab: setup-cicd-python3 setup-cicd-poetry setup-release-tools-gitlab
+
+setup-cicd-release-stage-github: setup-release-tools-gitlab
 
 
 #################################################################
@@ -189,7 +199,7 @@ clean-venv:
 tox:
 	poetry run tox
 
-toxp:
+tox-p:
 	poetry run tox -p auto
 
 #################################################################
@@ -206,7 +216,7 @@ repl:
 lint:
 	poetry run flake8 $(PACKAGE_DIR) tests features
 
-tlint:
+tox-lint:
 	poetry run tox -e lint
 
 #################################################################
@@ -228,7 +238,7 @@ format-check:
 	poetry run isort -c -rc $(PACKAGE_DIR) tests features -vb
 	poetry run black --check $(PACKAGE_DIR) tests features
 
-tformat:
+tox-format:
 	poetry run tox -e format
 
 #################################################################
@@ -238,7 +248,7 @@ tformat:
 type:
 	poetry run mypy -p $(PACKAGE_DIR) -p tests
 
-ttype:
+tox-type:
 	poetry run tox -e type
 
 #################################################################
@@ -248,21 +258,21 @@ ttype:
 test:
 	poetry run pytest --cov=pyadr --cov-report=html --cov-report=term tests
 
-ttest: py
+tox-test: py
 
-tpy:
+tox-py:
 	poetry run tox -e py
 
-tpy37:
+tox-py37:
 	poetry run tox -e py37
 
-tpy36:
+tox-py36:
 	poetry run tox -e py36
 
-tpy38:
+tox-py38:
 	poetry run tox -e py38
 
-ttest-all:
+tox-test-all:
 	poetry run tox -e py37,py36,py38
 
 #################################################################
@@ -272,7 +282,7 @@ ttest-all:
 bdd:
 	poetry run behave features --format=behave_ext.cucumber_json:PrettyCucumberJSONFormatter -o cucumber-report.json --format=pretty
 
-tbdd:
+tox-bdd:
 	poetry run tox -e bdd
 
 #################################################################
@@ -290,11 +300,11 @@ tbdd:
 # docs
 #################################################################
 
-docs:
+tox-docs:
 	poetry run tox -e docs
 	$(BROWSER) docs/_build/html/index.html
 
-docs-pdf:
+tox-docs-pdf:
 	poetry run tox -e docs-pdf
 
 # To use/adjust when we start using coverage. Encourage usage of tox.
