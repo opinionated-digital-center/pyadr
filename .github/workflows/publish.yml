@@ -23,5 +23,7 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Install remaining CI/CD tools and dependencies
+        run: make setup-cicd-release-stage-github
       - name: Publish to repository
         run: make publish

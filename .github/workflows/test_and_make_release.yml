@@ -25,13 +25,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Install remaining CI/CD tools and dependencies
+        run: make setup-cicd-test-stage-github
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox
+        run: make deps-test
       - name: Run unit tests
-        run: |
-          tox -e py
+        run: make test
 
   bdd:
     runs-on: ubuntu-latest
@@ -46,13 +45,12 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Install remaining CI/CD tools and dependencies
+        run: make setup-cicd-test-stage-github
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox
-      - name: Run bdd tests
-        run: |
-          tox -e bdd
+        run: make deps-bdd
+      - name: Run unit tests
+        run: make bdd
 
   format:
     runs-on: ubuntu-latest
@@ -64,13 +62,12 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Install remaining CI/CD tools and dependencies
+        run: make setup-cicd-test-stage-github
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox
+        run: make deps-format
       - name: Run format checks
-        run: |
-          tox -e format
+        run: make format-check
 
   lint:
     runs-on: ubuntu-latest
@@ -82,13 +79,12 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Install remaining CI/CD tools and dependencies
+        run: make setup-cicd-test-stage-github
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox
+        run: make deps-lint
       - name: Run lint checks
-        run: |
-          tox -e lint
+        run: make lint
 
   type:
     runs-on: ubuntu-latest
@@ -100,13 +96,12 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Install remaining CI/CD tools and dependencies
+        run: make setup-cicd-test-stage-github
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install tox
+        run: make deps-type
       - name: Run type checks
-        run: |
-          tox -e type
+        run: make type
 
   semantic_release:
     needs:
