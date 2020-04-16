@@ -41,7 +41,7 @@ pytest-html = {version = "^2.0.1", optional = true}
 pytest-asyncio = {version = "^0.10.0", optional = true}
 # Optional dependencies to be part of `bdd` extra
 behave = {version = "^1.2", optional = true}
-behave4cli = {version = "^1.0", optional = true}
+behave4git = {version = "^0.1", optional = true}
 PyHamcrest = {version = "^2.0", optional = true}
 # Optional dependencies to be part of `lint` extra
 flake8 = {version = "^3.7", optional = true}
@@ -79,7 +79,7 @@ rope = "^0.14.0"
 
 [tool.poetry.extras]
 test = ["pytest", "pytest-cov", "pytest-mock", "pytest-html", "pytest-asyncio", "PyHamcrest"]
-bdd = ["behave", "behave4cli", "PyHamcrest"]
+bdd = ["behave", "behave4git", "PyHamcrest"]
 lint = ["flake8", "flake8-bugbear", "pydocstyle", "pylint", "yapf"]
 type = ["mypy"]
 format = ["isort", "seed-isort-config", "black"]
@@ -98,7 +98,7 @@ include_trailing_comma = true
 use_parentheses = true
 force_grid_wrap = 0
 line_length = 88
-known_third_party = ["behave", "behave4cli", "cleo", "clikit", "git", "gitdb", "hamcrest", "loguru", "pytest", "six", "slugify", "toml"]
+known_third_party = ["behave", "behave4cli", "behave4git", "cleo", "clikit", "git", "gitdb", "hamcrest", "loguru", "pytest", "six", "slugify", "toml"]
 
 [tool.black]
 line-length = 88
