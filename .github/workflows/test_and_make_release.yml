@@ -4,9 +4,15 @@ on:
   push:
     branches:
       - master
+    paths-ignore:
+      - 'docs/**'
+      - '*.rst'
+      - '*.md'
   pull_request:
-    branches:
-      - master
+    paths-ignore:
+      - 'docs/**'
+      - '*.rst'
+      - '*.md'
 
 env:
   POETRY_VIRTUALENVS_CREATE: false
@@ -25,10 +31,10 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
-      - name: Install remaining CI/CD tools and dependencies
-        run: make setup-cicd-test-stage-github
+      - name: Complete CI/CD setup
+        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make deps-test
+        run: make install-test-dependencies
       - name: Run unit tests
         run: make test
 
@@ -45,11 +51,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
-      - name: Install remaining CI/CD tools and dependencies
-        run: make setup-cicd-test-stage-github
+      - name: Complete CI/CD setup
+        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make deps-bdd
-      - name: Run unit tests
+        run: make install-bdd-dependencies
+      - name: Run bdd tests
         run: make bdd
 
   format:
@@ -62,10 +68,10 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
-      - name: Install remaining CI/CD tools and dependencies
-        run: make setup-cicd-test-stage-github
+      - name: Complete CI/CD setup
+        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make deps-format
+        run: make install-format-dependencies
       - name: Run format checks
         run: make format-check
 
@@ -79,10 +85,10 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
-      - name: Install remaining CI/CD tools and dependencies
-        run: make setup-cicd-test-stage-github
+      - name: Complete CI/CD setup
+        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make deps-lint
+        run: make install-lint-dependencies
       - name: Run lint checks
         run: make lint
 
@@ -96,10 +102,10 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
-      - name: Install remaining CI/CD tools and dependencies
-        run: make setup-cicd-test-stage-github
+      - name: Complete CI/CD setup
+        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make deps-type
+        run: make install-type-dependencies
       - name: Run type checks
         run: make type
 
@@ -124,11 +130,8 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
-#      - name: Install tools (Release tools)
-#        run: make setup-release-tools-github
-#      - name: Make release
-#        run: make cicd-release
-# alternative using a github action
+      - name: Complete CI/CD setup
+        run: make setup-cicd-release-stage
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         with:

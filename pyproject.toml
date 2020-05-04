@@ -16,19 +16,19 @@ packages = [
 ]
 keywords = ["pyadr", "adr"]
 classifiers = [
-    'Development Status :: 2 - Pre-Alpha',
-    'Intended Audience :: Developers',
-    'License :: OSI Approved :: MIT License',
-    'Natural Language :: English',
-    'Operating System :: POSIX',
-    'Operating System :: MacOS :: MacOS X',
-    'Programming Language :: Python',
-    'Programming Language :: Python :: 3',
-    'Programming Language :: Python :: 3.6',
-    'Programming Language :: Python :: 3.7',
-    'Programming Language :: Python :: 3.8',
-    'Topic :: Software Development :: Libraries',
-    'Topic :: Software Development :: Libraries :: Python Modules',
+    "Development Status :: 2 - Pre-Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: POSIX",
+    "Operating System :: MacOS :: MacOS X",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
 
 [tool.poetry.dependencies]
@@ -87,8 +87,8 @@ docs= ["sphinx", "sphinx-autodoc-typehints", "sphinx-autobuild", "sphinx_rtd_the
 repl = ["bpython"]
 
 [tool.poetry.scripts]
-pyadr = 'pyadr.cli:main'
-git-adr = 'pyadr.git.cli:main'
+pyadr = "pyadr.cli:main"
+git-adr = "pyadr.git.cli:main"
 
 [tool.isort]
 # following black's doc for compatibility
@@ -102,7 +102,7 @@ known_third_party = ["behave", "behave4cli", "behave4git", "cleo", "clikit", "gi
 
 [tool.black]
 line-length = 88
-target_version = ['py37']
+target_version = ["py37"]
 
 [build-system]
 requires = ["poetry==1.0.5"]

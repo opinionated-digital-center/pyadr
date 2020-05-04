@@ -1,13 +1,29 @@
 {
   "plugins": [
     "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    "@semantic-release/changelog",
+    [
+      "@semantic-release/release-notes-generator",
+      {
+        "writerOpts": {
+
+          "mainTemplate": "{{> header}}\n\n{{#each commitGroups}}\n\n{{#if title}}\n### {{title}}\n\n{{/if}}\n{{#each commits}}\n{{> commit root=@root}}\n{{/each}}\n\n{{/each}}\n{{> footer}}\n\n",
+          "headerPartial": "## {{#if @root.linkCompare~}}\n  [{{version}}](\n  {{~#if @root.repository~}}\n    {{~#if @root.host}}\n      {{~@root.host}}/\n    {{~/if}}\n    {{~#if @root.owner}}\n      {{~@root.owner}}/\n    {{~/if}}\n    {{~@root.repository}}\n  {{~else}}\n    {{~@root.repoUrl}}\n  {{~/if~}}\n  /compare/{{previousTag}}...{{currentTag}})\n{{~else}}\n  {{~version}}\n{{~/if}}\n{{~#if title}} \"{{title}}\"\n{{~/if}}\n{{~#if date}} ({{date}})\n{{/if}}",
+          "footerPartial": "{{#if noteGroups}}\n{{#each noteGroups}}\nblah\n### {{title}}\nblah\n{{#each notes}}\n* {{#if commit.scope}}**{{commit.scope}}:** {{/if}}{{text}}\n{{/each}}\n{{/each}}\n\n{{/if}}"
+
+        }
+      }
+    ],
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogTitle": "# Changelog\n\nAll notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines."
+      }
+    ],
     [
       "@semantic-release/exec",
       {
         "verifyConditionsCmd": "./scripts/verify_git_tags_one_version_tag_present.sh",
-        "verifyReleaseCmd": "./scripts/semantic_release_exec_verify_release.sh ${nextRelease.version}",
+        "verifyReleaseCmd": "./scripts/verify_git_tags_new_version_tag_non_existant.sh ${nextRelease.version}",
         "prepareCmd": "make bump NEW_VERSION=${nextRelease.version}"
       }
     ],
