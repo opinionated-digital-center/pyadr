@@ -200,7 +200,7 @@ repl:
 #################################################################
 
 lint:
-	poetry run flake8 $(PACKAGE_DIR) tests features
+	poetry run flake8 $(PACKAGE_DIR) tests features features.git
 
 tox-lint:
 	poetry run tox -e lint
@@ -213,16 +213,16 @@ seed-isort:
 	poetry run seed-isort-config
 
 isort:
-	poetry run isort -rc $(PACKAGE_DIR) tests features -vb
+	poetry run isort -rc $(PACKAGE_DIR) tests features features.git -vb
 
 black:
-	poetry run black $(PACKAGE_DIR) tests features
+	poetry run black $(PACKAGE_DIR) tests features features.git
 
 format: seed-isort isort black
 
 format-check:
-	poetry run isort -c -rc $(PACKAGE_DIR) tests features -vb
-	poetry run black --check $(PACKAGE_DIR) tests features
+	poetry run isort -c -rc $(PACKAGE_DIR) tests features features.git -vb
+	poetry run black --check $(PACKAGE_DIR) tests features features.git
 
 tox-format:
 	poetry run tox -e format
@@ -270,8 +270,13 @@ tox-test-all:
 # acceptance testing / bdd
 #################################################################
 
-bdd:
-	poetry run behave features --format=pretty
+bdd-adr:
+	poetry run behave features  --format=pretty
+
+bdd-git:
+	poetry run behave features.git --format=pretty
+
+bdd: bdd-adr bdd-git
 
 tox-bdd-default-version: tox-bdd
 tox-bdd:
