@@ -38,7 +38,7 @@ Feature: Create a new ADR
             """
 
     Scenario: Propose a new ADR (same as create, different command name)
-        Given an initialised git adr repo
-        When I run "git adr propose My ADR Title"
+        Given a directory named "docs/adr/"
+        When I run "pyadr propose My ADR Title"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should exist
