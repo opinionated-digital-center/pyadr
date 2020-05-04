@@ -45,7 +45,8 @@ articles, and such.
 Submit Feedback
 ~~~~~~~~~~~~~~~
 
-The best way to send feedback is to file an issue at https://github.com/opinionated-digital-center/pyadr/issues.
+The best way to send feedback is to file an issue at
+https://github.com/opinionated-digital-center/pyadr/issues.
 
 If you are proposing a feature:
 
@@ -74,7 +75,7 @@ Setup (for Mac)
 1. Fork the ``pyadr`` repo on GitHub.
 2. Clone your fork locally::
 
-    $ git clone git@github.com:your_name_here/pyadr.git
+    $ git clone https://github.com/your-namespace/pyadr.git
 
 3. Assuming you have the prerequisites installed, this is how you set up your fork for local development::
 
@@ -90,7 +91,6 @@ Setup (for Mac)
 5. When you're done making changes, check that your changes pass typing, linting, formatting, unit tests
    (for all versions of Python) and functional (bdd) tests::
 
-
     $ make tox
 
 .. note::
@@ -100,8 +100,8 @@ Setup (for Mac)
 6. Commit your changes and push your branch to GitHub::
 
     $ git add .
-    $ git commit -m "Your detailed description of your changes."
-    $ git push origin name-of-your-bugfix-or-feature
+    $ git commit -m "[feat|fix|chore|...]: your detailed description of your changes"
+    $ git push --set-upstream origin name-of-your-bugfix-or-feature
 
 7. Submit a pull request through the GitHub website.
 
@@ -114,4 +114,4 @@ Before you submit a pull request, check that it meets these guidelines:
 2. If the pull request adds functionality, the docs should be updated. Put
    your new functionality into a function with a docstring, and add the
    feature to the list in README.rst.
-3. The pull request should work for Python 3.6, 3.7 and 3.8.
+3. The pull request should pass on all tests and checks of the pipeline.

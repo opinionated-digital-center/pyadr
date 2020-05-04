@@ -1,17 +1,28 @@
-# http://editorconfig.org
-
 root = true
 
 [*]
-indent_style = space
-indent_size = 4
-trim_trailing_whitespace = true
-insert_final_newline = true
 charset = utf-8
 end_of_line = lf
+indent_size = 4
+indent_style = space
+insert_final_newline = false
+max_line_length = 88
+tab_width = 4
+trim_trailing_whitespace = true
 
-[*.{yml,yaml,rst}]
+[{*.bash,*.zsh,*.sh}]
 indent_size = 2
+tab_width = 2
+
+[{*.yml,*.yaml}]
+indent_size = 2
+
+[{*.md,*.rst}]
+indent_size = 2
+
+[{.releaserc,*.json}]
+indent_size = 2
+tab_width = 2
 
 [LICENSE]
 insert_final_newline = false
