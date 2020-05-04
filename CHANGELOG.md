@@ -1,24 +1,24 @@
-# [0.11.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.10.0...v0.11.0) (2020-04-15)
+## [0.11.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.10.0...v0.11.0) (2020-04-15)
 
 
 ### Features
 
-* new adr and git adr propose command ([6ee33a4](https://github.com/opinionated-digital-center/pyadr/commit/6ee33a4f87c46cb5abf3349f70d62e2294a20d09))
+* new `adr propose` and `git adr propose` commands ([6ee33a4](https://github.com/opinionated-digital-center/pyadr/commit/6ee33a4f87c46cb5abf3349f70d62e2294a20d09))
 
-# [0.10.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.9.0...v0.10.0) (2020-04-13)
-
-
-### Features
-
-* **git:** adr-only-repo setting available ([1072550](https://github.com/opinionated-digital-center/pyadr/commit/10725509bffaa50e42ea43a97f2f6d3e189dc193))
-* **git:** command git adr config (basic) ([7703b7b](https://github.com/opinionated-digital-center/pyadr/commit/7703b7b3eafa60d1ab163dab42a3cba1a13ca594))
-
-# [0.9.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.8.1...v0.9.0) (2020-04-13)
+## [0.10.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.9.0...v0.10.0) (2020-04-13)
 
 
 ### Features
 
-* **adr:** command adr config ([50d1e3b](https://github.com/opinionated-digital-center/pyadr/commit/50d1e3b38fe0d022348e88db9a256b8276f1d3c3))
+* **git:** `adr-only-repo` setting available ([1072550](https://github.com/opinionated-digital-center/pyadr/commit/10725509bffaa50e42ea43a97f2f6d3e189dc193))
+* **git:** new `git adr config` command (basic) ([7703b7b](https://github.com/opinionated-digital-center/pyadr/commit/7703b7b3eafa60d1ab163dab42a3cba1a13ca594))
+
+## [0.9.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.8.1...v0.9.0) (2020-04-13)
+
+
+### Features
+
+* **adr:** new `adr config` command ([50d1e3b](https://github.com/opinionated-digital-center/pyadr/commit/50d1e3b38fe0d022348e88db9a256b8276f1d3c3))
 * **adr:** further setting check, write to config file ([7f862a3](https://github.com/opinionated-digital-center/pyadr/commit/7f862a3121313c11990182ca06e0af5c9be9af31))
 * **adr:** verify config option (setting) name valid setting it ([3d7aef8](https://github.com/opinionated-digital-center/pyadr/commit/3d7aef8f347d8a9a9b9b9c99743f8b12eb5161c7))
 
@@ -27,23 +27,23 @@
 
 ### Bug Fixes
 
-* **git:** stage instead of commit for git adr new ([f4bcef1](https://github.com/opinionated-digital-center/pyadr/commit/f4bcef1eaef72da8ff9e5a3322b1b1170ad76bce))
+* **git:** stage instead of commit for `git adr new` ([f4bcef1](https://github.com/opinionated-digital-center/pyadr/commit/f4bcef1eaef72da8ff9e5a3322b1b1170ad76bce))
 
-# [0.8.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.7.0...v0.8.0) (2020-04-11)
-
-
-### Features
-
-* **git:** command git adr new ([1f3c1cf](https://github.com/opinionated-digital-center/pyadr/commit/1f3c1cff64f81897a33742e619db157a21b96046))
-
-# [0.7.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.6.0...v0.7.0) (2020-04-10)
+## [0.8.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.7.0...v0.8.0) (2020-04-11)
 
 
 ### Features
 
-* **git:** add command git adr init ([a097271](https://github.com/opinionated-digital-center/pyadr/commit/a09727189029cd7c4d47ea18eb89c9ff353ee3dc))
+* **git:** new `git adr new` command ([1f3c1cf](https://github.com/opinionated-digital-center/pyadr/commit/1f3c1cff64f81897a33742e619db157a21b96046))
 
-# [0.6.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.5.0...v0.6.0) (2020-04-07)
+## [0.7.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.6.0...v0.7.0) (2020-04-10)
+
+
+### Features
+
+* **git:** new `git adr init` command ([a097271](https://github.com/opinionated-digital-center/pyadr/commit/a09727189029cd7c4d47ea18eb89c9ff353ee3dc))
+
+## [0.6.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.5.0...v0.6.0) (2020-04-07)
 
 
 ### Bug Fixes
@@ -55,7 +55,7 @@
 
 * changed command approve to accept ([fd4ae50](https://github.com/opinionated-digital-center/pyadr/commit/fd4ae50e4c5a13eba8c5f3df27a8d6bae911df2f))
 
-# [0.5.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.4.1...v0.5.0) (2020-04-07)
+## [0.5.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.4.1...v0.5.0) (2020-04-07)
 
 
 ### Bug Fixes
@@ -65,7 +65,7 @@
 
 ### Features
 
-* option --toc generates toc when accept or reject ([7dc6067](https://github.com/opinionated-digital-center/pyadr/commit/7dc60675d2c47036cb244d7a42eaf76f8539ce6a))
+* option `--toc` generates toc when `accept` or `reject` ([7dc6067](https://github.com/opinionated-digital-center/pyadr/commit/7dc60675d2c47036cb244d7a42eaf76f8539ce6a))
 
 ## [0.4.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.4.0...v0.4.1) (2020-04-07)
 
@@ -74,31 +74,30 @@
 
 * add './' and add consistency to messages displayed ([ce6d20a](https://github.com/opinionated-digital-center/pyadr/commit/ce6d20adc2497249bbbe5bafbcca1b60a4b5189a))
 
-# [0.4.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.3.0...v0.4.0) (2020-04-06)
+## [0.4.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.3.0...v0.4.0) (2020-04-06)
 
 
 ### Features
 
-* create a new proposed adr ([f00936f](https://github.com/opinionated-digital-center/pyadr/commit/f00936f5757e66c3af9817914af4960e163d6c54))
+* new `adr new` command ([f00936f](https://github.com/opinionated-digital-center/pyadr/commit/f00936f5757e66c3af9817914af4960e163d6c54))
 
-<<<<<<< HEAD
-# [0.3.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.2.0...v0.3.0) (2020-04-03)
+## [0.3.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.2.0...v0.3.0) (2020-04-03)
 
 
 ### Features
 
-* initialise an adr repository ([565159b](https://github.com/opinionated-digital-center/pyadr/commit/565159b928ba2500241ac4211ecf345f75310842))
+* new `adr init` command ([565159b](https://github.com/opinionated-digital-center/pyadr/commit/565159b928ba2500241ac4211ecf345f75310842))
 
-# [0.2.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.1.0...v0.2.0) (2020-04-03)
+## [0.2.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.1.0...v0.2.0) (2020-04-03)
 
 
 ### Features
 
 * generate a table of content ([24674e8](https://github.com/opinionated-digital-center/pyadr/commit/24674e8230efbfba15bf488114120a7a9c9e1c1f))
 
-# [0.1.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.0.0...v0.1.0) (2020-04-01)
+## [0.1.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.0.0...v0.1.0) (2020-04-01)
 
 
 ### Features
 
-* accept or reject a proposed adr ([f7db80c](https://github.com/opinionated-digital-center/pyadr/commit/f7db80c62a9a3b48062550d34581e223310a9ca6))
+* new `adr accept` and `adr reject` commands ([f7db80c](https://github.com/opinionated-digital-center/pyadr/commit/f7db80c62a9a3b48062550d34581e223310a9ca6))
