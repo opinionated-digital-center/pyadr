@@ -2,6 +2,12 @@
 ADR Process Tool
 ================
 
+.. image:: https://github.com/opinionated-digital-center/pyadr/workflows/Test%20and%20make%20release/badge.svg
+    :target: https://github.com/opinionated-digital-center/pyadr/actions
+
+.. image:: https://github.com/opinionated-digital-center/pyadr/workflows/Publish%20Python%20package%20to%20Pypi/badge.svg
+    :target: https://github.com/opinionated-digital-center/pyadr/actions
+
 .. image:: https://img.shields.io/pypi/v/pyadr.svg
     :target: https://pypi.org/project/pyadr/
 
@@ -13,9 +19,6 @@ ADR Process Tool
 
 .. image:: https://img.shields.io/pypi/l/pyadr.svg
     :target: https://pypi.org/project/pyadr/
-
-.. image:: https://github.com/opinionated-digital-center/pyadr/workflows/Test%20and%20make%20release/badge.svg
-    :target: https://github.com/opinionated-digital-center/pyadr/actions
 
 
 CLI to help with an ADR process lifecycle (``proposal``/``approval``/``rejection``/``deprecation``/
