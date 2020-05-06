@@ -2,4 +2,4 @@
 # Do not edit manually
 """Version module for pyadr."""
 
-__version__ = "0.11.1"
+__version__ = "0.11.2"
