@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.11.3](https://github.com/opinionated-digital-center/pyadr/compare/v0.11.2...v0.11.3) (2020-05-06)
+
+
+### Bug Fixes
+
+* display errors on cli stdout when occurs ([a8224c1](https://github.com/opinionated-digital-center/pyadr/commit/a8224c1e4b58da8ea1d88523f22f051995d95b74))
+* show app name and version ([593cac1](https://github.com/opinionated-digital-center/pyadr/commit/593cac149529da9aca2b8e1707c02608211a2c14))
+
 ## [0.11.2](https://github.com/opinionated-digital-center/pyadr/compare/v0.11.1...v0.11.2) (2020-05-06)
 
 
