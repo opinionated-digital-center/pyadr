@@ -29,8 +29,12 @@ def update_adr_content_title_status(
     return updated_content
 
 
-def adr_title_slug_from_content_stream(stream: TextIO) -> str:
-    title, _, _ = retrieve_title_status_and_date_from_madr_content_stream(stream)
+def adr_title_slug_from_content_stream(
+    stream: TextIO, stream_source: str = "Not provided"
+) -> str:
+    title, _, _ = retrieve_title_status_and_date_from_madr_content_stream(
+        stream, stream_source
+    )
     return adr_title_slug(title)
 
 
@@ -39,11 +43,15 @@ def adr_title_slug(title: str) -> str:
 
 
 def retrieve_title_status_and_date_from_madr_content_stream(
-    stream: TextIO,
+    stream: TextIO, stream_source: str = "Not provided",
 ) -> Tuple[str, Tuple[str, Optional[str]], str]:
-    title = extract_next_line_with_suffix_from_content_stream(stream, "# ")
+    title = extract_next_line_with_suffix_from_content_stream(
+        stream, "# ", stream_source=stream_source
+    )
 
-    full_status = extract_next_line_with_suffix_from_content_stream(stream, "* Status:")
+    full_status = extract_next_line_with_suffix_from_content_stream(
+        stream, "* Status:", stream_source=stream_source
+    )
 
     status_phrase: Optional[str]
     try:
@@ -54,19 +62,24 @@ def retrieve_title_status_and_date_from_madr_content_stream(
     else:
         status_phrase = status_phrase.strip()
 
-    date = extract_next_line_with_suffix_from_content_stream(stream, "* Date:")
+    date = extract_next_line_with_suffix_from_content_stream(
+        stream, "* Date:", stream_source=stream_source
+    )
 
     return title, (status, status_phrase), date
 
 
 def extract_next_line_with_suffix_from_content_stream(
-    stream: TextIO, suffix: str
+    stream: TextIO, suffix: str, stream_source: str = "Not provided",
 ) -> str:
     line = "bootstrap string"
     while not line.startswith(suffix) and len(line) != 0:
         line = stream.readline()
     if len(line) == 0:
-        raise PyadrNoLineWithSuffixError(f"No line found with suffix '{suffix}'")
+        raise PyadrNoLineWithSuffixError(
+            f"No line found with suffix '{suffix}' "
+            f"in content from source '{stream_source}'"
+        )
     title = line[len(suffix) :].strip()
     return title
 
@@ -118,7 +131,9 @@ def extract_adrs_by_status(records_path, adr_paths):
                 title,
                 (status, status_phrase),
                 date,
-            ) = retrieve_title_status_and_date_from_madr_content_stream(f)
+            ) = retrieve_title_status_and_date_from_madr_content_stream(
+                f, stream_source=str(adr)
+            )
         try:
             status_supplement = ""
             if status_phrase:
