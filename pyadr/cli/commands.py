@@ -4,7 +4,6 @@ import cleo
 
 from pyadr.const import STATUS_ACCEPTED, STATUS_REJECTED
 from pyadr.core import AdrCore
-from pyadr.exceptions import PyadrError
 
 
 class BaseCommand(cleo.Command):
@@ -25,19 +24,14 @@ class ConfigCommand(BaseCommand):
     """
 
     def handle(self):
-        try:
-            if self.option("list"):
-                self.adr_core.list_config()
-            elif self.option("unset"):
-                self.adr_core.unset_config_setting(self.argument("setting"))
-            elif not self.argument("value"):
-                self.adr_core.print_config_setting(self.argument("setting"))
-            else:
-                self.adr_core.configure(
-                    self.argument("setting"), self.argument("value")
-                )
-        except PyadrError:
-            return 1
+        if self.option("list"):
+            self.adr_core.list_config()
+        elif self.option("unset"):
+            self.adr_core.unset_config_setting(self.argument("setting"))
+        elif not self.argument("value"):
+            self.adr_core.print_config_setting(self.argument("setting"))
+        else:
+            self.adr_core.configure(self.argument("setting"), self.argument("value"))
 
 
 class InitCommand(BaseCommand):
@@ -49,10 +43,7 @@ class InitCommand(BaseCommand):
     """
 
     def handle(self):
-        try:
-            self.adr_core.init_adr_repo(force=self.option("force"))
-        except PyadrError:
-            return 1
+        self.adr_core.init_adr_repo(force=self.option("force"))
 
 
 class NewCommand(BaseCommand):
@@ -64,10 +55,7 @@ class NewCommand(BaseCommand):
     """
 
     def handle(self):
-        try:
-            self.adr_core.new_adr(title=" ".join(self.argument("words")))
-        except PyadrError:
-            return 1
+        self.adr_core.new_adr(title=" ".join(self.argument("words")))
 
 
 class ProposeCommand(NewCommand):
@@ -88,10 +76,7 @@ class AcceptCommand(BaseCommand):
     """
 
     def handle(self):
-        try:
-            self.adr_core.accept_or_reject(STATUS_ACCEPTED, self.option("toc"))
-        except PyadrError:
-            return 1
+        self.adr_core.accept_or_reject(STATUS_ACCEPTED, self.option("toc"))
 
 
 class RejectCommand(BaseCommand):
@@ -103,10 +88,7 @@ class RejectCommand(BaseCommand):
     """
 
     def handle(self):
-        try:
-            self.adr_core.accept_or_reject(STATUS_REJECTED, self.option("toc"))
-        except PyadrError:
-            return 1
+        self.adr_core.accept_or_reject(STATUS_REJECTED, self.option("toc"))
 
 
 class GenerateTocCommand(BaseCommand):
@@ -117,7 +99,4 @@ class GenerateTocCommand(BaseCommand):
     """
 
     def handle(self):
-        try:
-            self.adr_core.generate_toc()
-        except PyadrError:
-            return 1
+        self.adr_core.generate_toc()
