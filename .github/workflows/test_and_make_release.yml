@@ -15,7 +15,8 @@ on:
       - '*.md'
 
 env:
-  POETRY_VIRTUALENVS_CREATE: false
+  POETRY_VIRTUALENVS_CREATE: true
+  POETRY_VIRTUALENVS_IN_PROJECT: true
 
 jobs:
   test:
@@ -31,6 +32,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Get full python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-test-${{ hashFiles('**/poetry.lock') }}
       - name: Complete CI/CD setup
         run: make setup-cicd-test-stage
       - name: Install dependencies
@@ -51,6 +62,16 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Get full python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-bdd-${{ hashFiles('**/poetry.lock') }}
       - name: Complete CI/CD setup
         run: make setup-cicd-test-stage
       - name: Install dependencies
@@ -68,6 +89,16 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Get full python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-format-${{ hashFiles('**/poetry.lock') }}
       - name: Complete CI/CD setup
         run: make setup-cicd-test-stage
       - name: Install dependencies
@@ -85,6 +116,16 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Get full python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-lint-${{ hashFiles('**/poetry.lock') }}
       - name: Complete CI/CD setup
         run: make setup-cicd-test-stage
       - name: Install dependencies
@@ -102,6 +143,16 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Get full python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-type-${{ hashFiles('**/poetry.lock') }}
       - name: Complete CI/CD setup
         run: make setup-cicd-test-stage
       - name: Install dependencies
@@ -124,6 +175,17 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+      - name: Cache node modules
+        uses: actions/cache@v1
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('.releaserc') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
       - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
@@ -132,6 +194,16 @@ jobs:
         uses: Gr1N/setup-poetry@v2
       - name: Complete CI/CD setup
         run: make setup-cicd-release-stage
+      - name: Get full python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-release-${{ hashFiles('**/poetry.lock') }}
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v2
         with:

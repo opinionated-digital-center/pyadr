@@ -20,6 +20,16 @@ jobs:
           python-version: 3.8
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
+      - name: Get full python version
+        id: full-python-version
+        shell: bash
+        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+      - name: Set up cache
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-publish-${{ hashFiles('**/poetry.lock') }}
       - name: Install remaining CI/CD tools and dependencies
         run: make setup-cicd-publish-stage
       - name: Publish to repository
