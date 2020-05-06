@@ -21,8 +21,8 @@ ADR Process Tool
     :target: https://pypi.org/project/pyadr/
 
 
-CLI to help with an ADR process lifecycle (``proposal``/``approval``/``rejection``/``deprecation``/
-``superseding``) based on ``markdown`` files and ``git``.
+CLI to help with an ADR process lifecycle (``proposal``/``acceptance``/``rejection``/
+``deprecation``/``superseding``) based on ``markdown`` files and ``git``.
 
 *This tools is in pre-alpha state. Sphinx doc to be updated.*
 
