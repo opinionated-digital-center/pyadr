@@ -21,6 +21,6 @@ jobs:
       - name: Install tools (Poetry)
         uses: Gr1N/setup-poetry@v2
       - name: Install remaining CI/CD tools and dependencies
-        run: make setup-cicd-publish-stage-github
+        run: make setup-cicd-publish-stage
       - name: Publish to repository
         run: make publish
