@@ -1,7 +1,7 @@
 import cleo
 
 from pyadr import __version__
-from pyadr.cli import LoggingAppConfig
+from pyadr.cli.config import LoggingAppConfig
 from pyadr.git.cli.commands import (
     GitConfigCommand,
     GitInitCommand,

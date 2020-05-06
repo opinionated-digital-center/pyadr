@@ -1,11 +1,10 @@
 import sys
 
 from pyadr.cli.application import App
-from pyadr.cli.config import LoggingAppConfig
 
 
 def main(args=None):
-    return App(config=LoggingAppConfig()).run()
+    return App().run()
 
 
 if __name__ == "__main__":
