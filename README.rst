@@ -91,7 +91,13 @@ The ``git`` extension to ``pyadr`` does the following additional actions:
   * commit ADR(s).
   * optionally squash commits.
 
-* ``pyadr config [<setting>] [<value>]``:
+* ``git adr pre-merge-checks``:
+
+  * Performs sanity checks typically required on ADR files before merging a
+    Pull Request (see
+    `pre-merge-checks BDD tests <features.git/pre-merge-checks.feature>`_ for details).
+
+* ``git adr config [<setting>] [<value>]``:
 
   * configure also settings specific to ``git adr``.
 
