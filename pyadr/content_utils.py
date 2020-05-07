@@ -4,7 +4,12 @@ from typing import Optional, TextIO, Tuple
 
 from slugify import slugify
 
-from pyadr.exceptions import PyadrNoLineWithSuffixError
+from pyadr.exceptions import (
+    PyadrAdrDateNotFoundError,
+    PyadrAdrStatusNotFoundError,
+    PyadrAdrTitleNotFoundError,
+    PyadrNoLineWithSuffixError,
+)
 
 
 def update_adr_content_title_status(
@@ -45,13 +50,19 @@ def adr_title_slug(title: str) -> str:
 def retrieve_title_status_and_date_from_madr_content_stream(
     stream: TextIO, stream_source: str = "Not provided",
 ) -> Tuple[str, Tuple[str, Optional[str]], str]:
-    title = extract_next_line_with_suffix_from_content_stream(
-        stream, "# ", stream_source=stream_source
-    )
+    try:
+        title = extract_next_line_with_suffix_from_content_stream(
+            stream, "# ", stream_source=stream_source
+        )
+    except PyadrNoLineWithSuffixError:
+        raise PyadrAdrTitleNotFoundError(source=stream_source)
 
-    full_status = extract_next_line_with_suffix_from_content_stream(
-        stream, "* Status:", stream_source=stream_source
-    )
+    try:
+        full_status = extract_next_line_with_suffix_from_content_stream(
+            stream, "* Status:", stream_source=stream_source
+        )
+    except PyadrNoLineWithSuffixError:
+        raise PyadrAdrStatusNotFoundError(source=stream_source)
 
     status_phrase: Optional[str]
     try:
@@ -62,9 +73,12 @@ def retrieve_title_status_and_date_from_madr_content_stream(
     else:
         status_phrase = status_phrase.strip()
 
-    date = extract_next_line_with_suffix_from_content_stream(
-        stream, "* Date:", stream_source=stream_source
-    )
+    try:
+        date = extract_next_line_with_suffix_from_content_stream(
+            stream, "* Date:", stream_source=stream_source
+        )
+    except PyadrNoLineWithSuffixError:
+        raise PyadrAdrDateNotFoundError(source=stream_source)
 
     return title, (status, status_phrase), date
 

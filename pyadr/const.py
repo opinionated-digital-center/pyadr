@@ -10,3 +10,12 @@ DEFAULT_ADR_PATH = Path("docs", "adr")
 DEFAULT_CONFIG_FILE_NAME = ".adr"
 DEFAULT_CONFIG_FILE_PATH = Path(DEFAULT_CONFIG_FILE_NAME)
 ADR_DEFAULT_SETTINGS = {"records-dir": str(DEFAULT_ADR_PATH)}
+VALID_ADR_CONTENT_FORMAT = """>>>>>
+# Title
+
+* Status: a_status
+[..]
+* Date: YYYY-MM-DD
+[..]
+<<<<<
+"""

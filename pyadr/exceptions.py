@@ -1,4 +1,5 @@
 """All package specific exceptions"""
+from pyadr.const import VALID_ADR_CONTENT_FORMAT
 
 
 class PyadrError(Exception):
@@ -37,26 +38,40 @@ class PyadrConfigFileSettingsNotSupported(PyadrError):
     """Config settings in the config file not supported"""
 
 
-################################################
-# Git related Errors
-################################################
+class PyadrAdrFormatError(PyadrError):
+    """ADR file format error"""
+
+    def __init__(self, item_name: str, source: str):
+        adr_format_message = (
+            "{item} not found in ADR '{source}', "
+            + "where as it should be of format:\n"
+            + VALID_ADR_CONTENT_FORMAT
+        )
+        super(PyadrAdrFormatError, self).__init__(
+            adr_format_message.format(item=item_name, source=source)
+        )
 
 
-class PyadrGitError(PyadrError):
-    """Base exception for errors raised by pyadr"""
+class PyadrAdrTitleNotFoundError(PyadrAdrFormatError):
+    """ADR title was not found in ADR file"""
+
+    def __init__(self, source: str):
+        super(PyadrAdrTitleNotFoundError, self).__init__(
+            item_name="Title", source=source
+        )
 
 
-class PyadrInvalidGitRepositoryError(PyadrGitError):
-    """Could not find a valid repository"""
+class PyadrAdrStatusNotFoundError(PyadrAdrFormatError):
+    """ADR status was not found in ADR file"""
+
+    def __init__(self, source: str):
+        super(PyadrAdrStatusNotFoundError, self).__init__(
+            item_name="Status", source=source
+        )
 
 
-class PyadrGitIndexNotEmptyError(PyadrGitError):
-    """Files are staged in the index"""
+class PyadrAdrDateNotFoundError(PyadrAdrFormatError):
+    """ADR date was not found in ADR file"""
 
-
-class PyadrGitBranchAlreadyExistsError(PyadrGitError):
-    """Branch already exists"""
-
-
-class PyadrGitMainBranchDoesNotExistError(PyadrGitError):
-    """Main branch (master or other specified) does not exist"""
+    def __init__(self, source: str):
+        super(PyadrAdrDateNotFoundError, self).__init__(item_name="Date", source=source)

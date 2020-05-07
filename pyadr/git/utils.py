@@ -5,7 +5,7 @@ from git import Commit, InvalidGitRepositoryError, Repo
 from gitdb.exc import BadName
 from loguru import logger
 
-from pyadr.exceptions import (
+from pyadr.git.exceptions import (
     PyadrGitBranchAlreadyExistsError,
     PyadrGitIndexNotEmptyError,
     PyadrGitMainBranchDoesNotExistError,
@@ -56,7 +56,7 @@ def verify_main_branch_exists(repo: Repo, branch: str = "master") -> None:
         raise PyadrGitMainBranchDoesNotExistError(branch)
 
 
-def get_verified_repo(repo_workdir: Path) -> Repo:
+def get_verified_repo_client(repo_workdir: Path) -> Repo:
     try:
         repo = Repo(repo_workdir)
     except InvalidGitRepositoryError as e:

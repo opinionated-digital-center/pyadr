@@ -6,6 +6,7 @@ from pyadr.git.cli.commands import (
     GitConfigCommand,
     GitInitCommand,
     GitNewCommand,
+    GitPreMergeChecksCommand,
     GitProposeCommand,
 )
 
@@ -20,3 +21,4 @@ class App(cleo.Application):
         self.add(GitInitCommand())
         self.add(GitNewCommand())
         self.add(GitProposeCommand())
+        self.add(GitPreMergeChecksCommand())

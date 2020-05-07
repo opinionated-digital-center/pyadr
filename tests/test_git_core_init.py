@@ -1,7 +1,7 @@
 from git import Repo
 from hamcrest import assert_that, calling, not_, raises
 
-from pyadr.exceptions import (
+from pyadr.git.exceptions import (
     PyadrGitBranchAlreadyExistsError,
     PyadrGitMainBranchDoesNotExistError,
 )
