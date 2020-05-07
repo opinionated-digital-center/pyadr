@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.11.3...v0.12.0) (2020-05-07)
+
+
+### Bug Fixes
+
+* adjust error propagation to console ([f031a24](https://github.com/opinionated-digital-center/pyadr/commit/f031a24c85c9227be6f8771305b5cc022105082d))
+
+
+### Features
+
+* new `git adr pre-merge-checks` command ([3c02578](https://github.com/opinionated-digital-center/pyadr/commit/3c025782584ad9f69bb27ac869ac5f6f1f417a74))
+
 ## [0.11.3](https://github.com/opinionated-digital-center/pyadr/compare/v0.11.2...v0.11.3) (2020-05-06)
 
 
