@@ -1,9 +1,8 @@
 """Console script for git adr."""
 import cleo
 
-from pyadr.exceptions import PyadrError
 from pyadr.git.core import GitAdrCore
-from pyadr.git.exceptions import PyadrGitPreMergeChecksFailedError
+from pyadr.git.exceptions import PyadrGitError, PyadrGitPreMergeChecksFailedError
 
 
 class BaseGitCommand(cleo.Command):
@@ -24,19 +23,16 @@ class GitConfigCommand(BaseGitCommand):
     """
 
     def handle(self):
-        try:
-            if self.option("list"):
-                self.git_adr_core.list_config()
-            elif self.option("unset"):
-                self.git_adr_core.unset_config_setting(self.argument("setting"))
-            elif not self.argument("value"):
-                self.git_adr_core.print_config_setting(self.argument("setting"))
-            else:
-                self.git_adr_core.configure(
-                    self.argument("setting"), self.argument("value")
-                )
-        except PyadrError:
-            return 1
+        if self.option("list"):
+            self.git_adr_core.list_config()
+        elif self.option("unset"):
+            self.git_adr_core.unset_config_setting(self.argument("setting"))
+        elif not self.argument("value"):
+            self.git_adr_core.print_config_setting(self.argument("setting"))
+        else:
+            self.git_adr_core.configure(
+                self.argument("setting"), self.argument("value")
+            )
 
 
 class GitInitCommand(BaseGitCommand):
@@ -55,7 +51,7 @@ class GitInitCommand(BaseGitCommand):
 
         try:
             self.git_adr_core.git_init_adr_repo(force=self.option("force"))
-        except PyadrError:
+        except PyadrGitError:
             return 1
 
 
@@ -70,7 +66,7 @@ class GitNewCommand(BaseGitCommand):
     def handle(self):
         try:
             self.git_adr_core.git_new_adr(title=" ".join(self.argument("words")))
-        except PyadrError:
+        except PyadrGitError:
             return 1
 
 
