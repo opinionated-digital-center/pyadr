@@ -131,6 +131,8 @@ class GitAdrCore(AdrCore):
 
         if at_least_one_check_failed:
             raise PyadrGitPreMergeChecksFailedError
+        else:
+            logger.info("All checks passed.")
 
     def _check_adr_numbers_unique(self, adr_files: List[Path]) -> None:
         rex = re.compile(r"^[0-9][0-9][0-9][0-9]-.*\.md")
@@ -142,8 +144,8 @@ class GitAdrCore(AdrCore):
             [file for file in adrs_with_valid_filenames if file.stem.startswith(number)]
             for number in unique_numbers
         ]
-        adrs_with_duplicate_number = filter(
-            lambda x: len(x) > 1, adrs_aggregated_by_number
+        adrs_with_duplicate_number = list(
+            filter(lambda x: len(x) > 1, adrs_aggregated_by_number)
         )
         if adrs_with_duplicate_number:
             logger.error(

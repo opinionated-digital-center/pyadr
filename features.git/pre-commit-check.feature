@@ -244,3 +244,44 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
             but the following files where not:
               => 'docs/adr/0002-an-adr.md'.
             """
+
+    Scenario: Passing checks
+        Given an initialised git adr repo
+        And a file named "docs/adr/0002-an-adr.md" with:
+            """
+            # An ADR
+
+            * Status: accepted
+            * Date: 2020-03-26
+
+            ## Context and Problem Statement
+
+            [..]
+            """
+        And a file named "docs/adr/0003-another-adr.md" with:
+            """
+            # Another ADR
+
+            * Status: accepted
+            * Date: 2020-03-26
+
+            ## Context and Problem Statement
+
+            [..]
+            """
+        And a file named "docs/adr/0004-a-last-adr.md" with:
+            """
+            # A last ADR
+
+            * Status: accepted
+            * Date: 2020-03-26
+
+            ## Context and Problem Statement
+
+            [..]
+            """
+        When I run "git adr pre-merge-checks"
+        Then it should pass with
+            """
+            All checks passed.
+            """
