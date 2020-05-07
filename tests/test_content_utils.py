@@ -2,12 +2,17 @@ from datetime import datetime
 from io import StringIO
 
 import pytest
-from hamcrest import assert_that, contains_string, equal_to, none, not_
+from hamcrest import assert_that, calling, contains_string, equal_to, none, not_, raises
 
 from pyadr import content_utils
 from pyadr.content_utils import (
     adr_title_slug_from_content_stream,
     retrieve_title_status_and_date_from_madr_content_stream,
+)
+from pyadr.exceptions import (
+    PyadrAdrDateNotFoundError,
+    PyadrAdrStatusNotFoundError,
+    PyadrAdrTitleNotFoundError,
 )
 
 
@@ -131,3 +136,65 @@ def test_retrieve_title_status_and_date_from_madr_content_when_no_status_phrase(
     assert_that(status, equal_to("any_status"))
     assert_that(status_phrase, none())
     assert_that(date, equal_to("any_date"))
+
+
+def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_title():
+    # Given
+    adr_content = """
+* Status: any_status status phrase
+* Date: any_date
+
+## Context and Problem Statement
+
+[..]
+"""
+    # When
+    # Then
+    assert_that(
+        calling(retrieve_title_status_and_date_from_madr_content_stream).with_args(
+            StringIO(adr_content)
+        ),
+        raises(PyadrAdrTitleNotFoundError),
+    )
+
+
+def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_status():
+    # Given
+    adr_content = """
+#  My ADR Updated Title
+
+* Date: any_date
+
+## Context and Problem Statement
+
+[..]
+"""
+    # When
+    # Then
+    assert_that(
+        calling(retrieve_title_status_and_date_from_madr_content_stream).with_args(
+            StringIO(adr_content)
+        ),
+        raises(PyadrAdrStatusNotFoundError),
+    )
+
+
+def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_date():
+    # Given
+    adr_content = """
+#  My ADR Updated Title
+
+* Status: any_status status phrase
+
+## Context and Problem Statement
+
+[..]
+"""
+    # When
+    # Then
+    assert_that(
+        calling(retrieve_title_status_and_date_from_madr_content_stream).with_args(
+            StringIO(adr_content)
+        ),
+        raises(PyadrAdrDateNotFoundError),
+    )

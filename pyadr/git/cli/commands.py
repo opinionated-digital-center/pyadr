@@ -3,6 +3,7 @@ import cleo
 
 from pyadr.exceptions import PyadrError
 from pyadr.git.core import GitAdrCore
+from pyadr.git.exceptions import PyadrGitPreMergeChecksFailedError
 
 
 class BaseGitCommand(cleo.Command):
@@ -80,3 +81,17 @@ class GitProposeCommand(GitNewCommand):
     propose
         {words* : Words in the title}
     """
+
+
+class GitPreMergeChecksCommand(GitNewCommand):
+    """
+    Performs sanity checks typically required on ADR files before merging a Pull Request
+
+    pre-merge-checks
+    """
+
+    def handle(self):
+        try:
+            self.git_adr_core.git_pre_merge_checks()
+        except PyadrGitPreMergeChecksFailedError:
+            return 1
