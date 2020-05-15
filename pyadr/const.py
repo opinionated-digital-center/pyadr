@@ -10,6 +10,7 @@ DEFAULT_ADR_PATH = Path("docs", "adr")
 DEFAULT_CONFIG_FILE_NAME = ".adr"
 DEFAULT_CONFIG_FILE_PATH = Path(DEFAULT_CONFIG_FILE_NAME)
 ADR_DEFAULT_SETTINGS = {"records-dir": str(DEFAULT_ADR_PATH)}
+
 VALID_ADR_CONTENT_FORMAT = """>>>>>
 # Title
 
@@ -19,3 +20,4 @@ VALID_ADR_CONTENT_FORMAT = """>>>>>
 [..]
 <<<<<
 """
+VALID_ADR_FILENAME_REGEX = r"^[0-9][0-9][0-9][0-9]-[a-z0-9-]*\.md"

@@ -4,7 +4,11 @@ from typing import List, Tuple
 
 from loguru import logger
 
-from pyadr.const import STATUS_PROPOSED, VALID_ADR_CONTENT_FORMAT
+from pyadr.const import (
+    STATUS_PROPOSED,
+    VALID_ADR_CONTENT_FORMAT,
+    VALID_ADR_FILENAME_REGEX,
+)
 from pyadr.content_utils import (
     adr_title_slug,
     adr_title_slug_from_content_stream,
@@ -135,7 +139,7 @@ class GitAdrCore(AdrCore):
             logger.info("All checks passed.")
 
     def _check_adr_numbers_unique(self, adr_files: List[Path]) -> None:
-        rex = re.compile(r"^[0-9][0-9][0-9][0-9]-.*\.md")
+        rex = re.compile(VALID_ADR_FILENAME_REGEX)
         adrs_with_valid_filenames = [file for file in adr_files if rex.match(file.name)]
         unique_numbers = set(
             [file.stem.split("-", 1)[0] for file in adrs_with_valid_filenames]
@@ -219,7 +223,7 @@ class GitAdrCore(AdrCore):
 
             return title_part != title_slug, title_slug
 
-        rex = re.compile(r"^[0-9][0-9][0-9][0-9]-.*\.md")
+        rex = re.compile(VALID_ADR_FILENAME_REGEX)
         filenames_correctness_status = {
             file: {
                 "starts_incorrectly": not rex.match(file.name),

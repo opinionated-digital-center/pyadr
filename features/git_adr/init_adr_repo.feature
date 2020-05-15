@@ -33,10 +33,10 @@ Feature: Initialise a git ADR repository
             """
             docs(adr): initialise adr repository
             """
-        And 3 files should have been committed in the last commit
-        And the file "docs/adr/template.md" should have been committed in the last commit
-        And the file "docs/adr/0000-record-architecture-decisions.md" should have been committed in the last commit
-        And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should have been committed in the last commit
+        And 3 files should be committed in the last commit
+        And the file "docs/adr/template.md" should be committed in the last commit
+        And the file "docs/adr/0000-record-architecture-decisions.md" should be committed in the last commit
+        And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should be committed in the last commit
 
     Scenario: Initialise for ADR only repo
         Given an empty git repo
