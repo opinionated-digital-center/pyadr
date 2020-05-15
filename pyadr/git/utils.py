@@ -69,14 +69,14 @@ def get_verified_repo_client(repo_workdir: Path) -> Repo:
 
 
 def create_feature_branch_and_checkout(repo: Repo, branch_name: str) -> None:
-    logger.info(f"Switching to 'master'...")
+    logger.info("Switching to 'master'...")
     repo.heads.master.checkout()
-    logger.info(f"... done.")
+    logger.info("... done.")
 
     logger.info(f"Creating branch '{branch_name}' and switching to it...")
     repo.create_head(branch_name)
     repo.heads[branch_name].checkout()
-    logger.info(f"... done.")
+    logger.info("... done.")
 
 
 def files_committed_in_commit(commit: Commit) -> List:

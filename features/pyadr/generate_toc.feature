@@ -28,7 +28,7 @@ Feature: Generate a table of content in markdown
             """
             # A superseded ADR
 
-            * Status: superseded by [ADR-0001](docs/adr/0001-an-accepted-adr.md)
+            * Status: superseded by [ADR-0001](0001-an-accepted-adr.md)
             * Date: 2020-03-26
 
             ## Context and Problem Statement
@@ -68,25 +68,25 @@ Feature: Generate a table of content in markdown
 
             ## Accepted Records
 
-            * [An accepted ADR](docs/adr/0001-an-accepted-adr.md)
+            * [An accepted ADR](0001-an-accepted-adr.md)
 
             ## Rejected Records
 
-            * [A rejected ADR](docs/adr/0002-a-rejected-adr.md)
+            * [A rejected ADR](0002-a-rejected-adr.md)
 
             ## Superseded Records
 
-            * [A superseded ADR](docs/adr/0003-a-superseded-adr.md): superseded by [ADR-0001](docs/adr/0001-an-accepted-adr.md)
+            * [A superseded ADR](0003-a-superseded-adr.md): superseded by [ADR-0001](0001-an-accepted-adr.md)
 
             ## Deprecated Records
 
-            * [A deprecated ADR](docs/adr/0004-a-deprecated-adr.md)
+            * [A deprecated ADR](0004-a-deprecated-adr.md)
 
             ## Records with non-standard statuses
 
             ### Status `foo`
 
-            * [An ADR with a non-standard status](docs/adr/0005-an-adr-with-a-non-standard-status.md)
+            * [An ADR with a non-standard status](0005-an-adr-with-a-non-standard-status.md)
             """
 
     Scenario: Generate a table of content in markdown - some statuses don't have adr
@@ -122,8 +122,8 @@ Feature: Generate a table of content in markdown
 
             ## Accepted Records
 
-            * [An ADR](docs/adr/0001-an-adr.md)
-            * [Another ADR](docs/adr/0002-another-adr.md)
+            * [An ADR](0001-an-adr.md)
+            * [Another ADR](0002-another-adr.md)
 
             ## Rejected Records
 
@@ -175,7 +175,7 @@ Feature: Generate a table of content in markdown
 
             ## Accepted Records
 
-            * [An ADR](docs/adr/0001-an-adr.md)
+            * [An ADR](0001-an-adr.md)
 
             ## Rejected Records
 
