@@ -33,19 +33,19 @@ Features
 +++++++++
 
 * ``pyadr init``: initialise an ADR repository
-  (`corresponding BDD tests <features/init_adr_repo.feature>`_).
+  (`corresponding BDD tests <features/pyadr/init_adr_repo.feature>`_).
 * ``pyadr new|propose Title of your ADR``: propose a new ADR
-  (`corresponding BDD tests <features/new_adr.feature>`_).
+  (`corresponding BDD tests <features/pyadr/new_adr.feature>`_).
 * ``pyadr accept [<file-path>]``: accept a proposed ADR
-  (`corresponding BDD tests <features/accept_or_reject_proposed_adr.feature>`_).
+  (`corresponding BDD tests <features/pyadr/accept_or_reject_proposed_adr.feature>`_).
 * ``pyadr reject [<file-path>]``: reject a proposed ADR (see ``accept`` above for BDD
   tests).
 * ``pyadr deprecate <file-path>``: (not yet implemented) deprecate an ADR.
 * ``pyadr supersede <superseded-file-path> <superseding-file-path>``: (not yet implemented) supersede an ADR with another ADR.
 * ``pyadr generate-toc``: generate a table of content (in format ``index.md``)
-  (`corresponding BDD tests <features/generate_toc.feature>`_).
+  (`corresponding BDD tests <features/pyadr/generate_toc.feature>`_).
 * ``pyadr config [<setting>] [<value>]``: configure a setting
-  (`corresponding BDD tests <features/config.feature>`_).
+  (`corresponding BDD tests <features/pyadr/config.feature>`_).
 
 Help for all commands is available through ``pyadr help``.
 
@@ -57,12 +57,12 @@ Help for individual commands is available through ``pyadr help <command>``.
 The ``git`` extension to ``pyadr`` does the following additional actions:
 
 * ``git adr init``
-  (`corresponding BDD tests <features.git/init_adr_repo.feature>`_):
+  (`corresponding BDD tests <features/git_adr/init_adr_repo.feature>`_):
 
   * initialise a git repository for the ADRs.
 
 * ``git adr new|propose Title of your ADR``
-  (`corresponding BDD tests <features.git/new_adr.feature>`_):
+  (`corresponding BDD tests <features/git_adr/new_adr.feature>`_):
 
   * create a new branch from ``master``.
   * stage the new ADR in that branch.
