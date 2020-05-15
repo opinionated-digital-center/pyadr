@@ -94,7 +94,7 @@ class AdrCore(object):
         adr_repo_path = Path(self.config["records-dir"])
         logger.info(f"Creating ADR repo directory '{adr_repo_path}'.")
         adr_repo_path.mkdir(parents=True)
-        logger.info(f"... done.")
+        logger.info("... done.")
 
     def _init_adr_template(self) -> Path:
         template_path = Path(self.config["records-dir"], "template.md")
@@ -103,7 +103,7 @@ class AdrCore(object):
         with template_path.open("w") as f:
             f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
 
-        logger.info(f"... done.")
+        logger.info("... done.")
         return template_path
 
     def _init_adr_0000(self) -> Path:
@@ -122,7 +122,7 @@ class AdrCore(object):
             f.write(pkg_resources.read_text(assets, filename))  # type: ignore
         update_adr_title_status(path, status=STATUS_ACCEPTED)
 
-        logger.info(f"... done.")
+        logger.info("... done.")
         return path
 
     ###########################################
