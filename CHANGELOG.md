@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.12.2](https://github.com/opinionated-digital-center/pyadr/compare/v0.12.1...v0.12.2) (2020-05-15)
+
+
+### Bug Fixes
+
+* correct adr paths in toc ([cefd573](https://github.com/opinionated-digital-center/pyadr/commit/cefd5737b6095d31f55ad87e8c13f84c56c27734))
+
 ## [0.12.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.12.0...v0.12.1) (2020-05-07)
 
 
