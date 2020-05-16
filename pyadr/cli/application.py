@@ -3,6 +3,7 @@ import cleo
 from pyadr import __version__
 from pyadr.cli.commands import (
     AcceptCommand,
+    CheckAdrRepoCommand,
     ConfigCommand,
     GenerateTocCommand,
     InitCommand,
@@ -26,3 +27,4 @@ class App(cleo.Application):
         self.add(AcceptCommand())
         self.add(RejectCommand())
         self.add(GenerateTocCommand())
+        self.add(CheckAdrRepoCommand())

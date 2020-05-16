@@ -25,21 +25,5 @@ class PyadrGitPreMergeChecksFailedError(PyadrGitError):
     """Pre-merge checks have failed"""
 
 
-class PyadrSomeAdrFilenamesIncorrectError(PyadrGitError):
-    """Check on the name of each ADR files has failed"""
-
-
-class PyadrSomeAdrStatusesAreProposedError(PyadrGitError):
-    """Check on the fact that no ADR status is 'proposed' has failed"""
-
-
-class PyadrSomeAdrFileContentFormatIncorrectError(PyadrGitError):
-    """Check on the format of ADR file content has failed"""
-
-
-class PyadrSomeAdrNumbersNotUniqueError(PyadrGitError):
-    """Some ADRs have the same number"""
-
-
 class PyadrGitAdrNotStagedOrCommittedError(PyadrGitError):
     """ADR file was expected to be staged or committed"""
