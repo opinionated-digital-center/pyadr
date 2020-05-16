@@ -6,6 +6,7 @@ from pyadr.cli.commands import (
     CheckAdrRepoCommand,
     ConfigCommand,
     GenerateTocCommand,
+    HelperCommand,
     InitCommand,
     NewCommand,
     ProposeCommand,
@@ -28,3 +29,4 @@ class App(cleo.Application):
         self.add(RejectCommand())
         self.add(GenerateTocCommand())
         self.add(CheckAdrRepoCommand())
+        self.add(HelperCommand())
