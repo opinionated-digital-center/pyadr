@@ -5,18 +5,19 @@ Feature: Create a new ADR - Git included
     Background:
         Given a new working directory
 
-    Scenario: Fail when no ADR repo directory
-        When I run "git adr new My ADR Title"
-        Then it should fail with:
-            """
-            No Git repository found in directory '{__WORKDIR__}/'. Please initialise a Git repository before running command.
-            """
-
     Scenario: Fail when no title is given
         When I run "git adr new"
         Then it should fail with:
             """
             Not enough arguments (missing: "words").
+            """
+
+    Scenario: Fail when no ADR repo directory
+        Given a directory named "docs/adr/"
+        When I run "git adr new My ADR Title"
+        Then it should fail with:
+            """
+            No Git repository found in directory '{__WORKDIR__}/'. Please initialise a Git repository before running command.
             """
 
     Scenario: Fail when no master branch

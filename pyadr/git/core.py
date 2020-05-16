@@ -2,6 +2,7 @@ import re
 from pathlib import Path
 from typing import List, Tuple
 
+from git import Repo
 from loguru import logger
 
 from pyadr.const import (
@@ -18,6 +19,7 @@ from pyadr.core import AdrCore
 from pyadr.exceptions import PyadrAdrFormatError
 from pyadr.git.const import GIT_ADR_DEFAULT_SETTINGS
 from pyadr.git.exceptions import (
+    PyadrGitAdrNotStagedOrCommittedError,
     PyadrGitPreMergeChecksFailedError,
     PyadrSomeAdrFilenamesIncorrectError,
     PyadrSomeAdrNumbersNotUniqueError,
@@ -35,6 +37,7 @@ from pyadr.git.utils import (
 class GitAdrCore(AdrCore):
     def __init__(self):
         super().__init__(GIT_ADR_DEFAULT_SETTINGS)
+        self._repo = None
 
     ###########################################
     # PROPERTIES
@@ -46,31 +49,35 @@ class GitAdrCore(AdrCore):
         else:
             return "docs(adr):"
 
+    @property
+    def repo(self) -> Repo:
+        if not self._repo:
+            self._repo = get_verified_repo_client(Path.cwd())
+        return self._repo
+
     ###########################################
     # GIT INIT ADR
     ###########################################
     def git_init_adr_repo(self, force: bool = False) -> None:
-        repo = get_verified_repo_client(Path.cwd())
-
-        verify_index_empty(repo)
+        verify_index_empty(self.repo)
 
         init_branch_name = "adr-init-repo"
-        verify_branch_does_not_exist(repo, init_branch_name)
+        verify_branch_does_not_exist(self.repo, init_branch_name)
 
         created_files = self.init_adr_repo(force=force)
 
-        if "master" not in repo.heads:
+        if "master" not in self.repo.heads:
             logger.info("Git repo empty. Will commit files to 'master'.")
         else:
-            create_feature_branch_and_checkout(repo, init_branch_name)
+            create_feature_branch_and_checkout(self.repo, init_branch_name)
 
-        repo.index.add([str(p) for p in created_files])
+        self.repo.index.add([str(p) for p in created_files])
 
         message = f"{self.commit_msg_prefix} initialise adr repository"
-        repo.index.commit(message)
+        self.repo.index.commit(message)
 
         logger.info(
-            f"Files committed to branch '{repo.head.ref.name}' "
+            f"Files committed to branch '{self.repo.head.ref.name}' "
             f"with commit message '{message}'."
         )
         logger.info("ADR Git repo initialised.")
@@ -79,26 +86,58 @@ class GitAdrCore(AdrCore):
     # GIT NEW ADR
     ###########################################
     def git_new_adr(self, title: str, pre_checks: bool = True) -> None:
-        repo = get_verified_repo_client(Path.cwd())
-
         if pre_checks:
             self.verify_adr_dir_exists()
-            verify_main_branch_exists(repo, branch="master")
+            verify_main_branch_exists(self.repo, branch="master")
 
-        verify_index_empty(repo)
+        verify_index_empty(self.repo)
 
         adr_branch_name = f"adr-{adr_title_slug(title)}"
-        verify_branch_does_not_exist(repo, adr_branch_name)
+        verify_branch_does_not_exist(self.repo, adr_branch_name)
 
         new_adr_path = self.new_adr(title, pre_checks=False)
 
-        create_feature_branch_and_checkout(repo, adr_branch_name)
+        create_feature_branch_and_checkout(self.repo, adr_branch_name)
 
-        repo.index.add([str(new_adr_path)])
+        self.repo.index.add([str(new_adr_path)])
 
         logger.info(f"File '{new_adr_path}' staged.")
 
         logger.info("New ADR added to Git repo.")
+
+    ###########################################
+    # ACCEPT / REJECT
+    ###########################################
+    def git_accept_or_reject(self, status: str, toc: bool = False) -> None:
+        self.accept_or_reject(status, toc)
+
+    def _verify_proposed_adr(self):
+        proposed_adr = super()._verify_proposed_adr()
+        self._verify_file_staged_or_committed(proposed_adr)
+        return proposed_adr
+
+    def _verify_file_staged_or_committed(self, path: Path) -> None:
+        file_staged = str(path) in [
+            d.a_path
+            for d in list(
+                self.repo.index.diff(self.repo.head.commit).iter_change_type("D")
+            )
+        ]
+        file_committed = str(path) in list(self.repo.head.commit.stats.files.keys())
+        if not (file_staged or file_committed):
+            logger.error(f"File {path} should be staged or committed first.")
+            raise PyadrGitAdrNotStagedOrCommittedError(path)
+
+    def _apply_filepath_update(self, path: Path, renamed_path: Path) -> None:
+        self.repo.git.mv(str(path), str(renamed_path))
+
+    ###########################################
+    # GENERATE TOC
+    ###########################################
+    def generate_toc(self, pre_checks: bool = True) -> Path:
+        toc_path = super().generate_toc()
+        self.repo.index.add([str(toc_path)])
+        return toc_path
 
     ###########################################
     # GIT PRE MERGE CHECKS

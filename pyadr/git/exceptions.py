@@ -39,3 +39,7 @@ class PyadrSomeAdrFileContentFormatIncorrectError(PyadrGitError):
 
 class PyadrSomeAdrNumbersNotUniqueError(PyadrGitError):
     """Some ADRs have the same number"""
+
+
+class PyadrGitAdrNotStagedOrCommittedError(PyadrGitError):
+    """ADR file was expected to be staged or committed"""
