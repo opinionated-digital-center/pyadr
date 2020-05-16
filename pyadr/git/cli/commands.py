@@ -80,7 +80,7 @@ class GitProposeCommand(GitNewCommand):
     """
 
 
-class GitAcceptCommand(GitNewCommand):
+class GitAcceptCommand(BaseGitCommand):
     """
     Accept a proposed ADR
 
@@ -95,7 +95,7 @@ class GitAcceptCommand(GitNewCommand):
         )
 
 
-class GitRejectCommand(GitNewCommand):
+class GitRejectCommand(BaseGitCommand):
     """
     Reject a proposed ADR
 
@@ -110,7 +110,7 @@ class GitRejectCommand(GitNewCommand):
         )
 
 
-class GitPreMergeChecksCommand(GitNewCommand):
+class GitPreMergeChecksCommand(BaseGitCommand):
     """
     Performs sanity checks typically required on ADR files before merging a Pull Request
 
