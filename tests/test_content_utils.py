@@ -1,14 +1,13 @@
 from datetime import datetime
-from io import StringIO
 
 import pytest
 from hamcrest import assert_that, calling, contains_string, equal_to, none, not_, raises
 
 from pyadr import content_utils
 from pyadr.content_utils import (
-    adr_title_slug_from_content_stream,
+    adr_title_slug_from_file,
     build_toc_content_from_adrs_by_status,
-    retrieve_title_status_and_date_from_madr_content_stream,
+    retrieve_title_status_and_date_from_madr,
 )
 from pyadr.exceptions import (
     PyadrAdrDateNotFoundError,
@@ -29,6 +28,14 @@ def sample_adr_content():
 
 [..]
 """
+
+
+@pytest.fixture()
+def sample_adr_path(adr_tmp_path, sample_adr_content):
+    sample_adr_path = adr_tmp_path / "sample_adr"
+    with sample_adr_path.open("w") as f:
+        f.write(sample_adr_content)
+    yield sample_adr_path
 
 
 def test_update_adr_content_date(sample_adr_content):
@@ -74,7 +81,7 @@ def test_update_adr_content_status(sample_adr_content):
     assert_that(result_text, contains_string("\n* Status: another_status\n"))
 
 
-def test_get_adr_title_slug_from_content_stream():
+def test_get_adr_title_slug_from_content_stream(adr_tmp_path):
     # Given
     adr_content = """#  My ADR Updated Title
 
@@ -85,14 +92,18 @@ def test_get_adr_title_slug_from_content_stream():
 
 [..]
 """
+    adr_path = adr_tmp_path / "sample_adr"
+    with adr_path.open("w") as f:
+        f.write(adr_content)
+
     # When
-    title_slug = adr_title_slug_from_content_stream(StringIO(adr_content))
+    title_slug = adr_title_slug_from_file(adr_path)
 
     # Then
     assert_that(title_slug, equal_to("my-adr-updated-title"))
 
 
-def test_retrieve_title_status_and_date_from_madr_content():
+def test_retrieve_title_status_and_date_from_madr(adr_tmp_path):
     # Given
     adr_content = """<!-- comment -->
 #  My ADR Updated Title
@@ -104,12 +115,14 @@ def test_retrieve_title_status_and_date_from_madr_content():
 
 [..]
 """
+    adr_path = adr_tmp_path / "sample_adr"
+    with adr_path.open("w") as f:
+        f.write(adr_content)
+
     # When
-    (
-        title,
-        (status, status_phrase),
-        date,
-    ) = retrieve_title_status_and_date_from_madr_content_stream(StringIO(adr_content))
+    (title, (status, status_phrase), date,) = retrieve_title_status_and_date_from_madr(
+        adr_path
+    )
 
     # Then
     assert_that(title, equal_to("My ADR Updated Title"))
@@ -118,18 +131,14 @@ def test_retrieve_title_status_and_date_from_madr_content():
     assert_that(date, equal_to("any_date"))
 
 
-def test_retrieve_title_status_and_date_from_madr_content_when_no_status_phrase(
-    sample_adr_content,
+def test_retrieve_title_status_and_date_from_madr_when_no_status_phrase(
+    sample_adr_path,
 ):
     # Given
 
     # When
-    (
-        title,
-        (status, status_phrase),
-        date,
-    ) = retrieve_title_status_and_date_from_madr_content_stream(
-        StringIO(sample_adr_content)
+    (title, (status, status_phrase), date,) = retrieve_title_status_and_date_from_madr(
+        sample_adr_path
     )
 
     # Then
@@ -139,7 +148,9 @@ def test_retrieve_title_status_and_date_from_madr_content_when_no_status_phrase(
     assert_that(date, equal_to("any_date"))
 
 
-def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_title():
+def test_retrieve_title_status_and_date_from_madr_throws_error_when_no_title(
+    adr_tmp_path,
+):
     # Given
     adr_content = """
 * Status: any_status status phrase
@@ -149,17 +160,21 @@ def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_t
 
 [..]
 """
+    adr_path = adr_tmp_path / "sample_adr"
+    with adr_path.open("w") as f:
+        f.write(adr_content)
+
     # When
     # Then
     assert_that(
-        calling(retrieve_title_status_and_date_from_madr_content_stream).with_args(
-            StringIO(adr_content)
-        ),
+        calling(retrieve_title_status_and_date_from_madr).with_args(adr_path),
         raises(PyadrAdrTitleNotFoundError),
     )
 
 
-def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_status():
+def test_retrieve_title_status_and_date_from_madr_throws_error_when_no_status(
+    adr_tmp_path,
+):
     # Given
     adr_content = """
 #  My ADR Updated Title
@@ -170,17 +185,21 @@ def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_s
 
 [..]
 """
+    adr_path = adr_tmp_path / "sample_adr"
+    with adr_path.open("w") as f:
+        f.write(adr_content)
+
     # When
     # Then
     assert_that(
-        calling(retrieve_title_status_and_date_from_madr_content_stream).with_args(
-            StringIO(adr_content)
-        ),
+        calling(retrieve_title_status_and_date_from_madr).with_args(adr_path),
         raises(PyadrAdrStatusNotFoundError),
     )
 
 
-def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_date():
+def test_retrieve_title_status_and_date_from_madr_throws_error_when_no_date(
+    adr_tmp_path,
+):
     # Given
     adr_content = """
 #  My ADR Updated Title
@@ -191,12 +210,14 @@ def test_retrieve_title_status_and_date_from_madr_content_throws_error_when_no_d
 
 [..]
 """
+    adr_path = adr_tmp_path / "sample_adr"
+    with adr_path.open("w") as f:
+        f.write(adr_content)
+
     # When
     # Then
     assert_that(
-        calling(retrieve_title_status_and_date_from_madr_content_stream).with_args(
-            StringIO(adr_content)
-        ),
+        calling(retrieve_title_status_and_date_from_madr).with_args(adr_path),
         raises(PyadrAdrDateNotFoundError),
     )
 

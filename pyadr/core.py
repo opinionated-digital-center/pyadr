@@ -9,7 +9,7 @@ from pyadr import assets
 from pyadr.config import Config
 from pyadr.const import ADR_DEFAULT_SETTINGS, STATUS_ACCEPTED, STATUS_PROPOSED
 from pyadr.content_utils import (
-    adr_title_slug_from_content_stream,
+    adr_title_slug_from_file,
     build_toc_content_from_adrs_by_status,
     extract_adrs_by_status,
 )
@@ -208,10 +208,7 @@ class AdrCore(object):
         return processed_adr
 
     def _update_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
-        with adr_path.open() as f:
-            title_slug = adr_title_slug_from_content_stream(
-                f, stream_source=str(adr_path)
-            )
+        title_slug = adr_title_slug_from_file(adr_path)
 
         renamed_path = adr_path.with_name(
             "-".join([adr_id, title_slug]) + adr_path.suffix

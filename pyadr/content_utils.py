@@ -43,51 +43,44 @@ def update_adr_content_title_and_status(
     return updated_content
 
 
-def adr_title_slug_from_content_stream(
-    stream: TextIO, stream_source: str = "Not provided"
-) -> str:
-    title, _, _ = retrieve_title_status_and_date_from_madr_content_stream(
-        stream, stream_source
-    )
-    return adr_title_slug(title)
-
-
-def adr_title_slug(title: str) -> str:
+def adr_title_slug_from_file(path: Path) -> str:
+    title, _, _ = retrieve_title_status_and_date_from_madr(path)
     return slugify(title)
 
 
-def retrieve_title_status_and_date_from_madr_content_stream(
-    stream: TextIO, stream_source: str = "Not provided",
+def retrieve_title_status_and_date_from_madr(
+    path: Path,
 ) -> Tuple[str, Tuple[str, Optional[str]], str]:
-    try:
-        title = extract_next_line_with_suffix_from_content_stream(
-            stream, "# ", stream_source=stream_source
-        )
-    except PyadrNoLineWithSuffixError:
-        raise PyadrAdrTitleNotFoundError(source=stream_source)
+    with path.open() as f:
+        try:
+            title = extract_next_line_with_suffix_from_content_stream(
+                f, "# ", stream_source=str(path)
+            )
+        except PyadrNoLineWithSuffixError:
+            raise PyadrAdrTitleNotFoundError(source=str(path))
 
-    try:
-        full_status = extract_next_line_with_suffix_from_content_stream(
-            stream, "* Status:", stream_source=stream_source
-        )
-    except PyadrNoLineWithSuffixError:
-        raise PyadrAdrStatusNotFoundError(source=stream_source)
+        try:
+            full_status = extract_next_line_with_suffix_from_content_stream(
+                f, "* Status:", stream_source=str(path)
+            )
+        except PyadrNoLineWithSuffixError:
+            raise PyadrAdrStatusNotFoundError(source=str(path))
 
-    status_phrase: Optional[str]
-    try:
-        status, status_phrase = full_status.split(" ", 1)
-    except ValueError:
-        status = full_status
-        status_phrase = None
-    else:
-        status_phrase = status_phrase.strip()
+        status_phrase: Optional[str]
+        try:
+            status, status_phrase = full_status.split(" ", 1)
+        except ValueError:
+            status = full_status
+            status_phrase = None
+        else:
+            status_phrase = status_phrase.strip()
 
-    try:
-        date = extract_next_line_with_suffix_from_content_stream(
-            stream, "* Date:", stream_source=stream_source
-        )
-    except PyadrNoLineWithSuffixError:
-        raise PyadrAdrDateNotFoundError(source=stream_source)
+        try:
+            date = extract_next_line_with_suffix_from_content_stream(
+                f, "* Date:", stream_source=str(path)
+            )
+        except PyadrNoLineWithSuffixError:
+            raise PyadrAdrDateNotFoundError(source=str(path))
 
     return title, (status, status_phrase), date
 
@@ -153,14 +146,11 @@ def extract_adrs_by_status(
         },
     }
     for adr in adr_paths:
-        with adr.open() as f:
-            (
-                title,
-                (status, status_phrase),
-                date,
-            ) = retrieve_title_status_and_date_from_madr_content_stream(
-                f, stream_source=str(adr)
-            )
+        (
+            title,
+            (status, status_phrase),
+            date,
+        ) = retrieve_title_status_and_date_from_madr(adr)
         try:
             status_supplement = ""
             if status_phrase:
