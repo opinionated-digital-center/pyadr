@@ -116,3 +116,56 @@ class CheckAdrRepoCommand(BaseCommand):
             self.adr_core.check_adr_repo(self.option("no-proposed"))
         except PyadrAdrRepoChecksFailedError:
             return 1
+
+
+class HelperSlugCommand(BaseCommand):
+    """
+    Returns the ADR's title in slug format
+
+    slug
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.adr_core.print_title_slug(self.argument("file"))
+
+
+class HelperLowercaseCommand(BaseCommand):
+    """
+    Returns the ADR's title in lowercase
+
+    lowercase
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.adr_core.print_title_lowercase(self.argument("file"))
+
+
+class HelperResyncFilenameCommand(BaseCommand):
+    """
+    Resyncs the ADR's filename with its actual title
+
+    resync-filename
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.adr_core.resync_filename(self.argument("file"))
+
+
+class HelperCommand(BaseCommand):
+    """
+    Helper command generating and syncing various useful things
+
+    helper
+    """
+
+    commands = [
+        HelperSlugCommand(),
+        HelperLowercaseCommand(),
+        HelperResyncFilenameCommand(),
+    ]
+
+    def handle(self):
+        return self.call("help", self.config.name)

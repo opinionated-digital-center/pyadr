@@ -48,6 +48,11 @@ def adr_title_slug_from_file(path: Path) -> str:
     return slugify(title)
 
 
+def adr_title_lowercase_from_file(path: Path) -> str:
+    title, _, _ = retrieve_title_status_and_date_from_madr(path)
+    return title.lower()
+
+
 def retrieve_title_status_and_date_from_madr(
     path: Path,
 ) -> Tuple[str, Tuple[str, Optional[str]], str]:

@@ -16,6 +16,7 @@ from pyadr.const import (
     VALID_ADR_FILENAME_REGEX,
 )
 from pyadr.content_utils import (
+    adr_title_lowercase_from_file,
     adr_title_slug_from_file,
     build_toc_content_from_adrs_by_status,
     extract_adrs_by_status,
@@ -226,7 +227,8 @@ class AdrCore(object):
         renamed_path = adr_path.with_name(
             "-".join([adr_id, title_slug]) + adr_path.suffix
         )
-        self._apply_filepath_update(adr_path, renamed_path)
+        if adr_path != renamed_path:
+            self._apply_filepath_update(adr_path, renamed_path)
 
         return renamed_path
 
@@ -257,6 +259,32 @@ class AdrCore(object):
         logger.info(f"Markdown table of content generated in '{toc_path}'")
 
         return toc_path
+
+    ###########################################
+    # HELPER FUNCTIONS
+    ###########################################
+    def print_title_slug(self, file: str) -> None:
+        logger.info(adr_title_slug_from_file(Path(file)))
+
+    def print_title_lowercase(self, file: str) -> None:
+        logger.info(adr_title_lowercase_from_file(Path(file)))
+
+    def resync_filename(self, file: str) -> None:
+        path = Path(file)
+
+        rex = re.compile(r"^([0-9][0-9][0-9][0-9]|XXXX)-.*\.md")
+        if not rex.match(path.name):
+            logger.info(
+                "Filename must be starting with '[0-9][0-9][0-9][0-9]-' "
+                "or 'XXXX-' and have '.md' as extension."
+            )
+
+        renamed_path = self._update_adr_filename(path, path.stem.split("-", 1)[0])
+
+        if path != renamed_path:
+            logger.info(f"File renamed to '{str(renamed_path)}'.")
+        else:
+            logger.info("File name already up-to-date.")
 
     ###########################################
     # CHECK ADR REPO
@@ -364,25 +392,21 @@ class AdrCore(object):
             raise PyadrSomeAdrStatusesAreProposedError
 
     def _check_all_adr_filenames_correct(self, adr_files: List[Path]) -> None:
-        def has_filename_without_title_slug_and_title_slug(
-            file: Path,
-        ) -> Tuple[bool, str]:
+        def tuple_has_title_slug_and_title_slug(file: Path,) -> Tuple[bool, str]:
             title_slug = adr_title_slug_from_file(file)
 
             try:
-                title_part = file.stem.split("-", 1)[1]
+                title_in_filename = file.stem.split("-", 1)[1]
             except IndexError:
-                title_part = ""
+                title_in_filename = ""
 
-            return title_part != title_slug, title_slug
+            return title_in_filename != title_slug, title_slug
 
         rex = re.compile(VALID_ADR_FILENAME_REGEX)
         filenames_correctness_status = {
             file: {
                 "starts_incorrectly": not rex.match(file.name),
-                "with_incorrect_title_slug": has_filename_without_title_slug_and_title_slug(  # noqa
-                    file
-                ),
+                "with_incorrect_title_slug": tuple_has_title_slug_and_title_slug(file),
             }
             for file in sorted(adr_files)
         }
