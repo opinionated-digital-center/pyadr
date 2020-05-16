@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional, TextIO, Tuple
+from typing import Any, Dict, List, Optional, TextIO, Tuple, Union
 
 from slugify import slugify
 
@@ -13,8 +13,16 @@ from pyadr.exceptions import (
 )
 
 
-def update_adr_content_title_status(
-    content: str, title: str = None, status: str = None
+def update_adr_content_title(content: str, title: str) -> str:
+    return update_adr_content_title_and_status(content, title=title, status=None)
+
+
+def update_adr_content_status(content: str, status: str) -> str:
+    return update_adr_content_title_and_status(content, title=None, status=status)
+
+
+def update_adr_content_title_and_status(
+    content: str, title: Union[str, None], status: Union[str, None]
 ) -> str:
     if not title and not status:
         raise TypeError("argument 'title' of 'status' has to be given")

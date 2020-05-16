@@ -67,17 +67,19 @@ The ``git`` extension to ``pyadr`` does the following additional actions:
   * create a new branch from ``master``.
   * stage the new ADR in that branch.
 
-* ``git adr accept [<file-path>]``: (not yet implemented)
+* ``git adr accept [<file-path>]``
+  (`corresponding BDD tests <features/git_adr/accept_or_reject_proposed_adr.feature>`_):
 
   * stage ADR to current branch.
-  * optionally commit ADR.
-  * optionally squash commits.
+  * optionally commit ADR. (not yet implemented)
+  * optionally squash commits. (not yet implemented)
 
-* ``git adr reject [<file-path>]``: (not yet implemented)
+* ``git adr reject [<file-path>]``:
+  (`corresponding BDD tests <features/git_adr/accept_or_reject_proposed_adr.feature>`_):
 
   * stage ADR to current branch.
-  * optionally commit ADR.
-  * optionally squash commits.
+  * optionally commit ADR. (not yet implemented)
+  * optionally squash commits. (not yet implemented)
 
 * ``git adr deprecate <file-path>``: (not yet implemented)
 

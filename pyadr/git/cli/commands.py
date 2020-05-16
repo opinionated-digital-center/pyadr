@@ -1,6 +1,7 @@
 """Console script for git adr."""
 import cleo
 
+from pyadr.const import STATUS_ACCEPTED, STATUS_REJECTED
 from pyadr.git.core import GitAdrCore
 from pyadr.git.exceptions import PyadrGitError, PyadrGitPreMergeChecksFailedError
 
@@ -77,6 +78,30 @@ class GitProposeCommand(GitNewCommand):
     propose
         {words* : Words in the title}
     """
+
+
+class GitAcceptCommand(GitNewCommand):
+    """
+    Accept a proposed ADR
+
+    accept
+        {--t|toc : If set, generates also the table of content.}
+    """
+
+    def handle(self):
+        self.git_adr_core.git_accept_or_reject(STATUS_ACCEPTED, self.option("toc"))
+
+
+class GitRejectCommand(GitNewCommand):
+    """
+    Reject a proposed ADR
+
+    reject
+        {--t|toc : If set, generates also the table of content.}
+    """
+
+    def handle(self):
+        self.git_adr_core.git_accept_or_reject(STATUS_REJECTED, self.option("toc"))
 
 
 class GitPreMergeChecksCommand(GitNewCommand):

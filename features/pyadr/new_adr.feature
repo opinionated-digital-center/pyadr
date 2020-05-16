@@ -3,18 +3,18 @@ Feature: Create a new ADR
     Background:
         Given a new working directory
 
-    Scenario: Fail when no ADR repo directory
-        When I run "pyadr new My ADR Title"
-        Then it should fail with:
-            """
-            Directory 'docs/adr/' does not exist. Initialise your ADR repo first.
-            """
-
     Scenario: Fail when no title is given
         When I run "pyadr new"
         Then it should fail with:
             """
             Not enough arguments (missing: "words").
+            """
+
+    Scenario: Fail when no ADR repo directory
+        When I run "pyadr new My ADR Title"
+        Then it should fail with:
+            """
+            Directory 'docs/adr/' does not exist. Initialise your ADR repo first.
             """
 
     Scenario: Create a new ADR and succeed with a success message

@@ -9,6 +9,7 @@ from pyadr import assets
 from pyadr.config import Config
 from pyadr.const import ADR_DEFAULT_SETTINGS, STATUS_ACCEPTED, STATUS_PROPOSED
 from pyadr.content_utils import (
+    adr_title_slug_from_content_stream,
     build_toc_content_from_adrs_by_status,
     extract_adrs_by_status,
 )
@@ -19,7 +20,7 @@ from pyadr.exceptions import (
     PyadrNoProposedAdrError,
     PyadrTooManyProposedAdrError,
 )
-from pyadr.file_utils import rename_reviewed_adr_file, update_adr_title_status
+from pyadr.file_utils import calculate_next_adr_id, update_adr
 
 try:
     import importlib.resources as pkg_resources
@@ -120,7 +121,7 @@ class AdrCore(object):
         logger.info(f"Creating ADR '{path}'...")
         with path.open("w") as f:
             f.write(pkg_resources.read_text(assets, filename))  # type: ignore
-        update_adr_title_status(path, status=STATUS_ACCEPTED)
+        update_adr(path, status=STATUS_ACCEPTED)
 
         logger.info("... done.")
         return path
@@ -136,15 +137,96 @@ class AdrCore(object):
 
         with adr_path.open("w") as f:
             f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
-        update_adr_title_status(adr_path, title=title, status=STATUS_PROPOSED)
+        update_adr(adr_path, title=title, status=STATUS_PROPOSED)
 
         logger.warning(f"Created ADR '{adr_path}'.")
         return adr_path
 
     ###########################################
+    # ACCEPT / REJECT
+    ###########################################
+    def accept_or_reject(self, status: str, toc: bool = False) -> Path:
+        proposed_adr = self._verify_proposed_adr()
+
+        reviewed_adr = self._apply_accept_or_reject_to_proposed_adr(
+            proposed_adr, status
+        )
+
+        if toc:
+            self.generate_toc()
+
+        return reviewed_adr
+
+    def _verify_proposed_adr(self):
+        found_proposed_adrs = sorted(Path(self.config["records-dir"]).glob("XXXX-*"))
+        logger.info(
+            f"Current Working Directory is: '{Path(self.config['records-dir'])}'"
+        )
+        self._verify_one_and_only_one_proposed_adr_found(found_proposed_adrs)
+        proposed_adr = found_proposed_adrs[0]
+        return proposed_adr
+
+    def _verify_one_and_only_one_proposed_adr_found(
+        self, found_proposed_adrs: List[Path]
+    ) -> None:
+        if not len(found_proposed_adrs):
+            logger.error(
+                "Could not find a proposed ADR "
+                "(should be of format 'docs/adr/XXXX-adr-title.md')."
+            )
+            raise PyadrNoProposedAdrError()
+
+        elif len(found_proposed_adrs) > 1:
+            logger.error(
+                f"Can handle only 1 proposed ADR but found {len(found_proposed_adrs)}:"
+            )
+            for adr in found_proposed_adrs:
+                logger.error(f"    => '{adr}'")
+            raise PyadrTooManyProposedAdrError()
+
+    def _get_next_adr_id(self) -> str:
+        try:
+            next_adr_id = calculate_next_adr_id(Path(self.config["records-dir"]))
+        except PyadrNoNumberedAdrError as e:
+            logger.error(
+                "There should be at least one initial reviewed ADR "
+                "(usually 'docs/adr/0000-record-architecture-decisions.md')."
+            )
+            raise PyadrNoNumberedAdrError(e)
+        else:
+            return next_adr_id
+
+    def _apply_accept_or_reject_to_proposed_adr(
+        self, proposed_adr: Path, status: str
+    ) -> Path:
+        next_adr_id = self._get_next_adr_id()
+        reviewed_adr = self._update_adr_filename(proposed_adr, next_adr_id)
+        logger.info(f"Renamed ADR to: {reviewed_adr}")
+
+        update_adr(reviewed_adr, status=status)
+        logger.info(f"Changed ADR status to: {status}")
+        return reviewed_adr
+
+    def _update_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
+        with adr_path.open() as f:
+            title_slug = adr_title_slug_from_content_stream(
+                f, stream_source=str(adr_path)
+            )
+
+        renamed_path = adr_path.with_name(
+            "-".join([adr_id, title_slug]) + adr_path.suffix
+        )
+        self._apply_filepath_update(adr_path, renamed_path)
+
+        return renamed_path
+
+    def _apply_filepath_update(self, path: Path, renamed_path: Path) -> None:
+        path.rename(renamed_path)
+
+    ###########################################
     # GENERATE TOC
     ###########################################
-    def generate_toc(self, pre_checks: bool = True) -> None:
+    def generate_toc(self, pre_checks: bool = True) -> Path:
         if pre_checks:
             self.verify_adr_dir_exists()
 
@@ -164,53 +246,11 @@ class AdrCore(object):
 
         logger.info(f"Markdown table of content generated in '{toc_path}'")
 
+        return toc_path
+
     ###########################################
-    # ACCEPT / REJECT
+    # SHARED FUNC
     ###########################################
-    def accept_or_reject(self, status: str, toc: bool = False) -> None:
-        found_proposed_adrs = sorted(Path(self.config["records-dir"]).glob("XXXX-*"))
-        logger.info(
-            f"Current Working Directory is: '{Path(self.config['records-dir'])}'"
-        )
-        if not len(found_proposed_adrs):
-            logger.error(
-                "Could not find a proposed ADR "
-                "(should be of format 'docs/adr/XXXX-adr-title.md')."
-            )
-            raise PyadrNoProposedAdrError()
-
-        elif len(found_proposed_adrs) > 1:
-            logger.error(
-                f"Can handle only 1 proposed ADR but found {len(found_proposed_adrs)}:"
-            )
-            for adr in found_proposed_adrs:
-                logger.error(f"    => '{adr}'")
-            raise PyadrTooManyProposedAdrError()
-
-        proposed_adr = found_proposed_adrs[0]
-        try:
-            reviewed_adr = rename_reviewed_adr_file(
-                proposed_adr, Path(self.config["records-dir"])
-            )
-        except PyadrNoNumberedAdrError as e:
-            logger.error(
-                "There should be at least one initial reviewed ADR "
-                "(usually 'docs/adr/0000-record-architecture-decisions.md')."
-            )
-            raise PyadrNoNumberedAdrError(e)
-
-        logger.info(f"Renamed ADR to: {reviewed_adr}")
-
-        if toc:
-            self.generate_toc()
-
-        update_adr_title_status(reviewed_adr, status=status)
-        logger.info(f"Changed ADR status to: {status}")
-
-        ###########################################
-        # SHARED FUNC
-        ###########################################
-
     def verify_adr_dir_exists(self):
         adr_repo_path = Path(self.config["records-dir"])
         if not adr_repo_path.exists():
