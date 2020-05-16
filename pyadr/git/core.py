@@ -4,6 +4,7 @@ from typing import List, Tuple
 
 from git import Repo
 from loguru import logger
+from slugify import slugify
 
 from pyadr.const import (
     STATUS_PROPOSED,
@@ -11,9 +12,8 @@ from pyadr.const import (
     VALID_ADR_FILENAME_REGEX,
 )
 from pyadr.content_utils import (
-    adr_title_slug,
-    adr_title_slug_from_content_stream,
-    retrieve_title_status_and_date_from_madr_content_stream,
+    adr_title_slug_from_file,
+    retrieve_title_status_and_date_from_madr,
 )
 from pyadr.core import AdrCore
 from pyadr.exceptions import PyadrAdrFormatError
@@ -92,7 +92,7 @@ class GitAdrCore(AdrCore):
 
         verify_index_empty(self.repo)
 
-        adr_branch_name = f"adr-{adr_title_slug(title)}"
+        adr_branch_name = f"adr-{slugify(title)}"
         verify_branch_does_not_exist(self.repo, adr_branch_name)
 
         new_adr_path = self.new_adr(title, pre_checks=False)
@@ -211,11 +211,10 @@ class GitAdrCore(AdrCore):
     ) -> List[Path]:
         adr_files_with_invalid_content_format = []
         for adr in adr_files:
-            with adr.open() as f:
-                try:
-                    retrieve_title_status_and_date_from_madr_content_stream(f)
-                except PyadrAdrFormatError:
-                    adr_files_with_invalid_content_format.append(adr)
+            try:
+                retrieve_title_status_and_date_from_madr(adr)
+            except PyadrAdrFormatError:
+                adr_files_with_invalid_content_format.append(adr)
 
         if adr_files_with_invalid_content_format:
             logger.error(
@@ -229,14 +228,7 @@ class GitAdrCore(AdrCore):
 
     def _check_no_adr_is_proposed(self, adr_files: List[Path]) -> None:
         def adr_has_status(adr_path: Path, target_status: str) -> bool:
-            with adr_path.open() as f:
-                (
-                    _,
-                    (status, _),
-                    _,
-                ) = retrieve_title_status_and_date_from_madr_content_stream(
-                    f, stream_source=str(adr_path)
-                )
+            (_, (status, _), _,) = retrieve_title_status_and_date_from_madr(adr_path)
 
             return status == target_status
 
@@ -257,10 +249,7 @@ class GitAdrCore(AdrCore):
         def has_filename_without_title_slug_and_title_slug(
             file: Path,
         ) -> Tuple[bool, str]:
-            with file.open() as f:
-                title_slug = adr_title_slug_from_content_stream(
-                    f, stream_source=str(file)
-                )
+            title_slug = adr_title_slug_from_file(file)
 
             try:
                 title_part = file.stem.split("-", 1)[1]
