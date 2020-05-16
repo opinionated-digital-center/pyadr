@@ -102,26 +102,6 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
               => 'docs/adr/XXXX-an-adr.md' does not start with 4 digits followed by '-'.
             """
 
-    Scenario: Check ADR file names with no '-'
-        Given an initialised git adr repo
-        And a file named "docs/adr/0002_an_adr.md" with:
-            """
-            # A different ADR Title
-
-            * Status: accepted
-            * Date: 2020-03-26
-
-            ## Context and Problem Statement
-
-            [..]
-            """
-        When I run "git adr pre-merge-checks"
-        Then it should fail with:
-            """
-            ADR file names must be of format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but the following files where not:
-              => 'docs/adr/0002_an_adr.md' does not start with 4 digits followed by '-'.
-            """
-
     Scenario: Check all ADR files have a status other than 'proposed'
         Given an initialised git adr repo
         And a file named "docs/adr/0002-an-adr.md" with:
@@ -245,7 +225,7 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
               => 'docs/adr/0002-an-adr.md'.
             """
 
-    Scenario: Passing checks
+    Scenario: Pass checks when all conditions are filled
         Given an initialised git adr repo
         And a file named "docs/adr/0002-an-adr.md" with:
             """
