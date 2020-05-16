@@ -71,14 +71,14 @@ The ``git`` extension to ``pyadr`` does the following additional actions:
   (`corresponding BDD tests <features/git_adr/accept_or_reject_proposed_adr.feature>`_):
 
   * stage ADR to current branch.
-  * optionally commit ADR. (not yet implemented)
+  * optionally commit ADR.
   * optionally squash commits. (not yet implemented)
 
 * ``git adr reject [<file-path>]``:
   (`corresponding BDD tests <features/git_adr/accept_or_reject_proposed_adr.feature>`_):
 
   * stage ADR to current branch.
-  * optionally commit ADR. (not yet implemented)
+  * optionally commit ADR.
   * optionally squash commits. (not yet implemented)
 
 * ``git adr deprecate <file-path>``: (not yet implemented)

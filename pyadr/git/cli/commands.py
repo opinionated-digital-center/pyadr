@@ -86,10 +86,13 @@ class GitAcceptCommand(GitNewCommand):
 
     accept
         {--t|toc : If set, generates also the table of content.}
+        {--c|commit : If set, commits the processed ADR.}
     """
 
     def handle(self):
-        self.git_adr_core.git_accept_or_reject(STATUS_ACCEPTED, self.option("toc"))
+        self.git_adr_core.git_accept_or_reject(
+            STATUS_ACCEPTED, self.option("toc"), self.option("commit")
+        )
 
 
 class GitRejectCommand(GitNewCommand):
@@ -98,10 +101,13 @@ class GitRejectCommand(GitNewCommand):
 
     reject
         {--t|toc : If set, generates also the table of content.}
+        {--c|commit : If set, commits the processed ADR.}
     """
 
     def handle(self):
-        self.git_adr_core.git_accept_or_reject(STATUS_REJECTED, self.option("toc"))
+        self.git_adr_core.git_accept_or_reject(
+            STATUS_REJECTED, self.option("toc"), self.option("commit")
+        )
 
 
 class GitPreMergeChecksCommand(GitNewCommand):

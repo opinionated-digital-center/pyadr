@@ -31,8 +31,8 @@ def test_add_id_and_update_title_on_proposed_adr_file_name(adr_tmp_path):
 
 def test_determine_next_id(adr_tmp_path):
     # Given
-    (adr_tmp_path / "0001-a-reviewed-adr.md").touch()
-    (adr_tmp_path / "0002-a-reviewed-adr.md").touch()
+    (adr_tmp_path / "0001-an-accepted-or-rejected-adr.md").touch()
+    (adr_tmp_path / "0002-an-accepted-or-rejected-adr.md").touch()
     (adr_tmp_path / "XXXX-a-proposed-adr.md").touch()
 
     # When
