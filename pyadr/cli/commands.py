@@ -4,6 +4,7 @@ import cleo
 
 from pyadr.const import STATUS_ACCEPTED, STATUS_REJECTED
 from pyadr.core import AdrCore
+from pyadr.exceptions import PyadrAdrRepoChecksFailedError
 
 
 class BaseCommand(cleo.Command):
@@ -100,3 +101,18 @@ class GenerateTocCommand(BaseCommand):
 
     def handle(self):
         self.adr_core.generate_toc()
+
+
+class CheckAdrRepoCommand(BaseCommand):
+    """
+    Performs sanity checks typically required on ADR files before merging a Pull Request
+
+    check-adr-repo
+        {--p|no-proposed : If set, will also check that there are no proposed ADR.}
+    """
+
+    def handle(self):
+        try:
+            self.adr_core.check_adr_repo(self.option("no-proposed"))
+        except PyadrAdrRepoChecksFailedError:
+            return 1

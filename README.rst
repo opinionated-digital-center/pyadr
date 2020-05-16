@@ -44,6 +44,8 @@ Features
 * ``pyadr supersede <superseded-file-path> <superseding-file-path>``: (not yet implemented) supersede an ADR with another ADR.
 * ``pyadr generate-toc``: generate a table of content (in format ``index.md``)
   (`corresponding BDD tests <features/pyadr/generate_toc.feature>`_).
+* ``pyadr check-adr-repo``: performs sanity checks on the ADR repo
+  (`corresponding BDD tests <features/pyadr/check-adr-repo.feature>`_).
 * ``pyadr config [<setting>] [<value>]``: configure a setting
   (`corresponding BDD tests <features/pyadr/config.feature>`_).
 

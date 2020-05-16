@@ -75,3 +75,19 @@ class PyadrAdrDateNotFoundError(PyadrAdrFormatError):
 
     def __init__(self, source: str):
         super(PyadrAdrDateNotFoundError, self).__init__(item_name="Date", source=source)
+
+
+class PyadrSomeAdrFilenamesIncorrectError(PyadrError):
+    """Check on the name of each ADR files has failed"""
+
+
+class PyadrSomeAdrStatusesAreProposedError(PyadrError):
+    """Check on the fact that no ADR status is 'proposed' has failed"""
+
+
+class PyadrSomeAdrNumbersNotUniqueError(PyadrError):
+    """Some ADRs have the same number"""
+
+
+class PyadrAdrRepoChecksFailedError(PyadrError):
+    """ADR repository checks have failed"""
