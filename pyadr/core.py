@@ -148,14 +148,14 @@ class AdrCore(object):
     def accept_or_reject(self, status: str, toc: bool = False) -> Path:
         proposed_adr = self._verify_proposed_adr()
 
-        reviewed_adr = self._apply_accept_or_reject_to_proposed_adr(
+        processed_adr = self._apply_accept_or_reject_to_proposed_adr(
             proposed_adr, status
         )
 
         if toc:
             self.generate_toc()
 
-        return reviewed_adr
+        return processed_adr
 
     def _verify_proposed_adr(self):
         found_proposed_adrs = sorted(Path(self.config["records-dir"]).glob("XXXX-*"))
@@ -189,7 +189,7 @@ class AdrCore(object):
             next_adr_id = calculate_next_adr_id(Path(self.config["records-dir"]))
         except PyadrNoNumberedAdrError as e:
             logger.error(
-                "There should be at least one initial reviewed ADR "
+                "There should be at least one initial accepted/rejected ADR "
                 "(usually 'docs/adr/0000-record-architecture-decisions.md')."
             )
             raise PyadrNoNumberedAdrError(e)
@@ -200,12 +200,12 @@ class AdrCore(object):
         self, proposed_adr: Path, status: str
     ) -> Path:
         next_adr_id = self._get_next_adr_id()
-        reviewed_adr = self._update_adr_filename(proposed_adr, next_adr_id)
-        logger.info(f"Renamed ADR to: {reviewed_adr}")
+        processed_adr = self._update_adr_filename(proposed_adr, next_adr_id)
+        logger.info(f"Renamed ADR to: {processed_adr}")
 
-        update_adr(reviewed_adr, status=status)
+        update_adr(processed_adr, status=status)
         logger.info(f"Changed ADR status to: {status}")
-        return reviewed_adr
+        return processed_adr
 
     def _update_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
         with adr_path.open() as f:

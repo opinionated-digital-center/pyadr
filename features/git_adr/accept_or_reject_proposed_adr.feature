@@ -142,3 +142,27 @@ Feature: Accept or reject proposed ADR - Git included
             """
         And the file named "docs/adr/index.md" should exist
         And the file "docs/adr/index.md" should be staged
+
+    Scenario: Commit files on `accept --commit` option
+        Given an initialised git adr repo
+        And a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
+        And I stage the file "docs/adr/XXXX-my-adr-title.md"
+        When I run "git adr accept --commit"
+        Then it should pass
+        And the file "docs/adr/0002-my-adr-title.md" should be committed in the last commit
+        And the head commit message should be
+            """
+            docs(adr): [accepted] 0002-my-adr-title
+            """
+
+    Scenario: Commit files on `reject --commit` option
+        Given an initialised git adr repo
+        And a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
+        And I stage the file "docs/adr/XXXX-my-adr-title.md"
+        When I run "git adr reject --commit"
+        Then it should pass
+        And the file "docs/adr/0002-my-adr-title.md" should be committed in the last commit
+        And the head commit message should be
+            """
+            docs(adr): [rejected] 0002-my-adr-title
+            """

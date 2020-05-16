@@ -108,8 +108,15 @@ class GitAdrCore(AdrCore):
     ###########################################
     # ACCEPT / REJECT
     ###########################################
-    def git_accept_or_reject(self, status: str, toc: bool = False) -> None:
-        self.accept_or_reject(status, toc)
+    def git_accept_or_reject(
+        self, status: str, toc: bool = False, commit: bool = False,
+    ) -> None:
+        processed_adr = self.accept_or_reject(status, toc)
+
+        if commit:
+            self.repo.index.commit(
+                f"{self.commit_msg_prefix} [{status}] {processed_adr.stem}"
+            )
 
     def _verify_proposed_adr(self):
         proposed_adr = super()._verify_proposed_adr()
