@@ -105,7 +105,7 @@ class GenerateTocCommand(BaseCommand):
 
 class CheckAdrRepoCommand(BaseCommand):
     """
-    Performs sanity checks typically required on ADR files before merging a Pull Request
+    Perform sanity checks typically required on ADR files before merging a Pull Request
 
     check-adr-repo
         {--p|no-proposed : If set, will also check that there are no proposed ADR.}
@@ -120,7 +120,7 @@ class CheckAdrRepoCommand(BaseCommand):
 
 class HelperSlugCommand(BaseCommand):
     """
-    Returns the ADR's title in slug format
+    Return the ADR's title in slug format
 
     slug
         {file : ADR file to use as source.}
@@ -132,7 +132,7 @@ class HelperSlugCommand(BaseCommand):
 
 class HelperLowercaseCommand(BaseCommand):
     """
-    Returns the ADR's title in lowercase
+    Return the ADR's title in lowercase
 
     lowercase
         {file : ADR file to use as source.}
