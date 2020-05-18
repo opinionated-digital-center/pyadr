@@ -40,7 +40,7 @@ pytest-mock = {version = "^1.13.0", optional = true}
 pytest-html = {version = "^2.0.1", optional = true}
 pytest-asyncio = {version = "^0.10.0", optional = true}
 # Optional dependencies to be part of `bdd` extra
-behave4git = {version = "^0.2", optional = true}
+behave4git = {version = "^0.3", optional = true}
 PyHamcrest = {version = "^2.0", optional = true}
 # Optional dependencies to be part of `lint` extra
 flake8 = {version = "^3.7", optional = true}
