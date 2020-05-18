@@ -90,10 +90,10 @@ help:
 #################################################################
 
 setup-dev-env-minimal: clean
-	poetry install --no-root -E format
+	poetry install -E format
 
 setup-dev-env-full: clean
-	poetry install --no-root -E test -E bdd -E type -E format -E lint -E repl
+	poetry install -E test -E bdd -E type -E format -E lint -E repl
 
 setup-dev-host:
 	./scripts/install_pyenv.sh
