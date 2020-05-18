@@ -112,7 +112,7 @@ class GitRejectCommand(BaseGitCommand):
 
 class GitPreMergeChecksCommand(BaseGitCommand):
     """
-    Performs sanity checks typically required on ADR files before merging a Pull Request
+    Perform sanity checks typically required on ADR files before merging a Pull Request
 
     pre-merge-checks
     """
