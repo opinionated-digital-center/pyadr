@@ -44,16 +44,21 @@ def update_adr_content_title_and_status(
 
 
 def adr_title_slug_from_file(path: Path) -> str:
-    title, _, _ = retrieve_title_status_and_date_from_madr(path)
+    title, _, _ = adr_title_status_and_date_from_file(path)
     return slugify(title)
 
 
 def adr_title_lowercase_from_file(path: Path) -> str:
-    title, _, _ = retrieve_title_status_and_date_from_madr(path)
+    title, _, _ = adr_title_status_and_date_from_file(path)
     return title.lower()
 
 
-def retrieve_title_status_and_date_from_madr(
+def adr_status_from_file(path: Path) -> str:
+    _, (status, _), _ = adr_title_status_and_date_from_file(path)
+    return status
+
+
+def adr_title_status_and_date_from_file(
     path: Path,
 ) -> Tuple[str, Tuple[str, Optional[str]], str]:
     with path.open() as f:
@@ -151,11 +156,9 @@ def extract_adrs_by_status(
         },
     }
     for adr in adr_paths:
-        (
-            title,
-            (status, status_phrase),
-            date,
-        ) = retrieve_title_status_and_date_from_madr(adr)
+        (title, (status, status_phrase), date,) = adr_title_status_and_date_from_file(
+            adr
+        )
         try:
             status_supplement = ""
             if status_phrase:

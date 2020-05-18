@@ -49,9 +49,9 @@ Feature: Create a new ADR - Git included
             """
             File 'docs/adr/XXXX-my-adr-title.md' staged.
             """
-        And the branch "adr-my-adr-title" should exist
-        And the head should be at branch "adr-my-adr-title"
-        And the branch "adr-my-adr-title" should be at the same level as branch "master"
+        And the branch "adr-propose-my-adr-title" should exist
+        And the head should be at branch "adr-propose-my-adr-title"
+        And the branch "adr-propose-my-adr-title" should be at the same level as branch "master"
         And the file "docs/adr/XXXX-my-adr-title.md" should be staged
 
     Scenario: Fail when index dirty
@@ -70,10 +70,10 @@ Feature: Create a new ADR - Git included
 
     Scenario: Fail when feature branch already exists
         Given an initialised git adr repo
-        And I create the branch "adr-my-adr-title"
+        And I create the branch "adr-propose-my-adr-title"
         When I run "git adr new My ADR Title"
         Then it should fail with
             """
-            Verifying branch 'adr-my-adr-title' does not exist...
-            ... branch 'adr-my-adr-title' already exists. Clean before running command.
+            Verifying branch 'adr-propose-my-adr-title' does not exist...
+            ... branch 'adr-propose-my-adr-title' already exists. Clean before running command.
             """

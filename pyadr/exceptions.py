@@ -81,13 +81,29 @@ class PyadrSomeAdrFilenamesIncorrectError(PyadrError):
     """Check on the name of each ADR files has failed"""
 
 
+class PyadrAdrFilenameIncorrectError(PyadrError):
+    """ADR filename is badly formatted and/or not synched with the ADR content"""
+
+
 class PyadrSomeAdrStatusesAreProposedError(PyadrError):
     """Check on the fact that no ADR status is 'proposed' has failed"""
 
 
-class PyadrSomeAdrNumbersNotUniqueError(PyadrError):
+class PyadrSomeAdrIdsNotUniqueError(PyadrError):
     """Some ADRs have the same number"""
 
 
 class PyadrAdrRepoChecksFailedError(PyadrError):
     """ADR repository checks have failed"""
+
+
+class PyadrAdrFilenameFormatError(PyadrError):
+    """ADR filename format incorrect"""
+
+
+class PyadrAdrFilenameNotSynchedError(PyadrError):
+    """ADR filename not synched with ADR file content"""
+
+
+class PyadrStatusIncompatibleWithReviewRequestError(PyadrError):
+    """Cannot create a review request branch with status of the given ADR"""

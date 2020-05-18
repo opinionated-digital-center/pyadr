@@ -110,6 +110,15 @@ The ``git`` extension to ``pyadr`` does the following additional actions:
   * commit ADR(s).
   * optionally squash commits.
 
+* ``git adr helper``: generate and syncs various useful things
+  (`corresponding BDD tests <features/pyadr/helper.feature>`_):
+
+  * print title slug.
+  * print title in lowercase.
+  * synch filename with ADR title and staged renamed file.
+  * print expected commit message for ADR.
+  * print expected review request branch for ADR.
+
 * ``git adr pre-merge-checks``
   (`corresponding BDD tests <features.git/pre-merge-checks.feature>`_):
 

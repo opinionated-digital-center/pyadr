@@ -41,12 +41,12 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
         When I run "git adr pre-merge-checks"
         Then it should fail with:
             """
-            ADR file names must be of format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but the following files where not:
-              => 'docs/adr/0002-an-adr.md' should end with 'a-different-adr-title'.
-              => 'docs/adr/0003-another-adr.md' should end with 'yet-another-different-adr-title'.
+            Filename of ADR(s) processed (status '<any status with an id>') must be at least of format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but:
+              => 'docs/adr/0002-an-adr.md' does not have the correct title slug ('a-different-adr-title').
+              => 'docs/adr/0003-another-adr.md' does not have the correct title slug ('yet-another-different-adr-title').
             """
 
-    Scenario: Check all ADR file names have 4 digits followed by '-'
+    Scenario: Check all ADR file names have '[0-9][0-9][0-9][0-9]' followed by '-'
         Given an initialised git adr repo
         And a file named "docs/adr/XXXX-an-adr.md" with:
             """
@@ -95,11 +95,11 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
         When I run "git adr pre-merge-checks"
         Then it should fail with:
             """
-            ADR file names must be of format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but the following files where not:
-              => 'docs/adr/000-yet-another-adr.md' does not start with 4 digits followed by '-'.
-              => 'docs/adr/00023-a-last-adr.md' does not start with 4 digits followed by '-'.
-              => 'docs/adr/000X-another-adr.md' does not start with 4 digits followed by '-'.
-              => 'docs/adr/XXXX-an-adr.md' does not start with 4 digits followed by '-'.
+            Filename of ADR(s) processed (status '<any status with an id>') must be at least of format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but:
+              => 'docs/adr/000-yet-another-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
+              => 'docs/adr/00023-a-last-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
+              => 'docs/adr/000X-another-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
+              => 'docs/adr/XXXX-an-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
             """
 
     Scenario: Check all ADR files have a status other than 'proposed'
@@ -212,7 +212,7 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
         When I run "git adr pre-merge-checks"
         Then it should fail with
             """
-            ADR file names must be of format:
+            ADR must be of format:
             >>>>>
             # Title
 
