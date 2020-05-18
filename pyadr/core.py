@@ -1,7 +1,7 @@
 import re
 import shutil
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from loguru import logger
 from slugify import slugify
@@ -10,27 +10,34 @@ from pyadr import assets
 from pyadr.config import Config
 from pyadr.const import (
     ADR_DEFAULT_SETTINGS,
+    FILENAME_REGEXES,
+    REGEX_ERROR_MESSAGES,
     STATUS_ACCEPTED,
+    STATUS_ANY_WITH_ID,
     STATUS_PROPOSED,
     VALID_ADR_CONTENT_FORMAT,
-    VALID_ADR_FILENAME_REGEX,
+    VALID_ADR_FILENAME_WITH_ID_REGEX,
 )
 from pyadr.content_utils import (
+    adr_status_from_file,
     adr_title_lowercase_from_file,
     adr_title_slug_from_file,
+    adr_title_status_and_date_from_file,
     build_toc_content_from_adrs_by_status,
     extract_adrs_by_status,
-    retrieve_title_status_and_date_from_madr,
 )
 from pyadr.exceptions import (
     PyadrAdrDirectoryAlreadyExistsError,
     PyadrAdrDirectoryDoesNotExistsError,
+    PyadrAdrFilenameFormatError,
+    PyadrAdrFilenameIncorrectError,
+    PyadrAdrFilenameNotSynchedError,
     PyadrAdrFormatError,
     PyadrAdrRepoChecksFailedError,
     PyadrNoNumberedAdrError,
     PyadrNoProposedAdrError,
     PyadrSomeAdrFilenamesIncorrectError,
-    PyadrSomeAdrNumbersNotUniqueError,
+    PyadrSomeAdrIdsNotUniqueError,
     PyadrSomeAdrStatusesAreProposedError,
     PyadrTooManyProposedAdrError,
 )
@@ -171,6 +178,43 @@ class AdrCore(object):
 
         return processed_adr
 
+    def _adr_filename_format_correct(
+        self, path: Path, status: str = None, check_title_format: bool = True
+    ) -> bool:
+        status = self._resolve_status(path, status)
+        full_or_skip_title = self._resolve_regex_type(check_title_format)
+
+        return bool(
+            re.compile(FILENAME_REGEXES[status][full_or_skip_title]).match(path.name)
+        )
+
+    def _resolve_status(self, path: Path, status: str = None) -> str:
+        if status is None:
+            status = adr_status_from_file(path)
+        return status
+
+    def _resolve_regex_type(self, check_title_format: bool = True) -> str:
+        if check_title_format:
+            return "full"
+        else:
+            return "skip_title"
+
+    def _verify_adr_filename_format(
+        self, path: Path, status: str = None, check_title_format: bool = True
+    ) -> None:
+        if not self._adr_filename_format_correct(path, status, check_title_format):
+            status = self._resolve_status(path, status)
+            full_or_skip_title = self._resolve_regex_type(check_title_format)
+
+            logger.error(REGEX_ERROR_MESSAGES[status][full_or_skip_title] + ".")
+            raise PyadrAdrFilenameFormatError(str(path))
+
+    def _verify_adr_filename_synched(self, adr_path: Path) -> None:
+        try:
+            self._verify_adr_filenames_correct([adr_path])
+        except PyadrSomeAdrFilenamesIncorrectError:
+            raise PyadrAdrFilenameNotSynchedError(str(adr_path))
+
     def _verify_proposed_adr(self):
         found_proposed_adrs = sorted(Path(self.config["records-dir"]).glob("XXXX-*"))
         logger.info(
@@ -214,22 +258,25 @@ class AdrCore(object):
         self, proposed_adr: Path, status: str
     ) -> Path:
         next_adr_id = self._get_next_adr_id()
-        processed_adr = self._update_adr_filename(proposed_adr, next_adr_id)
+        processed_adr = self._synch_adr_filename(proposed_adr, next_adr_id)
         logger.info(f"Renamed ADR to: {processed_adr}")
 
         update_adr(processed_adr, status=status)
         logger.info(f"Changed ADR status to: {status}")
         return processed_adr
 
-    def _update_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
-        title_slug = adr_title_slug_from_file(adr_path)
-
-        renamed_path = adr_path.with_name(
-            "-".join([adr_id, title_slug]) + adr_path.suffix
-        )
+    def _synch_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
+        renamed_path = self._build_adr_filename(adr_path, adr_id)
         if adr_path != renamed_path:
             self._apply_filepath_update(adr_path, renamed_path)
 
+        return renamed_path
+
+    def _build_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
+        title_slug = adr_title_slug_from_file(adr_path)
+        renamed_path = adr_path.with_name(
+            "-".join([adr_id, title_slug]) + adr_path.suffix
+        )
         return renamed_path
 
     def _apply_filepath_update(self, path: Path, renamed_path: Path) -> None:
@@ -272,14 +319,9 @@ class AdrCore(object):
     def resync_filename(self, file: str) -> None:
         path = Path(file)
 
-        rex = re.compile(r"^([0-9][0-9][0-9][0-9]|XXXX)-.*\.md")
-        if not rex.match(path.name):
-            logger.info(
-                "Filename must be starting with '[0-9][0-9][0-9][0-9]-' "
-                "or 'XXXX-' and have '.md' as extension."
-            )
+        self._verify_adr_filename_format(path, check_title_format=False)
 
-        renamed_path = self._update_adr_filename(path, path.stem.split("-", 1)[0])
+        renamed_path = self._synch_adr_filename(path, path.stem.split("-", 1)[0])
 
         if path != renamed_path:
             logger.info(f"File renamed to '{str(renamed_path)}'.")
@@ -304,7 +346,7 @@ class AdrCore(object):
 
         try:
             self._check_adr_numbers_unique(adr_files)
-        except PyadrSomeAdrNumbersNotUniqueError:
+        except PyadrSomeAdrIdsNotUniqueError:
             at_least_one_check_failed = True
 
         adrs_with_invalid_content_format = self._filter_adrs_with_invalid_content_format(  # noqa
@@ -318,7 +360,11 @@ class AdrCore(object):
         ]
 
         try:
-            self._check_all_adr_filenames_correct(adr_files_checked_for_content_format)
+            self._verify_adr_filenames_correct(
+                adr_files_checked_for_content_format,
+                status=STATUS_ANY_WITH_ID,
+                check_title_format=True,
+            )
         except PyadrSomeAdrFilenamesIncorrectError:
             at_least_one_check_failed = True
 
@@ -331,7 +377,7 @@ class AdrCore(object):
         return at_least_one_check_failed
 
     def _check_adr_numbers_unique(self, adr_files: List[Path]) -> None:
-        rex = re.compile(VALID_ADR_FILENAME_REGEX)
+        rex = re.compile(VALID_ADR_FILENAME_WITH_ID_REGEX)
         adrs_with_valid_filenames = [file for file in adr_files if rex.match(file.name)]
         unique_numbers = set(
             [file.stem.split("-", 1)[0] for file in adrs_with_valid_filenames]
@@ -350,7 +396,7 @@ class AdrCore(object):
             )
             for files in sorted(adrs_with_duplicate_number):
                 logger.error(f"  => {[str(file) for file in sorted(files)]}.")
-            raise PyadrSomeAdrNumbersNotUniqueError
+            raise PyadrSomeAdrIdsNotUniqueError
 
     def _filter_adrs_with_invalid_content_format(
         self, adr_files: List[Path]
@@ -358,13 +404,13 @@ class AdrCore(object):
         adr_files_with_invalid_content_format = []
         for adr in adr_files:
             try:
-                retrieve_title_status_and_date_from_madr(adr)
+                adr_title_status_and_date_from_file(adr)
             except PyadrAdrFormatError:
                 adr_files_with_invalid_content_format.append(adr)
 
         if adr_files_with_invalid_content_format:
             logger.error(
-                "ADR file names must be of format:"
+                "ADR must be of format:"
                 "\n" + VALID_ADR_CONTENT_FORMAT + ""
                 "but the following files where not:"
             )
@@ -374,7 +420,7 @@ class AdrCore(object):
 
     def _check_no_adr_is_proposed(self, adr_files: List[Path]) -> None:
         def adr_has_status(adr_path: Path, target_status: str) -> bool:
-            (_, (status, _), _,) = retrieve_title_status_and_date_from_madr(adr_path)
+            (_, (status, _), _,) = adr_title_status_and_date_from_file(adr_path)
 
             return status == target_status
 
@@ -391,8 +437,25 @@ class AdrCore(object):
                 logger.error(f"  => '{str(file)}'.")
             raise PyadrSomeAdrStatusesAreProposedError
 
-    def _check_all_adr_filenames_correct(self, adr_files: List[Path]) -> None:
-        def tuple_has_title_slug_and_title_slug(file: Path,) -> Tuple[bool, str]:
+    def _verify_adr_filename_correct(
+        self, adr_path: Path, status: str = None, check_title_format: bool = True,
+    ) -> None:
+        error_messages = self._verify_adr_filenames_correct(
+            [adr_path], status, check_title_format, handle_errors=False
+        )
+        if error_messages:
+            for message in error_messages:
+                logger.error(message)
+            raise PyadrAdrFilenameIncorrectError(adr_path)
+
+    def _verify_adr_filenames_correct(
+        self,
+        adr_files: List[Path],
+        status: str = None,
+        check_title_format: bool = True,
+        handle_errors: bool = True,
+    ) -> Optional[List[str]]:
+        def title_slug_correct_and_title_slug(file: Path) -> Tuple[bool, str]:
             title_slug = adr_title_slug_from_file(file)
 
             try:
@@ -402,35 +465,48 @@ class AdrCore(object):
 
             return title_in_filename != title_slug, title_slug
 
-        rex = re.compile(VALID_ADR_FILENAME_REGEX)
-        filenames_correctness_status = {
-            file: {
-                "starts_incorrectly": not rex.match(file.name),
-                "with_incorrect_title_slug": tuple_has_title_slug_and_title_slug(file),
+        if len(adr_files) == 1:
+            status = self._resolve_status(adr_files[0], status)
+        else:
+            if status is None:
+                status = STATUS_ANY_WITH_ID
+        full_or_skip_title = self._resolve_regex_type(check_title_format)
+
+        filenames_correctness_status = {}
+        for file in sorted(adr_files):
+            filenames_correctness_status[file] = {
+                "format_not_valid": not self._adr_filename_format_correct(
+                    file, status, check_title_format
+                ),
+                "with_incorrect_title_slug": title_slug_correct_and_title_slug(file),
             }
-            for file in sorted(adr_files)
-        }
 
         error_messages = []
-        for file, status in filenames_correctness_status.items():
-            if status["starts_incorrectly"]:
+        for file, error_status in filenames_correctness_status.items():
+            if error_status["format_not_valid"]:
                 error_messages.append(
-                    f"  => '{str(file)}' does not start with 4 digits followed by '-'."
+                    f"  => '{str(file)}' does not start with "
+                    f"'{REGEX_ERROR_MESSAGES[status]['id_prefix']}' followed by '-'."
                 )
-            if status["with_incorrect_title_slug"][0]:  # type: ignore
+            if error_status["with_incorrect_title_slug"][0]:  # type: ignore
                 error_messages.append(
-                    f"  => '{str(file)}' should end with "  # type: ignore
-                    f"'{status['with_incorrect_title_slug'][1]}'."  # type: ignore
+                    f"  => '{str(file)}' does not have the correct title slug "  # type: ignore  # noqa
+                    f"('{error_status['with_incorrect_title_slug'][1]}')."  # type: ignore  # noqa
                 )
+
         if error_messages:
-            logger.error(
-                "ADR file names must be of format "
-                "'[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', "
-                "but the following files where not:"
+            error_messages.sort()
+            error_messages.insert(
+                0, REGEX_ERROR_MESSAGES[status][full_or_skip_title] + ", but:",
             )
-            for message in sorted(error_messages):
-                logger.error(message)
-            raise PyadrSomeAdrFilenamesIncorrectError
+            if handle_errors:
+                for message in error_messages:
+                    logger.error(message)
+                raise PyadrSomeAdrFilenamesIncorrectError
+            else:
+                return error_messages
+        else:
+            return None
 
     def _list_adr_files(self) -> List[Path]:
         adr_files = [

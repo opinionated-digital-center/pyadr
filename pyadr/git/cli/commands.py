@@ -122,3 +122,82 @@ class GitPreMergeChecksCommand(BaseGitCommand):
             self.git_adr_core.git_pre_merge_checks()
         except PyadrGitPreMergeChecksFailedError:
             return 1
+
+
+class GitHelperSlugCommand(BaseGitCommand):
+    """
+    Print the ADR's title in slug format
+
+    slug
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.git_adr_core.print_title_slug(self.argument("file"))
+
+
+class GitHelperLowercaseCommand(BaseGitCommand):
+    """
+    Print the ADR's title in lowercase
+
+    lowercase
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.git_adr_core.print_title_lowercase(self.argument("file"))
+
+
+class GitHelperResyncFilenameCommand(BaseGitCommand):
+    """
+    Resync the ADR's filename with its actual title
+
+    resync-filename
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.git_adr_core.resync_filename(self.argument("file"))
+
+
+class GitHelperCommitMessageCommand(BaseGitCommand):
+    """
+    Print the commit message related to the ADR
+
+    commit-message
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.git_adr_core.print_commit_message(self.argument("file"))
+
+
+class GitHelperBranchTitleCommand(BaseGitCommand):
+    """
+    Print the branch title related to the ADR's review request
+
+    branch-title
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.git_adr_core.print_branch_title(self.argument("file"))
+
+
+class GitHelperCommand(BaseGitCommand):
+    """
+    Helper command generating and syncing various useful things
+
+    helper
+    """
+
+    commands = [
+        GitHelperSlugCommand(),
+        GitHelperLowercaseCommand(),
+        GitHelperResyncFilenameCommand(),
+        GitHelperCommitMessageCommand(),
+        GitHelperBranchTitleCommand(),
+    ]
+
+    def handle(self):
+        return self.call("help", self.config.name)

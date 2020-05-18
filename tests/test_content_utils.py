@@ -6,8 +6,8 @@ from hamcrest import assert_that, calling, contains_string, equal_to, none, not_
 from pyadr import content_utils
 from pyadr.content_utils import (
     adr_title_slug_from_file,
+    adr_title_status_and_date_from_file,
     build_toc_content_from_adrs_by_status,
-    retrieve_title_status_and_date_from_madr,
 )
 from pyadr.exceptions import (
     PyadrAdrDateNotFoundError,
@@ -120,7 +120,7 @@ def test_retrieve_title_status_and_date_from_madr(adr_tmp_path):
         f.write(adr_content)
 
     # When
-    (title, (status, status_phrase), date,) = retrieve_title_status_and_date_from_madr(
+    (title, (status, status_phrase), date,) = adr_title_status_and_date_from_file(
         adr_path
     )
 
@@ -137,7 +137,7 @@ def test_retrieve_title_status_and_date_from_madr_when_no_status_phrase(
     # Given
 
     # When
-    (title, (status, status_phrase), date,) = retrieve_title_status_and_date_from_madr(
+    (title, (status, status_phrase), date,) = adr_title_status_and_date_from_file(
         sample_adr_path
     )
 
@@ -167,7 +167,7 @@ def test_retrieve_title_status_and_date_from_madr_throws_error_when_no_title(
     # When
     # Then
     assert_that(
-        calling(retrieve_title_status_and_date_from_madr).with_args(adr_path),
+        calling(adr_title_status_and_date_from_file).with_args(adr_path),
         raises(PyadrAdrTitleNotFoundError),
     )
 
@@ -192,7 +192,7 @@ def test_retrieve_title_status_and_date_from_madr_throws_error_when_no_status(
     # When
     # Then
     assert_that(
-        calling(retrieve_title_status_and_date_from_madr).with_args(adr_path),
+        calling(adr_title_status_and_date_from_file).with_args(adr_path),
         raises(PyadrAdrStatusNotFoundError),
     )
 
@@ -217,7 +217,7 @@ def test_retrieve_title_status_and_date_from_madr_throws_error_when_no_date(
     # When
     # Then
     assert_that(
-        calling(retrieve_title_status_and_date_from_madr).with_args(adr_path),
+        calling(adr_title_status_and_date_from_file).with_args(adr_path),
         raises(PyadrAdrDateNotFoundError),
     )
 
