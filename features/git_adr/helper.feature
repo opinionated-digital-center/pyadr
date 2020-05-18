@@ -6,7 +6,7 @@ Feature: Helper for the various names and messages - Git included
         Given a new working directory
         And an initialised git adr repo
 
-    Scenario: Resync ADR filename with its title - untracked files
+    Scenario: Sync ADR filename with its title - untracked files
         Given a file named "0002-my-adr-title.md" with:
             """
             # My ADR Updated Title
@@ -22,13 +22,13 @@ Feature: Helper for the various names and messages - Git included
 
             Decision outcome.
             """
-        When I run "git adr helper resync-filename 0002-my-adr-title.md"
+        When I run "git adr helper sync-filename 0002-my-adr-title.md"
         Then it should pass
         And the file named "0002-my-adr-title.md" should not exist
         And the file named "0002-my-adr-updated-title.md" should exist
         And the file "0002-my-adr-updated-title.md" should be staged
 
-    Scenario: Resync ADR filename with its title - staged file
+    Scenario: Sync ADR filename with its title - staged file
         Given a file named "0002-my-adr-title.md" with:
             """
             # My ADR Updated Title
@@ -45,13 +45,13 @@ Feature: Helper for the various names and messages - Git included
             Decision outcome.
             """
         And I stage the file "0002-my-adr-title.md"
-        When I run "git adr helper resync-filename 0002-my-adr-title.md"
+        When I run "git adr helper sync-filename 0002-my-adr-title.md"
         Then it should pass
         And the file named "0002-my-adr-title.md" should not exist
         And the file named "0002-my-adr-updated-title.md" should exist
         And the file "0002-my-adr-updated-title.md" should be staged
 
-    Scenario: Resync ADR filename with its title - committed file
+    Scenario: Sync ADR filename with its title - committed file
         Given a file named "0002-my-adr-title.md" with:
             """
             # My ADR Updated Title
@@ -69,15 +69,15 @@ Feature: Helper for the various names and messages - Git included
             """
         And I stage the file "0002-my-adr-title.md"
         And I commit the staged files with message "foo bar"
-        When I run "git adr helper resync-filename 0002-my-adr-title.md -vvv"
+        When I run "git adr helper sync-filename 0002-my-adr-title.md -vvv"
         Then it should pass
         And the file named "0002-my-adr-title.md" should not exist
         And the file named "0002-my-adr-updated-title.md" should exist
         And the file "0002-my-adr-updated-title.md" should be staged
 
-    Scenario: No resync if filename already correct
+    Scenario: No sync if filename already correct
         Given an accepted adr file named "0002-my-adr-title.md"
-        When I run "git adr helper resync-filename 0002-my-adr-title.md"
+        When I run "git adr helper sync-filename 0002-my-adr-title.md"
         Then it should pass
         And the file "0002-my-adr-title.md" should not be staged
 
