@@ -316,7 +316,7 @@ class AdrCore(object):
     def print_title_lowercase(self, file: str) -> None:
         logger.info(adr_title_lowercase_from_file(Path(file)))
 
-    def resync_filename(self, file: str) -> None:
+    def sync_filename(self, file: str) -> None:
         path = Path(file)
 
         self._verify_adr_filename_format(path, check_title_format=False)

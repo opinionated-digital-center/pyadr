@@ -142,16 +142,16 @@ class HelperLowercaseCommand(BaseCommand):
         self.adr_core.print_title_lowercase(self.argument("file"))
 
 
-class HelperResyncFilenameCommand(BaseCommand):
+class HelperSyncFilenameCommand(BaseCommand):
     """
-    Resyncs the ADR's filename with its actual title
+    Sync the ADR's filename with its actual title
 
-    resync-filename
+    sync-filename
         {file : ADR file to use as source.}
     """
 
     def handle(self):
-        self.adr_core.resync_filename(self.argument("file"))
+        self.adr_core.sync_filename(self.argument("file"))
 
 
 class HelperCommand(BaseCommand):
@@ -164,7 +164,7 @@ class HelperCommand(BaseCommand):
     commands = [
         HelperSlugCommand(),
         HelperLowercaseCommand(),
-        HelperResyncFilenameCommand(),
+        HelperSyncFilenameCommand(),
     ]
 
     def handle(self):

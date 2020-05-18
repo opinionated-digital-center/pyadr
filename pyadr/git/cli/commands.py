@@ -148,16 +148,16 @@ class GitHelperLowercaseCommand(BaseGitCommand):
         self.git_adr_core.print_title_lowercase(self.argument("file"))
 
 
-class GitHelperResyncFilenameCommand(BaseGitCommand):
+class GitHelperSyncFilenameCommand(BaseGitCommand):
     """
-    Resync the ADR's filename with its actual title
+    Sync the ADR's filename with its actual title
 
-    resync-filename
+    sync-filename
         {file : ADR file to use as source.}
     """
 
     def handle(self):
-        self.git_adr_core.resync_filename(self.argument("file"))
+        self.git_adr_core.sync_filename(self.argument("file"))
 
 
 class GitHelperCommitMessageCommand(BaseGitCommand):
@@ -194,7 +194,7 @@ class GitHelperCommand(BaseGitCommand):
     commands = [
         GitHelperSlugCommand(),
         GitHelperLowercaseCommand(),
-        GitHelperResyncFilenameCommand(),
+        GitHelperSyncFilenameCommand(),
         GitHelperCommitMessageCommand(),
         GitHelperBranchTitleCommand(),
     ]

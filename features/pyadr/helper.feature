@@ -29,7 +29,7 @@ Feature: Helper for the various names and messages
             my adr title
             """
 
-    Scenario: Resync ADR filename with its title
+    Scenario: Sync ADR filename with its title
         Given a file named "0001-my-adr-title.md" with:
             """
             # My ADR Updated Title
@@ -45,7 +45,7 @@ Feature: Helper for the various names and messages
 
             Decision outcome.
             """
-        When I run "pyadr helper resync-filename 0001-my-adr-title.md"
+        When I run "pyadr helper sync-filename 0001-my-adr-title.md"
         Then it should pass with
             """
             File renamed to '0001-my-adr-updated-title.md'.
@@ -53,7 +53,7 @@ Feature: Helper for the various names and messages
         And the file named "0001-my-adr-title.md" should not exist
         And the file named "0001-my-adr-updated-title.md" should exist
 
-    Scenario: Fail before resync filename if initial filename format not suitable
+    Scenario: Fail before sync filename if initial filename format not suitable
         Given a file named "001-my-adr-title.md" with:
             """
             # My ADR Title
@@ -64,7 +64,7 @@ Feature: Helper for the various names and messages
             ## Context and Problem Statement
             [..]
             """
-        When I run "pyadr helper resync-filename 001-my-adr-title.md"
+        When I run "pyadr helper sync-filename 001-my-adr-title.md"
         Then it should fail with
             """
             [PyadrAdrFilenameFormatError]
@@ -73,9 +73,9 @@ Feature: Helper for the various names and messages
             Filename of ADR(s) processed (status 'accepted') must be at least of format '[0-9][0-9][0-9][0-9]-*.md'.
             """
 
-    Scenario: No resync if filename already correct
+    Scenario: No sync if filename already correct
         Given an accepted adr file named "0001-my-adr-title.md"
-        When I run "pyadr helper resync-filename 0001-my-adr-title.md"
+        When I run "pyadr helper sync-filename 0001-my-adr-title.md"
         Then it should pass with
             """
             File name already up-to-date.
