@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.13.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.12.2...v0.13.0) (2020-05-18)
+
+
+### Features
+
+* add `--commit` option to `accept` and `reject` ([503a842](https://github.com/opinionated-digital-center/pyadr/commit/503a842e1c94e21081d9e44f7e2bf9a8383ca7ee))
+* add `git accept` and `git reject` commands ([d10c1af](https://github.com/opinionated-digital-center/pyadr/commit/d10c1afa233c103c4e829ba7e0abc108bb33d8cf))
+* add `git adr helper` command ([f98199c](https://github.com/opinionated-digital-center/pyadr/commit/f98199c49ccbbdf2adbd768e925c8093afd1654d))
+* add `pyadr check-adr-repo` command ([254f699](https://github.com/opinionated-digital-center/pyadr/commit/254f69968b147f5f62113a18353f3612c3875bc5))
+* add `pyadr helper` command ([6609d4a](https://github.com/opinionated-digital-center/pyadr/commit/6609d4a8d3145c9927be70c158fba6faad15cc9b))
+
 ## [0.12.2](https://github.com/opinionated-digital-center/pyadr/compare/v0.12.1...v0.12.2) (2020-05-15)
 
 
