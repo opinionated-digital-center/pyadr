@@ -1,14 +1,22 @@
 import logging
 
 from clikit.api.io import flags as verbosity
+from loguru import logger
 
+LOGGING_VERBOSE = 18
+LOGGING_VERY_VERBOSE = 16
 _levels = {
     logging.CRITICAL: verbosity.NORMAL,
     logging.ERROR: verbosity.NORMAL,
     logging.WARNING: verbosity.NORMAL,
     logging.INFO: verbosity.NORMAL,
+    LOGGING_VERBOSE: verbosity.VERBOSE,
+    LOGGING_VERY_VERBOSE: verbosity.VERY_VERBOSE,
     logging.DEBUG: verbosity.DEBUG,
 }
+
+logger.level("VERBOSE", no=LOGGING_VERBOSE)
+logger.level("VERY_VERBOSE", no=LOGGING_VERY_VERBOSE)
 
 
 class ClikitHandler(logging.Handler):
@@ -20,7 +28,7 @@ class ClikitHandler(logging.Handler):
 
     def emit(self, record: logging.LogRecord):
         level = _levels[record.levelno]
-        if self.io.verbosity == verbosity.NORMAL:
+        if self.io.verbosity <= verbosity.VERY_VERBOSE:
             self.write_line(level, record)
 
     def write_line(self, level: int, record: logging.LogRecord):
@@ -37,5 +45,5 @@ class ClikitDebuggerHandler(ClikitHandler):
 
     def emit(self, record: logging.LogRecord):
         level = _levels[record.levelno]
-        if self.io.verbosity >= verbosity.VERBOSE:
+        if self.io.verbosity >= verbosity.DEBUG:
             self.write_line(level, record)

@@ -25,13 +25,13 @@ def verify_index_empty(repo: Repo) -> None:
         logger.error("... files staged in Git index. Clean before running command.")
         raise PyadrGitIndexNotEmptyError()
 
-    logger.debug("... done.")
+    logger.log("VERBOSE", "... done.")
 
 
 def verify_branch_does_not_exist(repo: Repo, branch: str) -> None:
     logger.info(f"Verifying branch '{branch}' does not exist...")
     if "master" not in repo.heads or branch not in repo.heads:
-        logger.debug("... does not exist.")
+        logger.log("VERBOSE", "... does not exist.")
     else:
         logger.error(
             f"... branch '{branch}' already exists. Clean before running command."
@@ -42,7 +42,7 @@ def verify_branch_does_not_exist(repo: Repo, branch: str) -> None:
 def verify_main_branch_exists(repo: Repo, branch: str = "master") -> None:
     logger.info(f"Verifying branch '{branch}' exists... ")
     if branch in repo.heads:
-        logger.debug("... exists.")
+        logger.log("VERBOSE", "... exists.")
     else:
         message = (
             "... branch '{branch}' does not exist. {supplement}"
@@ -71,12 +71,12 @@ def get_verified_repo_client(repo_workdir: Path) -> Repo:
 def create_feature_branch_and_checkout(repo: Repo, branch_name: str) -> None:
     logger.info("Switching to 'master'...")
     repo.heads.master.checkout()
-    logger.debug("... done.")
+    logger.log("VERBOSE", "... done.")
 
     logger.info(f"Creating branch '{branch_name}' and switching to it...")
     repo.create_head(branch_name)
     repo.heads[branch_name].checkout()
-    logger.debug("... done.")
+    logger.log("VERBOSE", "... done.")
 
 
 def files_committed_in_commit(commit: Commit) -> List:

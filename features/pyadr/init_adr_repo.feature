@@ -20,7 +20,6 @@ Feature: Initialise an ADR repository
         Then it should pass with:
             """
             Directory '{__WORKDIR__}/docs/adr/' already exists. Used '--force' option => Erasing...
-            ... erased.
             """
         And the file named "docs/adr/to-be-erased" should not exist
         And the file named "docs/to-be-kept" should exist
@@ -43,7 +42,6 @@ Feature: Initialise an ADR repository
         Then it should pass with:
             """
             Copying MADR template to 'docs/adr/template.md'...
-            ... done.
             """
         And the file named "docs/adr/template.md" should exist
         And the file "docs/adr/template.md" should contain:
@@ -58,7 +56,6 @@ Feature: Initialise an ADR repository
         Then it should pass with:
             """
             Creating ADR 'docs/adr/0000-record-architecture-decisions.md'...
-            ... done.
             """
         And the file named "docs/adr/0000-record-architecture-decisions.md" should exist
         And the file "docs/adr/0000-record-architecture-decisions.md" should contain:
@@ -86,7 +83,6 @@ Feature: Initialise an ADR repository
         Then it should pass with:
             """
             Creating ADR 'docs/adr/0001-use-markdown-architectural-decision-records.md'...
-            ... done.
             """
         And the file named "docs/adr/0001-use-markdown-architectural-decision-records.md" should exist
         And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should contain:
