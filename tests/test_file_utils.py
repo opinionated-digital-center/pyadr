@@ -22,7 +22,7 @@ def test_add_id_and_update_title_on_proposed_adr_file_name(adr_tmp_path):
         )
 
     # When
-    result_file = AdrCore()._synch_adr_filename(adr_file, "0002")
+    result_file = AdrCore()._sync_adr_filename(adr_file, "0002")
 
     # Then
     expected_file = adr_tmp_path / "0002-my-adr-updated-title.md"

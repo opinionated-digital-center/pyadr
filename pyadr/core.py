@@ -258,14 +258,14 @@ class AdrCore(object):
         self, proposed_adr: Path, status: str
     ) -> Path:
         next_adr_id = self._get_next_adr_id()
-        processed_adr = self._synch_adr_filename(proposed_adr, next_adr_id)
+        processed_adr = self._sync_adr_filename(proposed_adr, next_adr_id)
         logger.info(f"Renamed ADR to: {processed_adr}")
 
         update_adr(processed_adr, status=status)
         logger.info(f"Changed ADR status to: {status}")
         return processed_adr
 
-    def _synch_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
+    def _sync_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
         renamed_path = self._build_adr_filename(adr_path, adr_id)
         if adr_path != renamed_path:
             self._apply_filepath_update(adr_path, renamed_path)
@@ -321,7 +321,7 @@ class AdrCore(object):
 
         self._verify_adr_filename_format(path, check_title_format=False)
 
-        renamed_path = self._synch_adr_filename(path, path.stem.split("-", 1)[0])
+        renamed_path = self._sync_adr_filename(path, path.stem.split("-", 1)[0])
 
         if path != renamed_path:
             logger.info(f"File renamed to '{str(renamed_path)}'.")
