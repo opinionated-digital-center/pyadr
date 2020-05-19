@@ -58,7 +58,7 @@ class GitInitCommand(BaseGitCommand):
 
 class GitNewCommand(BaseGitCommand):
     """
-    Create an new ADR
+    Create an new ADR, create a feature branch, stage new ADR in feature branch
 
     new
         {words* : Words in the title}
@@ -73,7 +73,7 @@ class GitNewCommand(BaseGitCommand):
 
 class GitProposeCommand(GitNewCommand):
     """
-    Create an proposal ADR (same as new... Here for coherence)
+    Same as `new` -> command added for coherence
 
     propose
         {words* : Words in the title}
@@ -82,7 +82,7 @@ class GitProposeCommand(GitNewCommand):
 
 class GitAcceptCommand(BaseGitCommand):
     """
-    Accept a proposed ADR
+    Accept a proposed ADR, stage the ADR in the current branch
 
     accept
         {--t|toc : If set, generates also the table of content.}
@@ -97,7 +97,7 @@ class GitAcceptCommand(BaseGitCommand):
 
 class GitRejectCommand(BaseGitCommand):
     """
-    Reject a proposed ADR
+    Reject a proposed ADR, stage the ADR in the current branch
 
     reject
         {--t|toc : If set, generates also the table of content.}
