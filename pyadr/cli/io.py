@@ -20,7 +20,8 @@ class ClikitHandler(logging.Handler):
 
     def emit(self, record: logging.LogRecord):
         level = _levels[record.levelno]
-        self.write_line(level, record)
+        if self.io.verbosity == verbosity.NORMAL:
+            self.write_line(level, record)
 
     def write_line(self, level: int, record: logging.LogRecord):
         if record.levelno >= logging.WARNING:
