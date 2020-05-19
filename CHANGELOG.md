@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.13.2](https://github.com/opinionated-digital-center/pyadr/compare/v0.13.1...v0.13.2) (2020-05-19)
+
+
+### Bug Fixes
+
+* clarify some commands help ([7dd8920](https://github.com/opinionated-digital-center/pyadr/commit/7dd8920ae934efb89ad765233e3ba28c461c79c0))
+* made prints less wordy ([4654550](https://github.com/opinionated-digital-center/pyadr/commit/465455063db81de8d5a7f9e778af103cd2952dc3))
+* manage properly verbose and very-verbose output levels ([b4a6de9](https://github.com/opinionated-digital-center/pyadr/commit/b4a6de980f956ef05db0367d7aa6829ac6987246))
+* remove duplicate message when using verbose ([e36ab87](https://github.com/opinionated-digital-center/pyadr/commit/e36ab877959be464ac9315014d9a6aab1ea879c8))
+
 ## [0.13.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.13.0...v0.13.1) (2020-05-18)
 
 
