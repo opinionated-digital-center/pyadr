@@ -6,18 +6,19 @@ from loguru import logger
 LOGGING_VERBOSE = 18
 LOGGING_VERY_VERBOSE = 16
 
-_levels = {
-    logging.CRITICAL: verbosity.NORMAL,
-    logging.ERROR: verbosity.NORMAL,
-    logging.WARNING: verbosity.NORMAL,
-    logging.INFO: verbosity.NORMAL,
-    LOGGING_VERBOSE: verbosity.VERBOSE,
-    LOGGING_VERY_VERBOSE: verbosity.VERY_VERBOSE,
-    logging.DEBUG: verbosity.DEBUG,
-}
-
 logger.level("VERBOSE", LOGGING_VERBOSE, color="<bold>", icon="🔈️")
 logger.level("VERY_VERBOSE", LOGGING_VERY_VERBOSE, color="<bold>", icon="🔊")
+
+_levels = {
+    logger.level("CRITICAL").no: verbosity.NORMAL,
+    logger.level("ERROR").no: verbosity.NORMAL,
+    logger.level("WARNING").no: verbosity.NORMAL,
+    logger.level("SUCCESS").no: verbosity.NORMAL,
+    logger.level("INFO").no: verbosity.NORMAL,
+    logger.level("VERBOSE").no: verbosity.VERBOSE,
+    logger.level("VERY_VERBOSE").no: verbosity.VERY_VERBOSE,
+    logger.level("DEBUG").no: verbosity.DEBUG,
+}
 
 
 class ClikitHandler(logging.Handler):
