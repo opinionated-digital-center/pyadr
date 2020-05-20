@@ -31,7 +31,6 @@ from pyadr.exceptions import (
     PyadrAdrDirectoryDoesNotExistsError,
     PyadrAdrFilenameFormatError,
     PyadrAdrFilenameIncorrectError,
-    PyadrAdrFilenameNotSynchedError,
     PyadrAdrFormatError,
     PyadrAdrRepoChecksFailedError,
     PyadrNoNumberedAdrError,
@@ -167,12 +166,8 @@ class AdrCore(object):
     ###########################################
     # ACCEPT / REJECT
     ###########################################
-    def accept_or_reject(self, status: str, toc: bool = False) -> Path:
-        proposed_adr = self._verify_proposed_adr()
-
-        processed_adr = self._apply_accept_or_reject_to_proposed_adr(
-            proposed_adr, status
-        )
+    def accept_or_reject(self, file: str, status: str, toc: bool = False) -> Path:
+        processed_adr = self._apply_accept_or_reject_to_proposed_adr(Path(file), status)
 
         if toc:
             self.generate_toc()
@@ -209,21 +204,6 @@ class AdrCore(object):
 
             logger.error(REGEX_ERROR_MESSAGES[status][full_or_skip_title] + ".")
             raise PyadrAdrFilenameFormatError(str(path))
-
-    def _verify_adr_filename_synched(self, adr_path: Path) -> None:
-        try:
-            self._verify_adr_filenames_correct([adr_path])
-        except PyadrSomeAdrFilenamesIncorrectError:
-            raise PyadrAdrFilenameNotSynchedError(str(adr_path))
-
-    def _verify_proposed_adr(self):
-        found_proposed_adrs = sorted(Path(self.config["records-dir"]).glob("XXXX-*"))
-        logger.info(
-            f"Current Working Directory is: '{Path(self.config['records-dir'])}'"
-        )
-        self._verify_one_and_only_one_proposed_adr_found(found_proposed_adrs)
-        proposed_adr = found_proposed_adrs[0]
-        return proposed_adr
 
     def _verify_one_and_only_one_proposed_adr_found(
         self, found_proposed_adrs: List[Path]
@@ -264,6 +244,7 @@ class AdrCore(object):
 
         update_adr(processed_adr, status=status)
         logger.info(f"Changed ADR status to: {status}")
+
         return processed_adr
 
     def _sync_adr_filename(self, adr_path: Path, adr_id: str) -> Path:
@@ -361,7 +342,7 @@ class AdrCore(object):
         ]
 
         try:
-            self._verify_adr_filenames_correct(
+            self._verify_adr_filenames(
                 adr_files_checked_for_content_format,
                 status=STATUS_ANY_WITH_ID,
                 check_title_format=True,
@@ -438,24 +419,46 @@ class AdrCore(object):
                 logger.error(f"  => '{str(file)}'.")
             raise PyadrSomeAdrStatusesAreProposedError
 
-    def _verify_adr_filename_correct(
+    def _verify_adr_filename(
         self, adr_path: Path, status: str = None, check_title_format: bool = True,
     ) -> None:
-        error_messages = self._verify_adr_filenames_correct(
-            [adr_path], status, check_title_format, handle_errors=False
+        error_messages = self._verify_adr_filenames(
+            [adr_path], status, check_title_format, log_and_raise=False
         )
         if error_messages:
             for message in error_messages:
                 logger.error(message)
             raise PyadrAdrFilenameIncorrectError(adr_path)
 
-    def _verify_adr_filenames_correct(
+    def _verify_adr_filenames(
         self,
         adr_files: List[Path],
         status: str = None,
         check_title_format: bool = True,
-        handle_errors: bool = True,
+        log_and_raise: bool = True,
     ) -> Optional[List[str]]:
+        """
+        Verify a list of ADR filenames to make sur that:
+
+        * the format of the ID portion of the filename is correct
+        * the title portion of the filename is synched with the title of the ADR
+
+        Args:
+            adr_files: list of ADR files
+            status: either `None` or a valid status ;
+                    if `None` and the list contains only one file, then status will be
+                    fetched from the file content ;
+                    if `None` and the list contains more than one file, then status will
+                    be set to `STATUS_ANY_WITH_ID`
+            check_title_format: if True, will check the format of the title portion of
+                                the ADR file
+            log_and_raise: if True, will log errors found on filenames and will raise
+                           an error
+
+        Returns: an optional list of error messages
+
+        """
+
         def title_slug_correct_and_title_slug(file: Path) -> Tuple[bool, str]:
             title_slug = adr_title_slug_from_file(file)
 
@@ -500,7 +503,7 @@ class AdrCore(object):
             error_messages.insert(
                 0, REGEX_ERROR_MESSAGES[status][full_or_skip_title] + ", but:",
             )
-            if handle_errors:
+            if log_and_raise:
                 for message in error_messages:
                     logger.error(message)
                 raise PyadrSomeAdrFilenamesIncorrectError

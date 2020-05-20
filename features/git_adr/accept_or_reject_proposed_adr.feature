@@ -6,7 +6,7 @@ Feature: Accept or reject proposed ADR - Git included
 
     Scenario: Fail if the proposed ADR is not staged or committed
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should fail
         And the command output should contain
             """
@@ -21,20 +21,20 @@ Feature: Accept or reject proposed ADR - Git included
     Scenario: Pass if the proposed ADR is staged
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
 
     Scenario: Pass if the proposed ADR is committed
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         And I commit the staged files with message "foo bar"
-        When I run "git adr accept"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
 
     Scenario: Increment ID of accepted ADR (same code for rejected, no need to duplicate test)
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-title.md" should exist
@@ -56,7 +56,7 @@ Feature: Accept or reject proposed ADR - Git included
             Decision outcome.
             """
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-updated-title.md" should exist
@@ -64,14 +64,14 @@ Feature: Accept or reject proposed ADR - Git included
     Scenario: Ensure git traced filename change of accepted ADR (same code for rejected, no need to duplicate test)
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file "docs/adr/0002-my-adr-title.md" should be staged
 
     Scenario: Update Status and Date for accepted ADR
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file "docs/adr/0002-my-adr-title.md" should contain:
             """
@@ -92,7 +92,7 @@ Feature: Accept or reject proposed ADR - Git included
     Scenario: Update Status and Date for rejected ADR
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr reject"
+        When I run "git adr reject docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-title.md" should exist
@@ -115,7 +115,7 @@ Feature: Accept or reject proposed ADR - Git included
     Scenario: Generate index when approving if requested and add it to index
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept --toc"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md --toc"
         Then it should pass with:
             """
             Markdown table of content generated in 'docs/adr/index.md'
@@ -126,7 +126,7 @@ Feature: Accept or reject proposed ADR - Git included
     Scenario: Generate index when rejecting if requested and add it to index
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr reject --toc"
+        When I run "git adr reject docs/adr/XXXX-my-adr-title.md --toc"
         Then it should pass with:
             """
             Markdown table of content generated in 'docs/adr/index.md'
@@ -137,7 +137,7 @@ Feature: Accept or reject proposed ADR - Git included
     Scenario: Commit files on `accept --commit` option
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr accept --commit"
+        When I run "git adr accept docs/adr/XXXX-my-adr-title.md --commit"
         Then it should pass
         And the file "docs/adr/0002-my-adr-title.md" should be committed in the last commit
         And the head commit message should be
@@ -148,7 +148,7 @@ Feature: Accept or reject proposed ADR - Git included
     Scenario: Commit files on `reject --commit` option
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
-        When I run "git adr reject --commit"
+        When I run "git adr reject docs/adr/XXXX-my-adr-title.md --commit"
         Then it should pass
         And the file "docs/adr/0002-my-adr-title.md" should be committed in the last commit
         And the head commit message should be

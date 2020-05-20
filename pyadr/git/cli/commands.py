@@ -1,4 +1,5 @@
 """Console script for git adr."""
+# flake8: noqa: B950
 import cleo
 
 from pyadr.const import STATUS_ACCEPTED, STATUS_REJECTED
@@ -82,31 +83,41 @@ class GitProposeCommand(GitNewCommand):
 
 class GitAcceptCommand(BaseGitCommand):
     """
-    Accept a proposed ADR and stage it in the current branch
+    Accept a proposed ADR by assigning an ID, updating filename, status and date, and stage to the current branch
 
     accept
-        {--t|toc : If set, generates and stages the table of content after the ADR's update.}  # noqa
+        {file : ADR file.}
+        {--t|toc : If set, generates and stages the table of content after the ADR's
+                   update.}
         {--c|commit : If set, commits the updated ADR.}
     """
 
     def handle(self):
         self.git_adr_core.git_accept_or_reject(
-            STATUS_ACCEPTED, self.option("toc"), self.option("commit")
+            self.argument("file"),
+            STATUS_ACCEPTED,
+            self.option("toc"),
+            self.option("commit"),
         )
 
 
-class GitRejectCommand(BaseGitCommand):
+class GitRejectCommand(BaseGitCommand):  # noqa
     """
-    Reject a proposed ADR and stage it in the current branch
+    Reject a proposed ADR by assigning an ID, updating filename, status and date, and stage to the current branch
 
     reject
-        {--t|toc : If set, generates and stages the table of content after the ADR's update.}  # noqa
+        {file : ADR file.}
+        {--t|toc : If set, generates and stages the table of content after the ADR's
+                   update.}
         {--c|commit : If set, commits the updated ADR.}
     """
 
     def handle(self):
         self.git_adr_core.git_accept_or_reject(
-            STATUS_REJECTED, self.option("toc"), self.option("commit")
+            self.argument("file"),
+            STATUS_REJECTED,
+            self.option("toc"),
+            self.option("commit"),
         )
 
 

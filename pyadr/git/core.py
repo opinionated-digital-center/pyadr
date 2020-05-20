@@ -107,9 +107,11 @@ class GitAdrCore(AdrCore):
     # ACCEPT / REJECT
     ###########################################
     def git_accept_or_reject(
-        self, status: str, toc: bool = False, commit: bool = False,
+        self, file: str, status: str, toc: bool = False, commit: bool = False,
     ) -> None:
-        processed_adr = self.accept_or_reject(status, toc)
+        self._verify_adr_staged_or_committed(Path(file))
+
+        processed_adr = self.accept_or_reject(file, status, toc)
 
         if commit:
             self._commit_adr(processed_adr)
@@ -121,18 +123,13 @@ class GitAdrCore(AdrCore):
         logger.success(f"Committed ADR '{adr_path}' with message '{commit_message}'.")
 
     def _commit_message_for_adr(self, adr_path: Path) -> str:
-        self._verify_adr_filename_correct(adr_path)
+        self._verify_adr_filename(adr_path)
 
         return (
             f"{self.commit_message_prefix} "
             f"[{adr_status_from_file(adr_path)}] "
             f"{adr_path.stem}"
         )
-
-    def _verify_proposed_adr(self):
-        proposed_adr = super()._verify_proposed_adr()
-        self._verify_adr_staged_or_committed(proposed_adr)
-        return proposed_adr
 
     def _verify_adr_staged_or_committed(
         self, path: Path, print_error_message: bool = True
@@ -191,7 +188,7 @@ class GitAdrCore(AdrCore):
         logger.info(self._branch_title_from_file(Path(file)))
 
     def _branch_title_from_file(self, adr_path: Path) -> str:
-        self._verify_adr_filename_correct(adr_path)
+        self._verify_adr_filename(adr_path)
 
         adr_status = adr_status_from_file(adr_path)
         if adr_status not in REVIEW_REQUESTS.keys():
