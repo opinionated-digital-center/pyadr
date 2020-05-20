@@ -43,7 +43,7 @@ class GitInitCommand(BaseGitCommand):
     init
         {--f|force : If set, will erase existing ADR directory.}
         {--a|adr-only-repo : ADR only repo. This will affect the prefixes of
-                             commit messages}
+                             commit messages.}
     """
 
     def handle(self):
@@ -58,7 +58,7 @@ class GitInitCommand(BaseGitCommand):
 
 class GitNewCommand(BaseGitCommand):
     """
-    Create an new ADR, create a feature branch, stage new ADR in feature branch
+    Create an new ADR, create a feature branch and stage new ADR in feature branch
 
     new
         {words* : Words in the title}
@@ -82,11 +82,11 @@ class GitProposeCommand(GitNewCommand):
 
 class GitAcceptCommand(BaseGitCommand):
     """
-    Accept a proposed ADR, stage the ADR in the current branch
+    Accept a proposed ADR and stage it in the current branch
 
     accept
-        {--t|toc : If set, generates also the table of content.}
-        {--c|commit : If set, commits the processed ADR.}
+        {--t|toc : If set, generates and stages the table of content after the ADR's update.}  # noqa
+        {--c|commit : If set, commits the updated ADR.}
     """
 
     def handle(self):
@@ -97,17 +97,29 @@ class GitAcceptCommand(BaseGitCommand):
 
 class GitRejectCommand(BaseGitCommand):
     """
-    Reject a proposed ADR, stage the ADR in the current branch
+    Reject a proposed ADR and stage it in the current branch
 
     reject
-        {--t|toc : If set, generates also the table of content.}
-        {--c|commit : If set, commits the processed ADR.}
+        {--t|toc : If set, generates and stages the table of content after the ADR's update.}  # noqa
+        {--c|commit : If set, commits the updated ADR.}
     """
 
     def handle(self):
         self.git_adr_core.git_accept_or_reject(
             STATUS_REJECTED, self.option("toc"), self.option("commit")
         )
+
+
+class GitCommitCommand(BaseGitCommand):
+    """
+    Commit an ADR
+
+    commit
+        {file : ADR file to use as source.}
+    """
+
+    def handle(self):
+        self.git_adr_core.commit_adr(self.argument("file"))
 
 
 class GitPreMergeChecksCommand(BaseGitCommand):

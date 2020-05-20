@@ -10,6 +10,7 @@ from pyadr.core import AdrCore
 from pyadr.exceptions import PyadrStatusIncompatibleWithReviewRequestError
 from pyadr.git.const import GIT_ADR_DEFAULT_SETTINGS, PROPOSAL_REQUEST
 from pyadr.git.exceptions import (
+    PyadrGitAdrNotStagedError,
     PyadrGitAdrNotStagedOrCommittedError,
     PyadrGitPreMergeChecksFailedError,
 )
@@ -111,14 +112,15 @@ class GitAdrCore(AdrCore):
         processed_adr = self.accept_or_reject(status, toc)
 
         if commit:
-            self.repo.index.commit(
-                self._commit_message_from_filepath(processed_adr, status)
-            )
+            self._commit_adr(processed_adr)
 
-    def _commit_message_from_filepath(self, adr_path: Path, status: str) -> str:
-        return f"{self.commit_message_prefix} [{status}] {adr_path.stem}"
+    def _commit_adr(self, adr_path):
+        logger.info(f"Committing ADR '{adr_path}'...")
+        commit_message = self._commit_message_for_adr(adr_path)
+        self.repo.index.commit(commit_message)
+        logger.success(f"Committed ADR '{adr_path}' with message '{commit_message}'.")
 
-    def _commit_message_from_file(self, adr_path: Path) -> str:
+    def _commit_message_for_adr(self, adr_path: Path) -> str:
         self._verify_adr_filename_correct(adr_path)
 
         return (
@@ -129,23 +131,32 @@ class GitAdrCore(AdrCore):
 
     def _verify_proposed_adr(self):
         proposed_adr = super()._verify_proposed_adr()
-        self._verify_file_staged_or_committed(proposed_adr)
+        self._verify_adr_staged_or_committed(proposed_adr)
         return proposed_adr
 
-    def _verify_file_staged_or_committed(
+    def _verify_adr_staged_or_committed(
         self, path: Path, print_error_message: bool = True
     ) -> None:
-        file_staged = str(path) in [d.a_path for d in self.repo.index.diff("HEAD")]
-        file_committed = str(path) in list(self.repo.head.commit.stats.files.keys())
-        if not (file_staged or file_committed):
+        if not (self._file_staged(path) or self._file_committed(path)):
             if print_error_message:
-                logger.error(f"File {path} should be staged or committed first.")
+                logger.error(f"ADR '{path}' should be staged or committed first.")
             raise PyadrGitAdrNotStagedOrCommittedError(path)
 
+    def _verify_adr_staged(self, path: Path, print_error_message: bool = True) -> None:
+        if not (self._file_staged(path) or self._file_committed(path)):
+            if print_error_message:
+                logger.error(f"ADR '{path}' should be staged first.")
+            raise PyadrGitAdrNotStagedError(path)
+
+    def _file_staged(self, path):
+        return str(path) in [d.a_path for d in self.repo.index.diff("HEAD")]
+
+    def _file_committed(self, path):
+        return str(path) in list(self.repo.head.commit.stats.files.keys())
+
     def _apply_filepath_update(self, path: Path, renamed_path: Path) -> None:
-        logger.debug("_apply_filepath_update")
         try:
-            self._verify_file_staged_or_committed(path, print_error_message=False)
+            self._verify_adr_staged_or_committed(path, print_error_message=False)
         except PyadrGitAdrNotStagedOrCommittedError:
             logger.debug("not staged or committed")
             super()._apply_filepath_update(path, renamed_path)
@@ -153,6 +164,14 @@ class GitAdrCore(AdrCore):
         else:
             logger.debug("staged or committed")
             self.repo.git.mv(str(path), str(renamed_path))
+
+    ###########################################
+    # COMMIT ADR
+    ###########################################
+    def commit_adr(self, file: str) -> None:
+        adr_path = Path(file)
+        self._verify_adr_staged(adr_path)
+        self._commit_adr(adr_path)
 
     ###########################################
     # GENERATE TOC
@@ -166,7 +185,7 @@ class GitAdrCore(AdrCore):
     # HELPER FUNCTIONS
     ###########################################
     def print_commit_message(self, file: str) -> None:
-        logger.info(self._commit_message_from_file(Path(file)))
+        logger.info(self._commit_message_for_adr(Path(file)))
 
     def print_branch_title(self, file: str) -> None:
         logger.info(self._branch_title_from_file(Path(file)))
