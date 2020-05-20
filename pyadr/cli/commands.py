@@ -70,26 +70,32 @@ class ProposeCommand(NewCommand):
 
 class AcceptCommand(BaseCommand):
     """
-    Accept a proposed ADR
+    Accept a proposed ADR by assigning an ID, updating filename, status and date
 
     accept
+        {file : ADR file.}
         {--t|toc : If set, generates also the table of content.}
     """
 
     def handle(self):
-        self.adr_core.accept_or_reject(STATUS_ACCEPTED, self.option("toc"))
+        self.adr_core.accept_or_reject(
+            self.argument("file"), STATUS_ACCEPTED, self.option("toc")
+        )
 
 
 class RejectCommand(BaseCommand):
     """
-    Reject a proposed ADR
+    Reject a proposed ADR by assigning an ID, updating filename, status and date
 
     reject
+        {file : ADR file.}
         {--t|toc : If set, generates also the table of content.}
     """
 
     def handle(self):
-        self.adr_core.accept_or_reject(STATUS_REJECTED, self.option("toc"))
+        self.adr_core.accept_or_reject(
+            self.argument("file"), STATUS_REJECTED, self.option("toc")
+        )
 
 
 class GenerateTocCommand(BaseCommand):

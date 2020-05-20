@@ -20,7 +20,7 @@ Feature: Accept or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr accept"
+        When I run "pyadr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0001-my-adr-title.md" should exist
@@ -42,7 +42,7 @@ Feature: Accept or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr accept"
+        When I run "pyadr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-title.md" should exist
@@ -64,7 +64,7 @@ Feature: Accept or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr accept"
+        When I run "pyadr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-updated-title.md" should exist
@@ -86,7 +86,7 @@ Feature: Accept or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr accept"
+        When I run "pyadr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file "docs/adr/0001-my-adr-title.md" should contain:
             """
@@ -121,7 +121,7 @@ Feature: Accept or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr reject"
+        When I run "pyadr reject docs/adr/XXXX-my-adr-title.md"
         Then it should pass
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0001-my-adr-title.md" should exist
@@ -158,7 +158,7 @@ Feature: Accept or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr accept --toc"
+        When I run "pyadr accept docs/adr/XXXX-my-adr-title.md --toc"
         Then it should pass with:
             """
             Markdown table of content generated in 'docs/adr/index.md'
@@ -182,7 +182,7 @@ Feature: Accept or reject proposed ADR
 
             Decision outcome.
             """
-        When I run "pyadr reject --toc"
+        When I run "pyadr reject docs/adr/XXXX-my-adr-title.md --toc"
         Then it should pass with:
             """
             Markdown table of content generated in 'docs/adr/index.md'

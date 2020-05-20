@@ -101,9 +101,5 @@ class PyadrAdrFilenameFormatError(PyadrError):
     """ADR filename format incorrect"""
 
 
-class PyadrAdrFilenameNotSynchedError(PyadrError):
-    """ADR filename not synched with ADR file content"""
-
-
 class PyadrStatusIncompatibleWithReviewRequestError(PyadrError):
     """Cannot create a review request branch with status of the given ADR"""
