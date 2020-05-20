@@ -17,12 +17,13 @@ Feature: Create a new ADR
             Directory 'docs/adr/' does not exist. Initialise your ADR repo first.
             """
 
-    Scenario: Create a new ADR and succeed with a success message
+    Scenario: Create a new ADR and succeed with a success message (when using verbose)
         Given a directory named "docs/adr/"
-        When I run "pyadr new My ADR Title"
+        When I run "pyadr new My ADR Title -v"
         Then it should pass with:
             """
-            Created ADR 'docs/adr/XXXX-my-adr-title.md'.
+            Creating ADR 'docs/adr/XXXX-my-adr-title.md'...
+            ... done.
             """
         And the file named "docs/adr/XXXX-my-adr-title.md" should exist
         And the file "docs/adr/XXXX-my-adr-title.md" should contain:

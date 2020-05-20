@@ -90,9 +90,9 @@ class GitAdrCore(AdrCore):
 
         create_feature_branch_and_checkout(self.repo, adr_branch_name)
 
+        logger.info(f"Staging '{new_adr_path}'...")
         self.repo.index.add([str(new_adr_path)])
-
-        logger.info(f"File '{new_adr_path}' staged.")
+        logger.log("VERBOSE", "... done.")
 
         logger.info("New ADR added to Git repo.")
 

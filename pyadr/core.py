@@ -156,11 +156,12 @@ class AdrCore(object):
 
         adr_path = Path(self.config["records-dir"], f"XXXX-{slugify(title)}.md")
 
+        logger.info(f"Creating ADR '{adr_path}'...")
         with adr_path.open("w") as f:
             f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
         update_adr(adr_path, title=title, status=STATUS_PROPOSED)
+        logger.log("VERBOSE", "... done.")
 
-        logger.warning(f"Created ADR '{adr_path}'.")
         return adr_path
 
     ###########################################
@@ -521,9 +522,12 @@ class AdrCore(object):
     ###########################################
     def verify_adr_dir_exists(self):
         adr_repo_path = Path(self.config["records-dir"])
+
+        logger.info(f"Verifying adr repo directory '{adr_repo_path}' exists... ")
         if not adr_repo_path.exists():
             logger.error(
                 f"Directory '{adr_repo_path}/' does not exist. "
                 "Initialise your ADR repo first."
             )
             raise PyadrAdrDirectoryDoesNotExistsError()
+        logger.log("VERBOSE", "... done.")
