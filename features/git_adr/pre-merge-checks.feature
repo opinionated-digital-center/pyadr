@@ -2,10 +2,10 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
 
     Background:
         Given a new working directory
+        And an initialised git adr repo
 
     Scenario: Check all ADR file names are slugs of the ADR title
-        Given an initialised git adr repo
-        And a file named "docs/adr/0002-an-adr.md" with:
+        Given a file named "docs/adr/0002-an-adr.md" with:
             """
             # A different ADR Title
 
@@ -47,8 +47,7 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
             """
 
     Scenario: Check all ADR file names have '[0-9][0-9][0-9][0-9]' followed by '-'
-        Given an initialised git adr repo
-        And a file named "docs/adr/XXXX-an-adr.md" with:
+        Given a file named "docs/adr/XXXX-an-adr.md" with:
             """
             # An ADR
 
@@ -103,8 +102,7 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
             """
 
     Scenario: Check all ADR files have a status other than 'proposed'
-        Given an initialised git adr repo
-        And a file named "docs/adr/0002-an-adr.md" with:
+        Given a file named "docs/adr/0002-an-adr.md" with:
             """
             # An ADR
 
@@ -134,8 +132,7 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
             """
 
     Scenario: Check all ADR files have a unique number
-        Given an initialised git adr repo
-        And a file named "docs/adr/0002-an-adr.md" with:
+        Given a file named "docs/adr/0002-an-adr.md" with:
             """
             # An ADR
 
@@ -199,8 +196,7 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
             """
 
     Scenario: Check all ADR files have a title followed by a status and a date
-        Given an initialised git adr repo
-        And a file named "docs/adr/0002-an-adr.md" with:
+        Given a file named "docs/adr/0002-an-adr.md" with:
             """
             * Status: accepted
             * Date: 2020-03-26
@@ -226,8 +222,7 @@ Feature: Git ADR - Check ADRs well formed before allowing to merge
             """
 
     Scenario: Pass checks when all conditions are filled
-        Given an initialised git adr repo
-        And a file named "docs/adr/0002-an-adr.md" with:
+        Given a file named "docs/adr/0002-an-adr.md" with:
             """
             # An ADR
 
