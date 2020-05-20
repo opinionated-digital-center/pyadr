@@ -5,6 +5,7 @@ from loguru import logger
 
 LOGGING_VERBOSE = 18
 LOGGING_VERY_VERBOSE = 16
+
 _levels = {
     logging.CRITICAL: verbosity.NORMAL,
     logging.ERROR: verbosity.NORMAL,
@@ -15,8 +16,8 @@ _levels = {
     logging.DEBUG: verbosity.DEBUG,
 }
 
-logger.level("VERBOSE", no=LOGGING_VERBOSE)
-logger.level("VERY_VERBOSE", no=LOGGING_VERY_VERBOSE)
+logger.level("VERBOSE", LOGGING_VERBOSE, color="<bold>", icon="🔈️")
+logger.level("VERY_VERBOSE", LOGGING_VERY_VERBOSE, color="<bold>", icon="🔊")
 
 
 class ClikitHandler(logging.Handler):
@@ -45,5 +46,5 @@ class ClikitDebuggerHandler(ClikitHandler):
 
     def emit(self, record: logging.LogRecord):
         level = _levels[record.levelno]
-        if self.io.verbosity >= verbosity.DEBUG:
+        if self.io.verbosity > verbosity.VERY_VERBOSE:
             self.write_line(level, record)

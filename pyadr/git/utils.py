@@ -31,7 +31,7 @@ def verify_index_empty(repo: Repo) -> None:
 def verify_branch_does_not_exist(repo: Repo, branch: str) -> None:
     logger.info(f"Verifying branch '{branch}' does not exist...")
     if "master" not in repo.heads or branch not in repo.heads:
-        logger.log("VERBOSE", "... does not exist.")
+        logger.log("VERBOSE", "... done.")
     else:
         logger.error(
             f"... branch '{branch}' already exists. Clean before running command."
@@ -42,7 +42,7 @@ def verify_branch_does_not_exist(repo: Repo, branch: str) -> None:
 def verify_main_branch_exists(repo: Repo, branch: str = "master") -> None:
     logger.info(f"Verifying branch '{branch}' exists... ")
     if branch in repo.heads:
-        logger.log("VERBOSE", "... exists.")
+        logger.log("VERBOSE", "... done.")
     else:
         message = (
             "... branch '{branch}' does not exist. {supplement}"
