@@ -4,6 +4,7 @@ from pyadr import __version__
 from pyadr.cli.config import LoggingAppConfig
 from pyadr.git.cli.commands import (
     GitAcceptCommand,
+    GitCommitCommand,
     GitConfigCommand,
     GitHelperCommand,
     GitInitCommand,
@@ -26,5 +27,6 @@ class App(cleo.Application):
         self.add(GitProposeCommand())
         self.add(GitAcceptCommand())
         self.add(GitRejectCommand())
+        self.add(GitCommitCommand())
         self.add(GitHelperCommand())
         self.add(GitPreMergeChecksCommand())

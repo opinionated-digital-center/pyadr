@@ -29,5 +29,9 @@ class PyadrGitAdrNotStagedOrCommittedError(PyadrGitError):
     """ADR file was expected to be staged or committed"""
 
 
+class PyadrGitAdrNotStagedError(PyadrGitError):
+    """ADR file was expected to be staged"""
+
+
 class PyadrGitAdrBadFilenameFormatOrTitleError(PyadrGitError):
     """ADR filename formot incorrect or title portion different from title in file"""
