@@ -11,7 +11,7 @@ Feature: Initialise an ADR repository
             Directory '{__WORKDIR__}/docs/adr/' already exists. You can use '--force' option to erase.
             """
 
-    Scenario: Force init the repo
+    Scenario: Force init the repo and succeed with a warning message
         Given a directory named "docs/adr"
         And an empty file named "docs/adr/to-be-erased"
         And an empty file named "docs/to-be-kept"
@@ -20,6 +20,7 @@ Feature: Initialise an ADR repository
         Then it should pass with:
             """
             Directory '{__WORKDIR__}/docs/adr/' already exists. Used '--force' option => Erasing...
+            ... erased.
             """
         And the file named "docs/adr/to-be-erased" should not exist
         And the file named "docs/to-be-kept" should exist
@@ -37,11 +38,12 @@ Feature: Initialise an ADR repository
         Then it should pass
         And the directory "docs/adr" exists
 
-    Scenario: Copy the MADR template to the repo
-        When I run "pyadr init"
+    Scenario: Copy the MADR template to the repo and succeed with a success message (when using verbose)
+        When I run "pyadr init -v"
         Then it should pass with:
             """
             Copying MADR template to 'docs/adr/template.md'...
+            ... done.
             """
         And the file named "docs/adr/template.md" should exist
         And the file "docs/adr/template.md" should contain:
@@ -51,11 +53,12 @@ Feature: Initialise an ADR repository
         * Status: [proposed | rejected | accepted | deprecated | ... | superseded by [ADR-0005](0005-example.md)]
         """
 
-    Scenario: Create the ADR to record architecture decisions
-        When I run "pyadr init"
+    Scenario: Create the ADR to record architecture decisions and succeed with a success message (when using verbose)
+        When I run "pyadr init -v"
         Then it should pass with:
             """
             Creating ADR 'docs/adr/0000-record-architecture-decisions.md'...
+            ... done.
             """
         And the file named "docs/adr/0000-record-architecture-decisions.md" should exist
         And the file "docs/adr/0000-record-architecture-decisions.md" should contain:
@@ -78,11 +81,12 @@ Feature: Initialise an ADR repository
         See Michael Nygard's article, linked above.
         """
 
-    Scenario: Create the ADR to use MADR
-        When I run "pyadr init"
+    Scenario: Create the ADR to use MADR and succeed with a success message (when using verbose)
+        When I run "pyadr init -v"
         Then it should pass with:
             """
             Creating ADR 'docs/adr/0001-use-markdown-architectural-decision-records.md'...
+            ... done.
             """
         And the file named "docs/adr/0001-use-markdown-architectural-decision-records.md" should exist
         And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should contain:
