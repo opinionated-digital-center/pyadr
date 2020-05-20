@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.14.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.13.3...v0.14.0) (2020-05-20)
+
+
+### Bug Fixes
+
+* handle success logging level and refactor ([cefde6c](https://github.com/opinionated-digital-center/pyadr/commit/cefde6cce4226fe60853d338f2af3cff908394d2))
+
+
+### Features
+
+* new `git adr commit` command ([653b0f7](https://github.com/opinionated-digital-center/pyadr/commit/653b0f7f46e4cffb83fd7a3824520b9961bd7d38))
+
 ## [0.13.3](https://github.com/opinionated-digital-center/pyadr/compare/v0.13.2...v0.13.3) (2020-05-20)
 
 
