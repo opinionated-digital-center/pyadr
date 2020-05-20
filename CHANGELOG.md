@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.13.3](https://github.com/opinionated-digital-center/pyadr/compare/v0.13.2...v0.13.3) (2020-05-20)
+
+
+### Bug Fixes
+
+* correct verbose and very_verbose to display correctly ([617f4d7](https://github.com/opinionated-digital-center/pyadr/commit/617f4d7a46445984ac70e453d3e55dcd2cf7b3e7))
+* ensure branch created from master ([f26d53e](https://github.com/opinionated-digital-center/pyadr/commit/f26d53eb5c6eed20342e724cfa1d4af3a53a37c8))
+
 ## [0.13.2](https://github.com/opinionated-digital-center/pyadr/compare/v0.13.1...v0.13.2) (2020-05-19)
 
 
