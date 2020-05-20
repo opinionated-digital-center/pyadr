@@ -75,8 +75,14 @@ class GitAdrCore(AdrCore):
     ###########################################
     def git_new_adr(self, title: str, pre_checks: bool = True) -> None:
         if pre_checks:
-            self.verify_adr_dir_exists()
             verify_main_branch_exists(self.repo, branch="master")
+
+        logger.info("Switching to 'master'...")
+        self.repo.heads.master.checkout()
+        logger.log("VERBOSE", "... done.")
+
+        if pre_checks:
+            self.verify_adr_dir_exists()
 
         verify_index_empty(self.repo)
 
