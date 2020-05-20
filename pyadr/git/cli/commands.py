@@ -115,7 +115,7 @@ class GitCommitCommand(BaseGitCommand):
     Commit an ADR
 
     commit
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
@@ -141,7 +141,7 @@ class GitHelperSlugCommand(BaseGitCommand):
     Print the ADR's title in slug format
 
     slug
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
@@ -153,7 +153,7 @@ class GitHelperLowercaseCommand(BaseGitCommand):
     Print the ADR's title in lowercase
 
     lowercase
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
@@ -165,7 +165,7 @@ class GitHelperSyncFilenameCommand(BaseGitCommand):
     Sync the ADR's filename with its actual title
 
     sync-filename
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
@@ -177,7 +177,7 @@ class GitHelperCommitMessageCommand(BaseGitCommand):
     Print the commit message related to the ADR
 
     commit-message
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
@@ -189,7 +189,7 @@ class GitHelperBranchTitleCommand(BaseGitCommand):
     Print the branch title related to the ADR's review request
 
     branch-title
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):

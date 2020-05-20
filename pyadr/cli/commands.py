@@ -123,7 +123,7 @@ class HelperSlugCommand(BaseCommand):
     Return the ADR's title in slug format
 
     slug
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
@@ -135,7 +135,7 @@ class HelperLowercaseCommand(BaseCommand):
     Return the ADR's title in lowercase
 
     lowercase
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
@@ -147,7 +147,7 @@ class HelperSyncFilenameCommand(BaseCommand):
     Sync the ADR's filename with its actual title
 
     sync-filename
-        {file : ADR file to use as source.}
+        {file : ADR file.}
     """
 
     def handle(self):
