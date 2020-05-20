@@ -44,10 +44,11 @@ Feature: Create a new ADR - Git included
 
     Scenario: Create feature branch and stage new ADR file, but don't commit
         Given an initialised git adr repo
-        When I run "git adr new My ADR Title"
+        When I run "git adr new My ADR Title -v"
         Then it should pass with
             """
-            File 'docs/adr/XXXX-my-adr-title.md' staged.
+            Staging 'docs/adr/XXXX-my-adr-title.md'...
+            ... done.
             """
         And the branch "adr-propose-my-adr-title" should exist
         And the head should be at branch "adr-propose-my-adr-title"
