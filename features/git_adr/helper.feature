@@ -69,7 +69,7 @@ Feature: Helper for the various names and messages - Git included
             """
         And I stage the file "0002-my-adr-title.md"
         And I commit the staged files with message "foo bar"
-        When I run "git adr helper sync-filename 0002-my-adr-title.md -vvv"
+        When I run "git adr helper sync-filename 0002-my-adr-title.md"
         Then it should pass
         And the file named "0002-my-adr-title.md" should not exist
         And the file named "0002-my-adr-updated-title.md" should exist
