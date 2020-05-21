@@ -51,7 +51,7 @@ class GitInitCommand(BaseGitCommand):
 
     def handle(self):
         if self.option("adr-only-repo"):
-            self.git_adr_core.config["adr-only-repo"] = "true"
+            self.git_adr_core.config["git"]["adr-only-repo"] = "true"
 
         try:
             self.git_adr_core.git_init_adr_repo(force=self.option("force"))

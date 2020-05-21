@@ -1,15 +1,14 @@
 import re
 import shutil
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 from loguru import logger
 from slugify import slugify
 
 from pyadr import assets
-from pyadr.config import Config
+from pyadr.config import AdrConfig
 from pyadr.const import (
-    ADR_DEFAULT_SETTINGS,
     FILENAME_REGEXES,
     REGEX_ERROR_MESSAGES,
     STATUS_ACCEPTED,
@@ -50,30 +49,28 @@ except ImportError:
 
 
 class AdrCore(object):
-    def __init__(self, default_settings: Dict[str, str] = ADR_DEFAULT_SETTINGS):
-        sorted_default_settings = {}
-        for key in sorted(default_settings.keys()):
-            sorted_default_settings[key] = default_settings[key]
-
-        self.config = Config(sorted_default_settings)["adr"]
+    def __init__(self):
+        self.config = AdrConfig()
 
     ###########################################
     # CONFIGURE ADR
     ###########################################
     def configure(self, setting: str, value: str) -> None:
-        self.config[setting] = value
+        self.config["adr"][setting] = value
         logger.info(f"Configured '{setting}' to '{value}'.")
 
     def unset_config_setting(self, setting: str) -> None:
-        del self.config[setting]
-        logger.info(f"Config setting '{setting}' unset.")
+        del self.config["adr"][setting]
+        logger.info(f"AdrConfig setting '{setting}' unset.")
 
     def list_config(self) -> None:
-        for key in self.config.keys():
-            self.print_config_setting(key)
+        raw_config = self.config.raw()
+        for setting in raw_config.keys():
+            logger.info(f"{setting} = {raw_config[setting]}")
 
     def print_config_setting(self, setting: str) -> None:
-        logger.info(f"{setting} = {self.config[setting]}")
+        raw_config = self.config.raw()
+        logger.info(f"{setting} = {raw_config[setting]}")
 
     ###########################################
     # INIT ADR
@@ -88,12 +85,12 @@ class AdrCore(object):
         ]
         logger.info(
             f"ADR repository successfully created at "
-            f"'{Path(self.config['records-dir']).resolve()}/'."
+            f"'{Path(self.config['adr']['records-dir']).resolve()}/'."
         )
         return created_files
 
     def verify_and_prepare_pre_init(self, force: bool = False) -> None:
-        adr_repo_abs_path = Path(self.config["records-dir"]).resolve()
+        adr_repo_abs_path = Path(self.config["adr"]["records-dir"]).resolve()
         if force:
             if adr_repo_abs_path.exists():
                 logger.warning(
@@ -112,13 +109,13 @@ class AdrCore(object):
                 raise PyadrAdrDirectoryAlreadyExistsError()
 
     def create_adr_repo_dir(self):
-        adr_repo_path = Path(self.config["records-dir"])
+        adr_repo_path = Path(self.config["adr"]["records-dir"])
         logger.info(f"Creating ADR repo directory '{adr_repo_path}'.")
         adr_repo_path.mkdir(parents=True)
         logger.log("VERBOSE", "... done.")
 
     def _init_adr_template(self) -> Path:
-        template_path = Path(self.config["records-dir"], "template.md")
+        template_path = Path(self.config["adr"]["records-dir"], "template.md")
 
         logger.info(f"Copying MADR template to '{template_path}'...")
         with template_path.open("w") as f:
@@ -136,7 +133,7 @@ class AdrCore(object):
         )
 
     def _init_adr_file(self, filename: str) -> Path:
-        path = Path(self.config["records-dir"], filename)
+        path = Path(self.config["adr"]["records-dir"], filename)
 
         logger.info(f"Creating ADR '{path}'...")
         with path.open("w") as f:
@@ -153,7 +150,7 @@ class AdrCore(object):
         if pre_checks:
             self.verify_adr_dir_exists()
 
-        adr_path = Path(self.config["records-dir"], f"XXXX-{slugify(title)}.md")
+        adr_path = Path(self.config["adr"]["records-dir"], f"XXXX-{slugify(title)}.md")
 
         logger.info(f"Creating ADR '{adr_path}'...")
         with adr_path.open("w") as f:
@@ -225,7 +222,7 @@ class AdrCore(object):
 
     def _get_next_adr_id(self) -> str:
         try:
-            next_adr_id = calculate_next_adr_id(Path(self.config["records-dir"]))
+            next_adr_id = calculate_next_adr_id(Path(self.config["adr"]["records-dir"]))
         except PyadrNoNumberedAdrError as e:
             logger.error(
                 "There should be at least one initial accepted/rejected ADR "
@@ -272,16 +269,16 @@ class AdrCore(object):
             self.verify_adr_dir_exists()
 
         adr_paths = sorted(
-            Path(self.config["records-dir"]).glob("[0-9][0-9][0-9][0-9]-*")
+            Path(self.config["adr"]["records-dir"]).glob("[0-9][0-9][0-9][0-9]-*")
         )
 
         adrs_by_status = extract_adrs_by_status(
-            Path(self.config["records-dir"]), adr_paths
+            Path(self.config["adr"]["records-dir"]), adr_paths
         )
 
         toc_content = build_toc_content_from_adrs_by_status(adrs_by_status)
 
-        toc_path = Path(self.config["records-dir"], "index.md")
+        toc_path = Path(self.config["adr"]["records-dir"], "index.md")
         with toc_path.open("w") as f:
             f.writelines(toc_content)
 
@@ -492,7 +489,8 @@ class AdrCore(object):
             if error_status["with_incorrect_title_slug"][0]:  # type: ignore
                 error_messages.append(
                     f"  => '{str(file)}' does not have the correct title slug "  # type: ignore  # noqa
-                    f"('{error_status['with_incorrect_title_slug'][1]}')."  # type: ignore  # noqa
+                    f"('{error_status['with_incorrect_title_slug'][1]}')."
+                    # type: ignore  # noqa
                 )
 
         if error_messages:
@@ -512,7 +510,7 @@ class AdrCore(object):
     def _list_adr_files(self) -> List[Path]:
         adr_files = [
             file
-            for file in Path(self.config["records-dir"]).glob("*.md")
+            for file in Path(self.config["adr"]["records-dir"]).glob("*.md")
             if file.name not in ["template.md", "index.md"]
         ]
         return adr_files
@@ -521,7 +519,7 @@ class AdrCore(object):
     # SHARED FUNC
     ###########################################
     def verify_adr_dir_exists(self):
-        adr_repo_path = Path(self.config["records-dir"])
+        adr_repo_path = Path(self.config["adr"]["records-dir"])
 
         logger.info(f"Verifying adr repo directory '{adr_repo_path}' exists... ")
         if not adr_repo_path.exists():
