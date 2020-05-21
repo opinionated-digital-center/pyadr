@@ -70,7 +70,8 @@ Feature: Helper for the various names and messages
             [PyadrAdrFilenameFormatError]
             001-my-adr-title.md
 
-            Filename of ADR(s) processed (status 'accepted') must be at least of format '[0-9][0-9][0-9][0-9]-*.md'.
+            (status to verify against: 'accepted')
+            ADR(s)'s filename follow the format '[0-9][0-9][0-9][0-9]-*.md'.
             """
 
     Scenario: No sync if filename already correct

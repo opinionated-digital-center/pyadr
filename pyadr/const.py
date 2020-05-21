@@ -74,6 +74,9 @@ ADR_ID_NOT_SET_REGEX = r"XXXX"
 ADR_ID_REGEX = r"[0-9][0-9][0-9][0-9]"
 ADR_TITLE_SLUG_REGEX = r"[a-z0-9-]*"
 
+ADR_ID_NOT_SET_REGEX_WITH_SEPARATOR = ADR_ID_NOT_SET_REGEX + "-"
+ADR_ID_REGEX_WITH_SEPARATOR = ADR_ID_REGEX + "-"
+
 VALID_ADR_FILENAME_REGEX = (
     r"^("
     + ADR_ID_NOT_SET_REGEX
@@ -138,7 +141,7 @@ FILENAME_REGEXES = {
 ###############################
 
 REGEX_ERROR_MESSAGE_PREFIX = (
-    "Filename of ADR(s) processed (status '{status}') must be at least of format '"
+    "(status to verify against: '{status}')\nADR(s)'s filename follow the format '"
 )
 
 REGEX_ERROR_MESSAGE_ADR_FILENAME = "".join(
@@ -183,7 +186,9 @@ REGEX_ERROR_MESSAGES = {
         "skip_title": REGEX_ERROR_MESSAGE_ADR_FILENAME_SKIP_TITLE.format(
             status=STATUS_ANY
         ),
-        "id_prefix": "' or '".join([ADR_ID_REGEX, ADR_ID_NOT_SET_REGEX]),
+        "id_prefix": "' or '".join(
+            [ADR_ID_REGEX_WITH_SEPARATOR, ADR_ID_NOT_SET_REGEX_WITH_SEPARATOR]
+        ),
     },
     STATUS_ANY_WITHOUT_ID: {
         "full": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITHOUT_ID.format(
@@ -192,7 +197,7 @@ REGEX_ERROR_MESSAGES = {
         "skip_title": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITHOUT_ID_SKIP_TITLE.format(
             status=STATUS_ANY_WITHOUT_ID
         ),
-        "id_prefix": ADR_ID_NOT_SET_REGEX,
+        "id_prefix": ADR_ID_NOT_SET_REGEX_WITH_SEPARATOR,
     },
     STATUS_ANY_WITH_ID: {
         "full": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID.format(
@@ -201,7 +206,7 @@ REGEX_ERROR_MESSAGES = {
         "skip_title": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID_SKIP_TITLE.format(
             status=STATUS_ANY_WITH_ID
         ),
-        "id_prefix": ADR_ID_REGEX,
+        "id_prefix": ADR_ID_REGEX_WITH_SEPARATOR,
     },
     STATUS_PROPOSED: {
         "full": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITHOUT_ID.format(
@@ -210,7 +215,7 @@ REGEX_ERROR_MESSAGES = {
         "skip_title": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITHOUT_ID_SKIP_TITLE.format(
             status=STATUS_PROPOSED
         ),
-        "id_prefix": ADR_ID_NOT_SET_REGEX,
+        "id_prefix": ADR_ID_NOT_SET_REGEX_WITH_SEPARATOR,
     },
     STATUS_ACCEPTED: {
         "full": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID.format(status=STATUS_ACCEPTED),
@@ -224,7 +229,7 @@ REGEX_ERROR_MESSAGES = {
         "skip_title": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID_SKIP_TITLE.format(
             status=STATUS_REJECTED
         ),
-        "id_prefix": ADR_ID_REGEX,
+        "id_prefix": ADR_ID_REGEX_WITH_SEPARATOR,
     },
     STATUS_DEPRECATED: {
         "full": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID.format(
@@ -233,7 +238,7 @@ REGEX_ERROR_MESSAGES = {
         "skip_title": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID_SKIP_TITLE.format(
             status=STATUS_DEPRECATED
         ),
-        "id_prefix": ADR_ID_REGEX,
+        "id_prefix": ADR_ID_REGEX_WITH_SEPARATOR,
     },
     STATUS_SUPERSEDING: {
         "full": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID.format(
@@ -242,6 +247,6 @@ REGEX_ERROR_MESSAGES = {
         "skip_title": REGEX_ERROR_MESSAGE_ADR_FILENAME_WITH_ID_SKIP_TITLE.format(
             status=STATUS_SUPERSEDING
         ),
-        "id_prefix": ADR_ID_NOT_SET_REGEX,
+        "id_prefix": ADR_ID_NOT_SET_REGEX_WITH_SEPARATOR,
     },
 }

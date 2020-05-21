@@ -40,7 +40,8 @@ Feature: Check ADRs well formed
         When I run "pyadr check-adr-repo"
         Then it should fail with:
             """
-            Filename of ADR(s) processed (status '<any status with an id>') must be at least of format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but:
+            (status to verify against: '<any status with an id>')
+            ADR(s)'s filename follow the format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but:
               => 'docs/adr/0002-an-adr.md' does not have the correct title slug ('a-different-adr-title').
               => 'docs/adr/0003-another-adr.md' does not have the correct title slug ('yet-another-different-adr-title').
             """
@@ -93,11 +94,12 @@ Feature: Check ADRs well formed
         When I run "pyadr check-adr-repo"
         Then it should fail with:
             """
-            Filename of ADR(s) processed (status '<any status with an id>') must be at least of format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but:
-              => 'docs/adr/000-yet-another-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
-              => 'docs/adr/00023-a-last-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
-              => 'docs/adr/000X-another-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
-              => 'docs/adr/XXXX-an-adr.md' does not start with '[0-9][0-9][0-9][0-9]' followed by '-'.
+            (status to verify against: '<any status with an id>')
+            ADR(s)'s filename follow the format '[0-9][0-9][0-9][0-9]-<adr-title-in-slug-format>.md', but:
+              => 'docs/adr/000-yet-another-adr.md' does not start with '[0-9][0-9][0-9][0-9]-'.
+              => 'docs/adr/00023-a-last-adr.md' does not start with '[0-9][0-9][0-9][0-9]-'.
+              => 'docs/adr/000X-another-adr.md' does not start with '[0-9][0-9][0-9][0-9]-'.
+              => 'docs/adr/XXXX-an-adr.md' does not start with '[0-9][0-9][0-9][0-9]-'.
             """
 
     Scenario: Check all ADR files have a unique number
@@ -159,7 +161,7 @@ Feature: Check ADRs well formed
         When I run "pyadr check-adr-repo"
         Then it should fail with:
             """
-            ADR files must have a unique number, but the following files have the same number:
+            ADRs must have a unique number, but the following files have the same number:
               => ['docs/adr/0002-a-last-adr.md', 'docs/adr/0002-an-adr.md', 'docs/adr/0002-another-adr.md'].
               => ['docs/adr/0003-more-adr.md', 'docs/adr/0003-yet-more-adr.md'].
             """
@@ -267,6 +269,6 @@ Feature: Check ADRs well formed
         When I run "pyadr check-adr-repo --no-proposed"
         Then it should fail with:
             """
-            ADR files must not have their status set to 'proposed', but the following files do:
-              => 'docs/adr/0003-another-adr.md'.
+            ADR(s) must not have their status set to 'proposed', but:
+              => 'docs/adr/0003-another-adr.md' has status 'proposed'.
             """
