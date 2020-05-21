@@ -373,7 +373,7 @@ class AdrCore(object):
         )
         if adrs_with_duplicate_number:
             logger.error(
-                "ADR files must have a unique number, "
+                "ADRs must have a unique number, "
                 "but the following files have the same number:"
             )
             for files in sorted(adrs_with_duplicate_number):
@@ -411,12 +411,9 @@ class AdrCore(object):
         ]
 
         if adrs_with_status_proposed:
-            logger.error(
-                "ADR files must not have their status set to 'proposed', "
-                "but the following files do:"
-            )
+            logger.error("ADR(s) must not have their status set to 'proposed', " "but:")
             for file in sorted(adrs_with_status_proposed):
-                logger.error(f"  => '{str(file)}'.")
+                logger.error(f"  => '{str(file)}' has status 'proposed'.")
             raise PyadrSomeAdrStatusesAreProposedError
 
     def _verify_adr_filename(
@@ -490,7 +487,7 @@ class AdrCore(object):
             if error_status["format_not_valid"]:
                 error_messages.append(
                     f"  => '{str(file)}' does not start with "
-                    f"'{REGEX_ERROR_MESSAGES[status]['id_prefix']}' followed by '-'."
+                    f"'{REGEX_ERROR_MESSAGES[status]['id_prefix']}'."
                 )
             if error_status["with_incorrect_title_slug"][0]:  # type: ignore
                 error_messages.append(

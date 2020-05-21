@@ -97,8 +97,9 @@ Feature: Helper for the various names and messages - Git included
             [PyadrAdrFilenameIncorrectError]
             XXXXX-my-adr-title.md
 
-            Filename of ADR(s) processed (status 'proposed') must be at least of format 'XXXX-<adr-title-in-slug-format>.md', but:
-              => 'XXXXX-my-adr-title.md' does not start with 'XXXX' followed by '-'.
+            (status to verify against: 'proposed')
+            ADR(s)'s filename follow the format 'XXXX-<adr-title-in-slug-format>.md', but:
+              => 'XXXXX-my-adr-title.md' does not start with 'XXXX-'.
             """
 
     Scenario: Return commit message fail on unsynched filename title
@@ -117,8 +118,8 @@ Feature: Helper for the various names and messages - Git included
             """
             [PyadrAdrFilenameIncorrectError]
             XXXX-my-adr-title.md
-
-            Filename of ADR(s) processed (status 'proposed') must be at least of format 'XXXX-<adr-title-in-slug-format>.md', but:
+            (status to verify against: 'proposed')
+            ADR(s)'s filename follow the format 'XXXX-<adr-title-in-slug-format>.md', but:
               => 'XXXX-my-adr-title.md' does not have the correct title slug ('my-adr-updated-title').
             """
 
