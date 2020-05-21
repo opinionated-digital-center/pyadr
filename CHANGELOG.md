@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.15.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.15.0...v0.15.1) (2020-05-21)
+
+
+### Bug Fixes
+
+* fix exception on commit message when in adr only repo ([51963d5](https://github.com/opinionated-digital-center/pyadr/commit/51963d5f7e005dd580a61b897f9aad13c08d1440))
+
 ## [0.15.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.14.0...v0.15.0) (2020-05-21)
 
 
