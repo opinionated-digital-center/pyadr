@@ -76,7 +76,7 @@ class GitNewCommand(BaseGitCommand):
 
 class GitProposeCommand(GitNewCommand):
     """
-    Same as `new` -> command added for coherence
+    Propose a new ADR (same as 'new' command)
 
     propose
         {words* : Words in the title}
