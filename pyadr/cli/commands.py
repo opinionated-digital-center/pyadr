@@ -62,7 +62,7 @@ class NewCommand(BaseCommand):
 
 class ProposeCommand(NewCommand):
     """
-    Propose a new ADR (same as 'new' command... Here for coherence)
+    Propose a new ADR (same as 'new' command)
 
     propose
         {words* : Words in the title}
