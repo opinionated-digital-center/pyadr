@@ -8,7 +8,8 @@ from pyadr.const import REVIEW_REQUESTS
 from pyadr.content_utils import adr_status_from_file
 from pyadr.core import AdrCore
 from pyadr.exceptions import PyadrStatusIncompatibleWithReviewRequestError
-from pyadr.git.const import GIT_ADR_DEFAULT_SETTINGS, PROPOSAL_REQUEST
+from pyadr.git.config import GitAdrConfig
+from pyadr.git.const import PROPOSAL_REQUEST
 from pyadr.git.exceptions import (
     PyadrGitAdrNotStagedError,
     PyadrGitAdrNotStagedOrCommittedError,
@@ -25,7 +26,7 @@ from pyadr.git.utils import (
 
 class GitAdrCore(AdrCore):
     def __init__(self):
-        super().__init__(GIT_ADR_DEFAULT_SETTINGS)
+        self.config = GitAdrConfig()
         self._repo = None
 
     ###########################################
@@ -33,7 +34,7 @@ class GitAdrCore(AdrCore):
     ###########################################
     @property
     def commit_message_prefix(self) -> str:
-        if self.config.getboolean("adr-only-repo"):
+        if self.config["git"].getboolean("adr-only-repo"):
             return "feat(adr):"
         else:
             return "docs(adr):"
@@ -43,6 +44,17 @@ class GitAdrCore(AdrCore):
         if not self._repo:
             self._repo = get_verified_repo_client(Path.cwd())
         return self._repo
+
+    ###########################################
+    # CONFIGURE ADR
+    ###########################################
+    def configure(self, setting: str, value: str) -> None:
+        self.config.configure(setting, value)
+        logger.info(f"Configured '{setting}' to '{value}'.")
+
+    def unset_config_setting(self, setting: str) -> None:
+        self.config.unset(setting)
+        logger.info(f"AdrConfig setting '{setting}' unset.")
 
     ###########################################
     # GIT INIT ADR
