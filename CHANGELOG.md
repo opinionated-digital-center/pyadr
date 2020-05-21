@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.15.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.14.0...v0.15.0) (2020-05-21)
+
+
+### Features
+
+* make `file` argument compulsory for `accept` of `reject` ([e7dddbe](https://github.com/opinionated-digital-center/pyadr/commit/e7dddbee53987bbfb91dee5c2479f98f175fc312))
+
 ## [0.14.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.13.3...v0.14.0) (2020-05-20)
 
 
