@@ -1,4 +1,5 @@
 """Console script for pyadr."""
+from typing import List
 
 import cleo
 
@@ -167,11 +168,17 @@ class HelperCommand(BaseCommand):
     helper
     """
 
-    commands = [
-        HelperSlugCommand(),
-        HelperLowercaseCommand(),
-        HelperSyncFilenameCommand(),
-    ]
+    commands: List[BaseCommand] = []
+
+    def __init__(self):
+        self.commands.extend(
+            [
+                HelperSlugCommand(),
+                HelperLowercaseCommand(),
+                HelperSyncFilenameCommand(),
+            ]
+        )
+        super().__init__()
 
     def handle(self):
         return self.call("help", self.config.name)

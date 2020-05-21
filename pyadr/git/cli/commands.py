@@ -1,5 +1,7 @@
 """Console script for git adr."""
 # flake8: noqa: B950
+from typing import Callable, List
+
 import cleo
 
 from pyadr.const import STATUS_ACCEPTED, STATUS_REJECTED
@@ -214,13 +216,19 @@ class GitHelperCommand(BaseGitCommand):
     helper
     """
 
-    commands = [
-        GitHelperSlugCommand(),
-        GitHelperLowercaseCommand(),
-        GitHelperSyncFilenameCommand(),
-        GitHelperCommitMessageCommand(),
-        GitHelperBranchTitleCommand(),
-    ]
+    commands: List[BaseGitCommand] = []
+
+    def __init__(self):
+        self.commands.extend(
+            [
+                GitHelperSlugCommand(),
+                GitHelperLowercaseCommand(),
+                GitHelperSyncFilenameCommand(),
+                GitHelperCommitMessageCommand(),
+                GitHelperBranchTitleCommand(),
+            ]
+        )
+        super().__init__()
 
     def handle(self):
         return self.call("help", self.config.name)
