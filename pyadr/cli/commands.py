@@ -29,11 +29,16 @@ class ConfigCommand(BaseCommand):
         if self.option("list"):
             self.adr_core.list_config()
         elif self.option("unset"):
+            if not self.argument("setting"):
+                self.line_error('Not enough arguments (missing: "words").')
             self.adr_core.unset_config_setting(self.argument("setting"))
-        elif not self.argument("value"):
-            self.adr_core.print_config_setting(self.argument("setting"))
-        else:
-            self.adr_core.configure(self.argument("setting"), self.argument("value"))
+        elif self.argument("setting"):
+            if self.argument("value"):
+                self.adr_core.configure(
+                    self.argument("setting"), self.argument("value")
+                )
+            else:
+                self.adr_core.print_config_setting(self.argument("setting"))
 
 
 class InitCommand(BaseCommand):
