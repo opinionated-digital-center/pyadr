@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.15.4](https://github.com/opinionated-digital-center/pyadr/compare/v0.15.3...v0.15.4) (2020-05-22)
+
+
+### Bug Fixes
+
+* handle gracefully when empty call of `config` command ([be1053d](https://github.com/opinionated-digital-center/pyadr/commit/be1053d015b491b1140a6e76d3cc2cb38d061049))
+
 ## [0.15.3](https://github.com/opinionated-digital-center/pyadr/compare/v0.15.2...v0.15.3) (2020-05-22)
 
 
