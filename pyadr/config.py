@@ -127,4 +127,7 @@ class AdrConfig(ConfigParser):
             )
 
     def section_supports_setting(self, section: str, setting: str) -> bool:
-        return self.optionxform(setting) in self.section_defaults[section].keys()
+        if section in self.section_defaults.keys():
+            return self.optionxform(setting) in self.section_defaults[section].keys()
+        else:
+            return True
