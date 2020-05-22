@@ -30,13 +30,16 @@ class GitConfigCommand(BaseGitCommand):
         if self.option("list"):
             self.git_adr_core.list_config()
         elif self.option("unset"):
+            if not self.argument("setting"):
+                self.line_error('Not enough arguments (missing: "words").')
             self.git_adr_core.unset_config_setting(self.argument("setting"))
-        elif not self.argument("value"):
-            self.git_adr_core.print_config_setting(self.argument("setting"))
-        else:
-            self.git_adr_core.configure(
-                self.argument("setting"), self.argument("value")
-            )
+        elif self.argument("setting"):
+            if self.argument("value"):
+                self.git_adr_core.configure(
+                    self.argument("setting"), self.argument("value")
+                )
+            else:
+                self.git_adr_core.print_config_setting(self.argument("setting"))
 
 
 class GitInitCommand(BaseGitCommand):
