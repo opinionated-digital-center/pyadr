@@ -2,6 +2,7 @@ from hamcrest import assert_that, calling, contains_string, equal_to, not_, rais
 
 from pyadr.config import AdrConfig
 from pyadr.const import DEFAULT_ADR_PATH
+from pyadr.core import AdrCore
 from pyadr.exceptions import (
     PyadrConfigFileSettingsNotSupported,
     PyadrConfigSettingNotSupported,
@@ -70,6 +71,34 @@ option = value
         f.write(content)
 
     # When
+    adr_core.config.persist()
+    # Then
+    with adr_ini_path.open() as f:
+        result = f.read()
+
+    expected = """[adr]
+
+[other_section]
+option = value
+
+"""
+    assert_that(result, equal_to(expected))
+
+
+def test_config_works_with_other_sections_on_init(tmp_path):
+    # Given
+    adr_ini_path = tmp_path / ".adr"
+    content = """[adr]
+
+[other_section]
+option = value
+
+"""
+    with adr_ini_path.open("w") as f:
+        f.write(content)
+
+    # When
+    adr_core = AdrCore()
     adr_core.config.persist()
     # Then
     with adr_ini_path.open() as f:
