@@ -94,9 +94,11 @@ Feature: Helper for the various names and messages - Git included
         When I run "git adr helper commit-message XXXXX-my-adr-title.md"
         Then it should fail with
             """
-            [PyadrAdrFilenameIncorrectError]
-            XXXXX-my-adr-title.md
-
+              PyadrAdrFilenameIncorrectError
+              XXXXX-my-adr-title.md
+            """
+        And the command output should contain
+            """
             (status to verify against: 'proposed')
             ADR(s)'s filename follow the format 'XXXX-<adr-title-in-slug-format>.md', but:
               => 'XXXXX-my-adr-title.md' does not start with 'XXXX-'.
@@ -116,8 +118,11 @@ Feature: Helper for the various names and messages - Git included
         When I run "git adr helper commit-message XXXX-my-adr-title.md"
         Then it should fail with
             """
-            [PyadrAdrFilenameIncorrectError]
-            XXXX-my-adr-title.md
+              PyadrAdrFilenameIncorrectError
+              XXXX-my-adr-title.md
+            """
+        And the command output should contain
+            """
             (status to verify against: 'proposed')
             ADR(s)'s filename follow the format 'XXXX-<adr-title-in-slug-format>.md', but:
               => 'XXXX-my-adr-title.md' does not have the correct title slug ('my-adr-updated-title').
@@ -187,16 +192,18 @@ Feature: Helper for the various names and messages - Git included
         When I run "git adr helper branch-title XXXX-my-adr-title.md"
         Then it should fail with
             """
-            [PyadrAdrFilenameIncorrectError]
+              PyadrAdrFilenameIncorrectError
             """
     Scenario: Fail on branch option if ADR status not valid (propose, deprecate, supersede)
         Given an accepted adr file named "0001-my-adr-title.md"
         When I run "git adr helper branch-title 0001-my-adr-title.md"
         Then it should fail with
             """
-            [PyadrStatusIncompatibleWithReviewRequestError]
-            ADR: '0001-my-adr-title.md'; status: 'accepted'.
-
+              PyadrStatusIncompatibleWithReviewRequestError
+              ADR: '0001-my-adr-title.md'; status: 'accepted'.
+            """
+        And the command output should contain
+            """
             Can only create review request branches for ADR statuses: ['proposed', 'deprecated', 'superseding'].
             """
 

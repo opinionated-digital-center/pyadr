@@ -10,7 +10,7 @@ Feature: Helper for the various names and messages
         When I run "pyadr helper slug foo-bar-file"
         Then it should fail with:
             """
-            [PyadrAdrTitleNotFoundError]
+              PyadrAdrTitleNotFoundError
             """
 
     Scenario: Return title slug
@@ -67,9 +67,11 @@ Feature: Helper for the various names and messages
         When I run "pyadr helper sync-filename 001-my-adr-title.md"
         Then it should fail with
             """
-            [PyadrAdrFilenameFormatError]
-            001-my-adr-title.md
-
+              PyadrAdrFilenameFormatError
+              001-my-adr-title.md
+            """
+        And the command output should contain
+            """
             (status to verify against: 'accepted')
             ADR(s)'s filename follow the format '[0-9][0-9][0-9][0-9]-*.md'.
             """

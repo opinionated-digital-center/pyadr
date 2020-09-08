@@ -30,7 +30,7 @@ class AdrConfig(ConfigParser):
 
             self.check_filled_settings_supported()
 
-    def set(self, section: str, setting: str, value: str) -> None:
+    def set(self, section: str, setting: str, value: str = None) -> None:
         if section != self.default_section:  # type: ignore
             self.check_section_supports_setting(section, setting)
         super().set(section, setting, value)

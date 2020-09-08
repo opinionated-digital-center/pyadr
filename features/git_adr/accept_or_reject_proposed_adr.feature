@@ -10,8 +10,8 @@ Feature: Accept or reject proposed ADR - Git included
         Then it should fail
         And the command output should contain
             """
-            [PyadrGitAdrNotStagedOrCommittedError]
-            docs/adr/XXXX-my-adr-title.md
+              PyadrGitAdrNotStagedOrCommittedError
+              docs/adr/XXXX-my-adr-title.md
             """
         And the command output should contain
             """
