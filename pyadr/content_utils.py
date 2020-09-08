@@ -96,7 +96,7 @@ def adr_title_status_and_date_from_file(
 
 
 def extract_next_line_with_suffix_from_content_stream(
-    stream: TextIO, suffix: str, stream_source: str = "Not provided",
+    stream: TextIO, suffix: str, stream_source: str = "Not provided"
 ) -> str:
     line = "bootstrap string"
     while not line.startswith(suffix) and len(line) != 0:
@@ -156,9 +156,11 @@ def extract_adrs_by_status(
         },
     }
     for adr in adr_paths:
-        (title, (status, status_phrase), date,) = adr_title_status_and_date_from_file(
-            adr
-        )
+        (
+            title,
+            (status, status_phrase),
+            date,
+        ) = adr_title_status_and_date_from_file(adr)
         try:
             status_supplement = ""
             if status_phrase:

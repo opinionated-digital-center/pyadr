@@ -176,9 +176,7 @@ def test_git_config_fail_on_unknown_adr_setting_in_config_file(tmp_path):
         f.write("[adr]\nunsupported_option = value\n\n")
     # When
     # Then
-    assert_that(
-        calling(GitAdrConfig), raises(PyadrConfigFileSettingsNotSupported),
-    )
+    assert_that(calling(GitAdrConfig), raises(PyadrConfigFileSettingsNotSupported))
 
 
 def test_git_config_fail_on_unknown_git_setting_in_config_file(tmp_path):
@@ -188,6 +186,4 @@ def test_git_config_fail_on_unknown_git_setting_in_config_file(tmp_path):
         f.write("[git]\nunsupported_option = value\n\n")
     # When
     # Then
-    assert_that(
-        calling(GitAdrConfig), raises(PyadrConfigFileSettingsNotSupported),
-    )
+    assert_that(calling(GitAdrConfig), raises(PyadrConfigFileSettingsNotSupported))

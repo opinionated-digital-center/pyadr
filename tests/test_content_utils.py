@@ -120,9 +120,11 @@ def test_retrieve_title_status_and_date_from_madr(adr_tmp_path):
         f.write(adr_content)
 
     # When
-    (title, (status, status_phrase), date,) = adr_title_status_and_date_from_file(
-        adr_path
-    )
+    (
+        title,
+        (status, status_phrase),
+        date,
+    ) = adr_title_status_and_date_from_file(adr_path)
 
     # Then
     assert_that(title, equal_to("My ADR Updated Title"))
@@ -137,9 +139,11 @@ def test_retrieve_title_status_and_date_from_madr_when_no_status_phrase(
     # Given
 
     # When
-    (title, (status, status_phrase), date,) = adr_title_status_and_date_from_file(
-        sample_adr_path
-    )
+    (
+        title,
+        (status, status_phrase),
+        date,
+    ) = adr_title_status_and_date_from_file(sample_adr_path)
 
     # Then
     assert_that(title, equal_to("[short title of solved problem and solution]"))

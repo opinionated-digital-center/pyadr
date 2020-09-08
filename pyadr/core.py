@@ -328,8 +328,8 @@ class AdrCore(object):
         except PyadrSomeAdrIdsNotUniqueError:
             at_least_one_check_failed = True
 
-        adrs_with_invalid_content_format = self._filter_adrs_with_invalid_content_format(  # noqa
-            adr_files
+        adrs_with_invalid_content_format = (
+            self._filter_adrs_with_invalid_content_format(adr_files)  # noqa
         )
         if adrs_with_invalid_content_format:
             at_least_one_check_failed = True
@@ -399,7 +399,11 @@ class AdrCore(object):
 
     def _check_no_adr_is_proposed(self, adr_files: List[Path]) -> None:
         def adr_has_status(adr_path: Path, target_status: str) -> bool:
-            (_, (status, _), _,) = adr_title_status_and_date_from_file(adr_path)
+            (
+                _,
+                (status, _),
+                _,
+            ) = adr_title_status_and_date_from_file(adr_path)
 
             return status == target_status
 
@@ -414,7 +418,7 @@ class AdrCore(object):
             raise PyadrSomeAdrStatusesAreProposedError
 
     def _verify_adr_filename(
-        self, adr_path: Path, status: str = None, check_title_format: bool = True,
+        self, adr_path: Path, status: str = None, check_title_format: bool = True
     ) -> None:
         error_messages = self._verify_adr_filenames(
             [adr_path], status, check_title_format, log_and_raise=False
@@ -496,7 +500,7 @@ class AdrCore(object):
         if error_messages:
             error_messages.sort()
             error_messages.insert(
-                0, REGEX_ERROR_MESSAGES[status][full_or_skip_title] + ", but:",
+                0, REGEX_ERROR_MESSAGES[status][full_or_skip_title] + ", but:"
             )
             if log_and_raise:
                 for message in error_messages:

@@ -143,6 +143,4 @@ def test_config_fail_on_unknown_setting_in_config_file(tmp_path):
         f.write("[adr]\nunsupported_option = value\n\n")
     # When
     # Then
-    assert_that(
-        calling(AdrConfig), raises(PyadrConfigFileSettingsNotSupported),
-    )
+    assert_that(calling(AdrConfig), raises(PyadrConfigFileSettingsNotSupported))

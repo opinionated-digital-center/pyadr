@@ -119,7 +119,7 @@ class GitAdrCore(AdrCore):
     # ACCEPT / REJECT
     ###########################################
     def git_accept_or_reject(
-        self, file: str, status: str, toc: bool = False, commit: bool = False,
+        self, file: str, status: str, toc: bool = False, commit: bool = False
     ) -> None:
         self._verify_adr_staged_or_committed(Path(file))
 

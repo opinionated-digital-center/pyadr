@@ -32,7 +32,7 @@ def tmp_repo(tmp_path):
 @pytest.fixture(autouse=True)
 def initialise_config(monkeypatch, tmp_path):
     monkeypatch.setattr(
-        pyadr.config.AdrConfig, "config_file_path", tmp_path / DEFAULT_CONFIG_FILE_NAME,
+        pyadr.config.AdrConfig, "config_file_path", tmp_path / DEFAULT_CONFIG_FILE_NAME
     )
     assert (
         pyadr.config.AdrConfig.config_file_path == tmp_path / DEFAULT_CONFIG_FILE_NAME
