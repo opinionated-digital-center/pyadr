@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.16.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.15.4...v0.16.0) (2020-09-09)
+
+
+### Features
+
+* add id in adr titles in index ([548118e](https://github.com/opinionated-digital-center/pyadr/commit/548118ee0ee2efdb1983bb964ff71cd117d6b040))
+
 ## [0.15.4](https://github.com/opinionated-digital-center/pyadr/compare/v0.15.3...v0.15.4) (2020-05-22)
 
 
