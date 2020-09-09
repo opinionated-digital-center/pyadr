@@ -118,27 +118,27 @@ def build_toc_content_from_adrs_by_status(
         "erased at next generation. -->\n",
         "# Architecture Decision Records\n",
     ]
-    for status in ["accepted", "rejected", "superseded", "deprecated", "non-standard"]:
-        if status != "non-standard":
-            toc_content.append("\n")
-            toc_content.append(f"## {adrs_by_status[status]['status-title']}\n")
-            toc_content.append("\n")
-            if adrs_by_status[status]["adrs"]:
-                toc_content.extend(adrs_by_status[status]["adrs"])
-            else:
-                toc_content.append("* None\n")
+    for status in ["accepted", "rejected", "superseded", "deprecated"]:
+        toc_content.append("\n")
+        toc_content.append(f"## {adrs_by_status[status]['status-title']}\n")
+        toc_content.append("\n")
+        if adrs_by_status[status]["adrs"]:
+            toc_content.extend(adrs_by_status[status]["adrs"])
         else:
+            toc_content.append("* None\n")
+
+    status = "non-standard"
+    toc_content.append("\n")
+    toc_content.append(f"## {adrs_by_status[status]['status-title']}\n")
+    if adrs_by_status[status]["adrs-by-status"]:
+        for value in adrs_by_status[status]["adrs-by-status"].values():
             toc_content.append("\n")
-            toc_content.append(f"## {adrs_by_status[status]['status-title']}\n")
-            if adrs_by_status[status]["adrs-by-status"]:
-                for value in adrs_by_status[status]["adrs-by-status"].values():
-                    toc_content.append("\n")
-                    toc_content.append(f"### {value['status-title']}\n")
-                    toc_content.append("\n")
-                    toc_content.extend(value["adrs"])
-            else:
-                toc_content.append("\n")
-                toc_content.append("* None\n")
+            toc_content.append(f"### {value['status-title']}\n")
+            toc_content.append("\n")
+            toc_content.extend(value["adrs"])
+    else:
+        toc_content.append("\n")
+        toc_content.append("* None\n")
     return toc_content
 
 
@@ -155,26 +155,33 @@ def extract_adrs_by_status(
             "adrs-by-status": {},
         },
     }
+
     for adr in adr_paths:
         (
             title,
             (status, status_phrase),
             date,
         ) = adr_title_status_and_date_from_file(adr)
-        try:
+        id = adr.stem.split("-")[0]
+
+        if status_phrase:
+            status_supplement = f": {status} {status_phrase}"
+        else:
             status_supplement = ""
-            if status_phrase:
-                status_supplement = f": {status} {status_phrase}"
-            adrs_by_status[status]["adrs"].append(
-                f"* [{title}]({adr.relative_to(records_path)})" f"{status_supplement}\n"
-            )
+
+        adr_statement = (
+            f"* [{id} - {title}]({adr.relative_to(records_path)}){status_supplement}\n"
+        )
+        try:
+            adrs_by_status[status]["adrs"].append(adr_statement)
         except KeyError:
             if status not in adrs_by_status["non-standard"]["adrs-by-status"].keys():
                 adrs_by_status["non-standard"]["adrs-by-status"][status] = {
                     "status-title": f"Status `{status}`",
                     "adrs": [],
                 }
+
             adrs_by_status["non-standard"]["adrs-by-status"][status]["adrs"].append(
-                f"* [{title}]({adr.relative_to(records_path)})" f"{status_supplement}\n"
+                adr_statement
             )
     return adrs_by_status
