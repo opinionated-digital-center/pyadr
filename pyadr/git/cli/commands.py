@@ -235,3 +235,14 @@ class GitHelperCommand(BaseGitCommand):
 
     def handle(self):
         return self.call("help", self.config.name)
+
+
+class GitGenerateTocCommand(BaseGitCommand):
+    """
+    Generate a table of content of the ADRs
+
+    toc
+    """
+
+    def handle(self):
+        self.git_adr_core.generate_toc()
