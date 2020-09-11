@@ -108,7 +108,7 @@ class GenerateTocCommand(BaseCommand):
     """
     Generate a table of content of the ADRs
 
-    generate-toc
+    toc
     """
 
     def handle(self):

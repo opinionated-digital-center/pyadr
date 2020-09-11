@@ -57,7 +57,7 @@ Feature: Generate a table of content in markdown
 
             [..]
             """
-        When I run "pyadr generate-toc"
+        When I run "pyadr toc"
         Then it should pass with:
             """
             Markdown table of content generated in 'docs/adr/index.md'
@@ -113,7 +113,7 @@ Feature: Generate a table of content in markdown
 
             [..]
             """
-        When I run "pyadr generate-toc"
+        When I run "pyadr toc"
         Then it should pass
         And the file named "docs/adr/index.md" should exist
         And the file "docs/adr/index.md" should contain:
@@ -166,7 +166,7 @@ Feature: Generate a table of content in markdown
 
             [..]
             """
-        When I run "pyadr generate-toc"
+        When I run "pyadr toc"
         Then it should pass
         And the file named "docs/adr/index.md" should exist
         And the file "docs/adr/index.md" should contain:
