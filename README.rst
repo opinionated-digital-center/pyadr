@@ -42,7 +42,7 @@ Features
   tests).
 * ``pyadr deprecate <file-path>``: (not yet implemented) deprecate an ADR.
 * ``pyadr supersede <superseded-file-path> <superseding-file-path>``: (not yet implemented) supersede an ADR with another ADR.
-* ``pyadr generate-toc``: generate a table of content (in format ``index.md``)
+* ``pyadr toc``: generate a table of content (in format ``index.md``)
   (`corresponding BDD tests <features/pyadr/generate_toc.feature>`_).
 * ``pyadr helper``: generate and syncs various useful things
   (`corresponding BDD tests <features/pyadr/helper.feature>`_):
