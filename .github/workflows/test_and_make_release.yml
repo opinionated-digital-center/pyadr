@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Set up cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: cache
         with:
           path: .venv
@@ -67,7 +67,7 @@ jobs:
         shell: bash
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Set up cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: cache
         with:
           path: .venv
@@ -94,7 +94,7 @@ jobs:
         shell: bash
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Set up cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: cache
         with:
           path: .venv
@@ -121,7 +121,7 @@ jobs:
         shell: bash
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Set up cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: cache
         with:
           path: .venv
@@ -148,7 +148,7 @@ jobs:
         shell: bash
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Set up cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: cache
         with:
           path: .venv
@@ -176,7 +176,7 @@ jobs:
         with:
           node-version: 12.x
       - name: Cache node modules
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         env:
           cache-name: cache-node-modules
         with:
@@ -199,7 +199,7 @@ jobs:
         shell: bash
         run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
       - name: Set up cache
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         id: cache
         with:
           path: .venv
