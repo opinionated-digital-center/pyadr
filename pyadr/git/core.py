@@ -170,6 +170,17 @@ class GitAdrCore(AdrCore):
     def _file_committed(self, path):
         return str(path) in list(self.repo.head.commit.stats.files.keys())
 
+    def _apply_accept_or_reject_to_proposed_adr(
+        self, proposed_adr: Path, status: str
+    ) -> Path:
+        processed_adr = super()._apply_accept_or_reject_to_proposed_adr(
+            proposed_adr, status
+        )
+
+        self.repo.index.add([str(processed_adr)])
+
+        return processed_adr
+
     def _apply_filepath_update(self, path: Path, renamed_path: Path) -> None:
         try:
             self._verify_adr_staged_or_committed(path, print_error_message=False)
