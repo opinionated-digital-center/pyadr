@@ -4,7 +4,7 @@ Feature: Accept or reject proposed ADR - Git included
         Given a new working directory
         And an initialised git adr repo
 
-    Scenario: Fail if the proposed ADR is not staged or committed
+    Scenario: The proposed ADR should be already staged or committed
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should fail
@@ -18,20 +18,20 @@ Feature: Accept or reject proposed ADR - Git included
             ADR 'docs/adr/XXXX-my-adr-title.md' should be staged or committed first.
             """
 
-    Scenario: Pass if the proposed ADR is staged
+    Scenario: Accepting should pass when the proposed ADR is staged (code shared with rejected => no need to duplicate test)
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
 
-    Scenario: Pass if the proposed ADR is committed
+    Scenario: Accepting should pass when the proposed ADR is committed (code shared with rejected => no need to duplicate test)
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         And I commit the staged files with message "foo bar"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
 
-    Scenario: Increment ID of accepted ADR (same code for rejected, no need to duplicate test)
+    Scenario: An incremented ID number should be assigned to the accepted ADR (code shared with rejected => no need to duplicate test)
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
@@ -39,7 +39,7 @@ Feature: Accept or reject proposed ADR - Git included
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-title.md" should exist
 
-    Scenario: Ensure filename corresponds to title of accepted ADR (same code for rejected, no need to duplicate test)
+    Scenario: The accepted ADR's filename should correspond to title of the ADR (code shared with rejected => no need to duplicate test)
         Given a file named "docs/adr/XXXX-my-adr-title.md" with:
             """
             # My Adr Updated Title
@@ -61,14 +61,15 @@ Feature: Accept or reject proposed ADR - Git included
         And the file named "docs/adr/XXXX-my-adr-title.md" should not exist
         And the file named "docs/adr/0002-my-adr-updated-title.md" should exist
 
-    Scenario: Ensure git traced filename change of accepted ADR (same code for rejected, no need to duplicate test)
+    Scenario: The renaming of the ADR file should be traced by git (code shared with rejected => no need to duplicate test)
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
+        And I commit the staged files with message "dummy message"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
         Then it should pass
-        And the file "docs/adr/0002-my-adr-title.md" should be staged
+        And the file "docs/adr/0002-my-adr-title.md" should be staged as renamed
 
-    Scenario: Update Status and Date for accepted ADR
+    Scenario: Accepted ADR's Status and Date should be updated
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
@@ -89,7 +90,7 @@ Feature: Accept or reject proposed ADR - Git included
             Decision outcome.
             """
 
-    Scenario: Update Status and Date for rejected ADR
+    Scenario: Rejected ADR's Status and Date should be updated
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr reject docs/adr/XXXX-my-adr-title.md"
@@ -112,7 +113,15 @@ Feature: Accept or reject proposed ADR - Git included
             Decision outcome.
             """
 
-    Scenario: Generate index when approving if requested and add it to index
+#    Scenario: All changes to accepted ADR should be staged (code shared with rejected => no need to duplicate test)
+#        Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
+#        And I stage the file "docs/adr/XXXX-my-adr-title.md"
+#        When I run "git adr accept docs/adr/XXXX-my-adr-title.md"
+#        Then it should pass
+#        And the file "docs/adr/0002-my-adr-title.md" should be staged
+#        And the file "docs/adr/0002-my-adr-title.md" should NOT be marked in the git working tree as modified
+
+    Scenario: Optionnaly, one should be able to re-generate the index upon acceptance
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md --toc"
@@ -123,7 +132,7 @@ Feature: Accept or reject proposed ADR - Git included
         And the file named "docs/adr/index.md" should exist
         And the file "docs/adr/index.md" should be staged
 
-    Scenario: Generate index when rejecting if requested and add it to index
+    Scenario: Optionnaly, one should be able to re-generate the index upon rejection
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr reject docs/adr/XXXX-my-adr-title.md --toc"
@@ -134,7 +143,7 @@ Feature: Accept or reject proposed ADR - Git included
         And the file named "docs/adr/index.md" should exist
         And the file "docs/adr/index.md" should be staged
 
-    Scenario: Commit files on `accept --commit` option
+    Scenario: Optionnaly, one should be able to commit the ADR upon acceptance
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr accept docs/adr/XXXX-my-adr-title.md --commit"
@@ -145,7 +154,7 @@ Feature: Accept or reject proposed ADR - Git included
             docs(adr): [accepted] 0002-my-adr-title
             """
 
-    Scenario: Commit files on `reject --commit` option
+    Scenario: Optionnaly, one should be able to commit the ADR upon rejection
         Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr reject docs/adr/XXXX-my-adr-title.md --commit"
