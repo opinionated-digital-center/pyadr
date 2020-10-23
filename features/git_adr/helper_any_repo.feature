@@ -1,4 +1,4 @@
-Feature: Helper for the various names and messages - Git included
+Feature: Helper for the various names and messages - Git included - Any repo type
     Since 'git adr' makes calls to 'pyadr', some features will be already fully
     tested in the bdd tests for 'pyadr'.
 
@@ -81,14 +81,6 @@ Feature: Helper for the various names and messages - Git included
         Then it should pass
         And the file "0002-my-adr-title.md" should not be staged
 
-    Scenario: Return commit message for proposed adr
-        Given a proposed adr file named "XXXX-my-adr-title.md"
-        When I run "git adr helper commit-message XXXX-my-adr-title.md"
-        Then it should pass with
-            """
-            docs(adr): [proposed] XXXX-my-adr-title
-            """
-
     Scenario: Return commit message fail on wrong filename format
         Given a proposed adr file named "XXXXX-my-adr-title.md"
         When I run "git adr helper commit-message XXXXX-my-adr-title.md"
@@ -126,48 +118,6 @@ Feature: Helper for the various names and messages - Git included
             (status to verify against: 'proposed')
             ADR(s)'s filename follow the format 'XXXX-<adr-title-in-slug-format>.md', but:
               => 'XXXX-my-adr-title.md' does not have the correct title slug ('my-adr-updated-title').
-            """
-
-    Scenario: Return commit message for accepted adr
-        Given an accepted adr file named "0001-my-adr-title.md"
-        When I run "git adr helper commit-message 0001-my-adr-title.md"
-        Then it should pass with
-            """
-            docs(adr): [accepted] 0001-my-adr-title
-            """
-
-    Scenario: Return commit message for rejected adr
-        Given a file named "0001-my-adr-title.md" with:
-            """
-            # My ADR Title
-
-            * Status: rejected
-            * Date: 2020-03-26
-
-            ## Context and Problem Statement
-            [..]
-            """
-        When I run "git adr helper commit-message 0001-my-adr-title.md"
-        Then it should pass with
-            """
-            docs(adr): [rejected] 0001-my-adr-title
-            """
-
-    Scenario: Return commit message for deprecated adr
-        Given a file named "0001-my-adr-title.md" with:
-            """
-            # My ADR Title
-
-            * Status: deprecated
-            * Date: 2020-03-26
-
-            ## Context and Problem Statement
-            [..]
-            """
-        When I run "git adr helper commit-message 0001-my-adr-title.md"
-        Then it should pass with
-            """
-            docs(adr): [deprecated] 0001-my-adr-title
             """
 
     Scenario: Return branch title
@@ -209,8 +159,6 @@ Feature: Helper for the various names and messages - Git included
 
 
 # TODO
-#    Scenario: Return commit message for superseding
-#
 #    Scenario: Fail on commit message option for superseding if no superseded file given
 #
 #    Scenario: Fail on commit message option if ADR status not valid

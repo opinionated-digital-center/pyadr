@@ -2,25 +2,34 @@ Feature: Commit adrs
 
     Background:
         Given a new working directory
-        And an initialised git adr repo
 
-    Scenario: Commit proposed ADR: Passing for proposed ADRs
-        Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
+    Scenario: Commit proposed ADR in standard repo
+        Given an initialised git adr repo
+        And a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         And I stage the file "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr commit docs/adr/XXXX-my-adr-title.md"
-        Then it should pass with
-            """
-            Committing ADR 'docs/adr/XXXX-my-adr-title.md'...
-            Committed ADR 'docs/adr/XXXX-my-adr-title.md' with message 'docs(adr): [proposed] XXXX-my-adr-title'.
-            """
+        Then it should pass
         And the file "docs/adr/XXXX-my-adr-title.md" should be committed in the last commit
         And the head commit message should be
             """
-            docs(adr): [proposed] XXXX-my-adr-title
+            chore(adr): [proposed] XXXX-my-adr-title
             """
 
-    Scenario: Commit proposed ADR: Passing for accepted ADRs
-        Given an accepted adr file named "docs/adr/0002-my-adr-title.md"
+    Scenario: Commit proposed ADR in adr only repo
+        Given an initialised git adr only repo
+        And a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
+        And I stage the file "docs/adr/XXXX-my-adr-title.md"
+        When I run "git adr commit docs/adr/XXXX-my-adr-title.md"
+        Then it should pass
+        And the file "docs/adr/XXXX-my-adr-title.md" should be committed in the last commit
+        And the head commit message should be
+            """
+            chore(adr): [proposed] XXXX-my-adr-title
+            """
+
+    Scenario: Commit accepted ADR in standard repo
+        Given an initialised git adr repo
+        And an accepted adr file named "docs/adr/0002-my-adr-title.md"
         And I stage the file "docs/adr/0002-my-adr-title.md"
         When I run "git adr commit docs/adr/0002-my-adr-title.md"
         Then it should pass
@@ -30,8 +39,32 @@ Feature: Commit adrs
             docs(adr): [accepted] 0002-my-adr-title
             """
 
+    Scenario: Commit accepted ADR in adr only repo
+        Given an initialised git adr only repo
+        And an accepted adr file named "docs/adr/0002-my-adr-title.md"
+        And I stage the file "docs/adr/0002-my-adr-title.md"
+        When I run "git adr commit docs/adr/0002-my-adr-title.md"
+        Then it should pass
+        And the file "docs/adr/0002-my-adr-title.md" should be committed in the last commit
+        And the head commit message should be
+            """
+            feat(adr): [accepted] 0002-my-adr-title
+            """
+
+    Scenario: Commit ADR command output
+        Given an initialised git adr repo
+        And a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
+        And I stage the file "docs/adr/XXXX-my-adr-title.md"
+        When I run "git adr commit docs/adr/XXXX-my-adr-title.md"
+        Then the command output should contain
+            """
+            Committing ADR 'docs/adr/XXXX-my-adr-title.md'...
+            Committed ADR 'docs/adr/XXXX-my-adr-title.md' with message 'chore(adr): [proposed] XXXX-my-adr-title'.
+            """
+
     Scenario: Commit proposed ADR: Fail if not previously staged
-        Given a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
+        Given an initialised git adr repo
+        And a proposed adr file named "docs/adr/XXXX-my-adr-title.md"
         When I run "git adr commit docs/adr/XXXX-my-adr-title.md"
         Then it should fail with
             """
