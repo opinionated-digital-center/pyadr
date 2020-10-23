@@ -31,7 +31,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v2
+        uses: Gr1N/setup-poetry@v4
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -61,7 +61,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v2
+        uses: Gr1N/setup-poetry@v4
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -88,7 +88,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v2
+        uses: Gr1N/setup-poetry@v4
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -115,7 +115,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v2
+        uses: Gr1N/setup-poetry@v4
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -142,7 +142,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v2
+        uses: Gr1N/setup-poetry@v4
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -191,7 +191,7 @@ jobs:
         with:
           python-version: 3.8
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v2
+        uses: Gr1N/setup-poetry@v4
       - name: Complete CI/CD setup
         run: make setup-cicd-release-stage
       - name: Get full python version
