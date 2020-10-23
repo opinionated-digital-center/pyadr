@@ -33,7 +33,7 @@ class GitAdrCore(AdrCore):
     # PROPERTIES
     ###########################################
     @property
-    def commit_message_prefix(self) -> str:
+    def commit_message_default_prefix(self) -> str:
         if self.config["git"].getboolean("adr-only-repo"):
             return "feat(adr):"
         else:
@@ -74,7 +74,7 @@ class GitAdrCore(AdrCore):
 
         self.repo.index.add([str(p) for p in created_files])
 
-        message = f"{self.commit_message_prefix} initialise adr repository"
+        message = f"{self.commit_message_default_prefix} initialise adr repository"
         self.repo.index.commit(message)
 
         logger.info(
@@ -137,11 +137,18 @@ class GitAdrCore(AdrCore):
     def _commit_message_for_adr(self, adr_path: Path) -> str:
         self._verify_adr_filename(adr_path)
 
+        adr_status = adr_status_from_file(adr_path)
         return (
-            f"{self.commit_message_prefix} "
-            f"[{adr_status_from_file(adr_path)}] "
+            f"{self._commit_message_prefix_for_status(adr_status)} "
+            f"[{adr_status}] "
             f"{adr_path.stem}"
         )
+
+    def _commit_message_prefix_for_status(self, status: str) -> str:
+        if status == "proposed":
+            return "chore(adr):"
+        else:
+            return self.commit_message_default_prefix
 
     def _verify_adr_staged_or_committed(
         self, path: Path, print_error_message: bool = True
