@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.17.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.0...v0.17.1) (2020-10-23)
+
+
+### Bug Fixes
+
+* **git:** all changes staged when accept/reject ([cb3e753](https://github.com/opinionated-digital-center/pyadr/commit/cb3e753c5da9a62adbe5ff4a1ebcdee7a92cb51a))
+
 ## [0.17.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.16.0...v0.17.0) (2020-10-23)
 
 
