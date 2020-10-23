@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.17.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.16.0...v0.17.0) (2020-10-23)
+
+
+### Bug Fixes
+
+* commit message for proposed adr starts with 'chore(adr):' ([85def8d](https://github.com/opinionated-digital-center/pyadr/commit/85def8d72e9cfae31f9de682480b0c1ae012a1ea))
+
+
+### Features
+
+* add `git adr toc` command ([cec6335](https://github.com/opinionated-digital-center/pyadr/commit/cec6335b087038fc7744319f351b300f9f4180e9))
+* **toc:** change command from generate-toc to toc ([5e8a93b](https://github.com/opinionated-digital-center/pyadr/commit/5e8a93b3d6dd531eadff0f8f4458d9f7ac2357c1))
+
 ## [0.16.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.15.4...v0.16.0) (2020-09-09)
 
 
