@@ -141,6 +141,8 @@ setup-cicd-common:
 	pip install --upgrade pip
 
 setup-cicd-test-stage: setup-cicd-common
+	git config --global user.name "Foo Bar"
+	git config --global user.email "foo@bar.com"
 
 setup-cicd-release-stage: setup-cicd-common
 
