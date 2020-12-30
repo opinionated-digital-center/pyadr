@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.17.3](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.2...v0.17.3) (2020-12-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency pytest-html to v3 ([78dc60e](https://github.com/opinionated-digital-center/pyadr/commit/78dc60e49b0e0d9997da073b0338cbefebae96fe))
+
 ## [0.17.2](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.1...v0.17.2) (2020-12-30)
 
 
