@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.17.4](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.3...v0.17.4) (2020-12-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency sphinx to v3 ([1724f64](https://github.com/opinionated-digital-center/pyadr/commit/1724f643d3eca7f3f40e99823871465ffaf43b98))
+
 ## [0.17.3](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.2...v0.17.3) (2020-12-30)
 
 
