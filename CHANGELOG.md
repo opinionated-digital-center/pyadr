@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.17.5](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.4...v0.17.5) (2020-12-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency sphinx-autobuild to v2020 ([cd0bcc3](https://github.com/opinionated-digital-center/pyadr/commit/cd0bcc3270ddc8f351d429617f43e1f708ec9ef6))
+
 ## [0.17.4](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.3...v0.17.4) (2020-12-30)
 
 
