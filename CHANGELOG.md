@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.17.2](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.1...v0.17.2) (2020-12-30)
+
+
+### Bug Fixes
+
+* **deps:** update dependency importlib_resources to v4 ([4080630](https://github.com/opinionated-digital-center/pyadr/commit/4080630398816437588b4cab0c2de8cbd86b8336))
+
 ## [0.17.1](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.0...v0.17.1) (2020-10-23)
 
 
