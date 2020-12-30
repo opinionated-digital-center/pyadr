@@ -844,10 +844,10 @@ description = "pytest plugin for generating HTML reports"
 name = "pytest-html"
 optional = true
 python-versions = ">=3.6"
-version = "2.1.1"
+version = "3.1.1"
 
 [package.dependencies]
-pytest = ">=5.0"
+pytest = ">=5.0,<6.0.0 || >6.0.0"
 pytest-metadata = "*"
 
 [[package]]
@@ -1314,7 +1314,7 @@ test = ["pytest", "pytest-cov", "pytest-mock", "pytest-html", "pytest-asyncio", 
 type = ["mypy"]
 
 [metadata]
-content-hash = "17f5f5eb727be0ae246f9f04a13849876cc32d02a28bc0d17266c1f496a259d6"
+content-hash = "e4b5be98b9bb1f7a9634bc01858a23d4c5d2657526e6aea5d691da6f64ccf39c"
 lock-version = "1.0"
 python-versions = "^3.6.1"
 
@@ -1722,8 +1722,8 @@ pytest-cov = [
     {file = "pytest_cov-2.10.1-py2.py3-none-any.whl", hash = "sha256:45ec2d5182f89a81fc3eb29e3d1ed3113b9e9a873bcddb2a71faaab066110191"},
 ]
 pytest-html = [
-    {file = "pytest-html-2.1.1.tar.gz", hash = "sha256:6a4ac391e105e391208e3eb9bd294a60dd336447fd8e1acddff3a6de7f4e57c5"},
-    {file = "pytest_html-2.1.1-py2.py3-none-any.whl", hash = "sha256:9e4817e8be8ddde62e8653c8934d0f296b605da3d2277a052f762c56a8b32df2"},
+    {file = "pytest-html-3.1.1.tar.gz", hash = "sha256:3ee1cf319c913d19fe53aeb0bc400e7b0bc2dbeb477553733db1dad12eb75ee3"},
+    {file = "pytest_html-3.1.1-py3-none-any.whl", hash = "sha256:b7f82f123936a3f4d2950bc993c2c1ca09ce262c9ae12f9ac763a2401380b455"},
 ]
 pytest-metadata = [
     {file = "pytest-metadata-1.10.0.tar.gz", hash = "sha256:b7e6e0a45adacb17a03a97bf7a2ef60cc1f4e172bcce9732ce5e814191932315"},
