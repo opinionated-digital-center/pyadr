@@ -29,10 +29,10 @@ sys.path.insert(0, os.path.abspath(".."))
 
 # If your documentation needs a minimal Sphinx version, state it here.
 #
-# needs_sphinx = '1.0'
+# needs_sphinx = "1.0"
 
 # Add any Sphinx extension module names here, as strings. They can be
-# extensions coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
+# extensions coming with Sphinx (named "sphinx.ext.*") or your custom ones.
 extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.viewcode",
@@ -45,7 +45,7 @@ templates_path = ["_templates"]
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
 #
-# source_suffix = '.rst'
+# source_suffix = ".rst"
 source_suffix = [
     ".rst",
     ".md",
@@ -92,7 +92,7 @@ todo_include_todos = False
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-# html_theme = 'alabaster'
+# html_theme = "alabaster"
 html_theme = "sphinx_rtd_theme"
 
 # Theme options are theme-specific and customize the look and feel of a
@@ -116,18 +116,17 @@ htmlhelp_basename = "pyadrdoc"
 # -- Options for LaTeX output ------------------------------------------
 
 latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
+    # The paper size ("letterpaper" or "a4paper").
+    # "papersize": "letterpaper",
     #
-    # 'papersize': 'letterpaper',
-    # The font size ('10pt', '11pt' or '12pt').
+    # The font size ("10pt", "11pt" or "12pt").
+    # "pointsize": "10pt",
     #
-    # 'pointsize': '10pt',
     # Additional stuff for the LaTeX preamble.
+    # "preamble": "",
     #
-    # 'preamble': '',
     # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
+    # "figure_align": "htbp",
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
