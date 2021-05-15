@@ -67,7 +67,7 @@ cleo = "^0"
 #############################
 # Add you dependencies here #
 #############################
-python-slugify = "^4"
+python-slugify = "^5"
 importlib_resources = { version = "^5.0.0", python = "<3.7" }
 loguru = "^0"
 gitpython = "^3.1"
