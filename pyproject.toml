@@ -44,7 +44,7 @@ behave4git = {version = "^0", optional = true}
 PyHamcrest = {version = "^2.0", optional = true}
 # Optional dependencies to be part of `lint` extra
 flake8 = {version = "^3.7", optional = true}
-flake8-bugbear = {version = "^20", optional = true}
+flake8-bugbear = {version = "^21", optional = true}
 pydocstyle = {version = "^5.0", optional = true}
 pylint = {version = "^2.3", optional = true}
 yapf = {version = "^0", optional = true}
