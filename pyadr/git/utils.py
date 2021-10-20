@@ -1,7 +1,7 @@
 from pathlib import Path
 from typing import List
 
-from git import Commit, InvalidGitRepositoryError, Repo
+from git import Commit, InvalidGitRepositoryError, Repo  # type: ignore[attr-defined]
 from gitdb.exc import BadName
 from loguru import logger
 
