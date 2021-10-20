@@ -67,8 +67,8 @@ class GitAdrCore(AdrCore):
 
         created_files = self.init_adr_repo(force=force)
 
-        if "master" not in self.repo.heads:
-            logger.info("Git repo empty. Will commit files to 'master'.")
+        if "main" not in self.repo.heads:
+            logger.info("Git repo empty. Will commit files to 'main'.")
         else:
             create_feature_branch_and_checkout(self.repo, init_branch_name)
 
@@ -88,10 +88,10 @@ class GitAdrCore(AdrCore):
     ###########################################
     def git_new_adr(self, title: str, pre_checks: bool = True) -> None:
         if pre_checks:
-            verify_main_branch_exists(self.repo, branch="master")
+            verify_main_branch_exists(self.repo, branch="main")
 
-        logger.info("Switching to 'master'...")
-        self.repo.heads.master.checkout()
+        logger.info("Switching to 'main'...")
+        self.repo.heads.main.checkout()
         logger.log("VERBOSE", "... done.")
 
         if pre_checks:

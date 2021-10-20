@@ -73,7 +73,7 @@ The ``git`` extension to ``pyadr`` does the following additional actions:
 * ``git adr new|propose Title of your ADR``
   (`corresponding BDD tests <features/git_adr/new_adr.feature>`_):
 
-  * create a new branch from ``master``.
+  * create a new branch from ``main``.
   * stage the new ADR in that branch.
 
 * ``git adr accept [<file-path>]``
@@ -92,14 +92,14 @@ The ``git`` extension to ``pyadr`` does the following additional actions:
 
 * ``git adr deprecate <file-path>``: (not yet implemented)
 
-  * create a new branch from ``master``.
+  * create a new branch from ``main``.
   * stage the deprecated ADR in that branch.
   * optionally commit.
   * optionally squash commits.
 
 * ``git adr supersede <superseded-file-path> <superseding-file-path>``: (not yet implemented)
 
-  * create a new branch from ``master``.
+  * create a new branch from ``main``.
   * stage the superseded and superseding ADRs in that branch.
   * optionally commit both ADRs.
   * optionally squash commits.

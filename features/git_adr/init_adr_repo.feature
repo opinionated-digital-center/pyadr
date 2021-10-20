@@ -22,13 +22,13 @@ Feature: Initialise a git ADR repository
         When I run "git adr init"
         Then it should pass with
             """
-            Files committed to branch 'master' with commit message
+            Files committed to branch 'main' with commit message
             """
         And the command output should contain
             """
-            Git repo empty. Will commit files to 'master'.
+            Git repo empty. Will commit files to 'main'.
             """
-        And there should be 1 commit in "master"
+        And there should be 1 commit in "main"
         And the head commit message should be
             """
             docs(adr): initialise adr repository
@@ -56,7 +56,7 @@ Feature: Initialise a git ADR repository
             """
         And the branch "adr-init-repo" should exist
         And the head should be at branch "adr-init-repo"
-        And there should be 1 commit between head and the branch "master"
+        And there should be 1 commit between head and the branch "main"
 
     Scenario: Fail when index dirty
         Given a starting git repo

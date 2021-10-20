@@ -27,7 +27,7 @@ Feature: Create a new ADR - Git included
             """
         And the branch "adr-propose-my-adr-title" should exist
         And the head should be at branch "adr-propose-my-adr-title"
-        And the branch "adr-propose-my-adr-title" should be at the same level as branch "master"
+        And the branch "adr-propose-my-adr-title" should be at the same level as branch "main"
         And the file "docs/adr/XXXX-my-adr-title.md" should be staged
 
     Scenario: Fail when no title is given
@@ -45,14 +45,14 @@ Feature: Create a new ADR - Git included
             No Git repository found in directory '{__WORKDIR__}/'. Please initialise a Git repository before running command.
             """
 
-    Scenario: Fail when no master branch
+    Scenario: Fail when no main branch
         Given an empty git repo
         And a directory named "docs/adr/"
         When I run "git adr new My ADR Title"
         Then it should fail with:
             """
-            Verifying branch 'master' exists...
-            ... branch 'master' does not exist. Correct before running command.
+            Verifying branch 'main' exists...
+            ... branch 'main' does not exist. Correct before running command.
             """
 
     Scenario: Fail when index dirty

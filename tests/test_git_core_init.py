@@ -14,7 +14,7 @@ def test_verify_branch_does_not_exist_empty_repo(tmp_path):
     # When
     # Then
     assert_that(
-        calling(verify_branch_does_not_exist).with_args(repo, "master"),
+        calling(verify_branch_does_not_exist).with_args(repo, "main"),
         not_(raises(PyadrGitBranchAlreadyExistsError)),
     )
     assert_that(
@@ -23,12 +23,12 @@ def test_verify_branch_does_not_exist_empty_repo(tmp_path):
     )
 
 
-def test_verify_branch_does_not_exist_repo_fails_with_master(tmp_repo):
+def test_verify_branch_does_not_exist_repo_fails_with_main(tmp_repo):
     # Given
     # When
     # Then
     assert_that(
-        calling(verify_branch_does_not_exist).with_args(tmp_repo, "master"),
+        calling(verify_branch_does_not_exist).with_args(tmp_repo, "main"),
         raises(PyadrGitBranchAlreadyExistsError),
     )
     assert_that(
@@ -56,17 +56,17 @@ def test_verify_main_branch_exists_empty_repo(tmp_path):
     # When
     # Then
     assert_that(
-        calling(verify_main_branch_exists).with_args(repo, "master"),
+        calling(verify_main_branch_exists).with_args(repo, "main"),
         raises(PyadrGitMainBranchDoesNotExistError),
     )
 
 
-def test_verify_main_branch_exists_other_main_than_master_fail(tmp_repo):
+def test_verify_main_branch_exists_other_main_than_main_fail(tmp_repo):
     # Given
     # When
     # Then
     assert_that(
-        calling(verify_main_branch_exists).with_args(tmp_repo, "master"),
+        calling(verify_main_branch_exists).with_args(tmp_repo, "main"),
         not_(raises(PyadrGitBranchAlreadyExistsError)),
     )
     assert_that(
@@ -75,7 +75,7 @@ def test_verify_main_branch_exists_other_main_than_master_fail(tmp_repo):
     )
 
 
-def test_verify_main_branch_exists_other_main_than_master_pass(tmp_repo):
+def test_verify_main_branch_exists_other_main_than_main_pass(tmp_repo):
     # Given
     tmp_repo.create_head("other-main-branch")
 

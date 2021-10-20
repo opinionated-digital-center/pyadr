@@ -18,7 +18,7 @@ class PyadrGitBranchAlreadyExistsError(PyadrGitError):
 
 
 class PyadrGitMainBranchDoesNotExistError(PyadrGitError):
-    """Main branch (master or other specified) does not exist"""
+    """Main branch (main or other specified) does not exist"""
 
 
 class PyadrGitPreMergeChecksFailedError(PyadrGitError):

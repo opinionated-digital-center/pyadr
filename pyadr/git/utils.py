@@ -30,7 +30,7 @@ def verify_index_empty(repo: Repo) -> None:
 
 def verify_branch_does_not_exist(repo: Repo, branch: str) -> None:
     logger.info(f"Verifying branch '{branch}' does not exist...")
-    if "master" not in repo.heads or branch not in repo.heads:
+    if "main" not in repo.heads or branch not in repo.heads:
         logger.log("VERBOSE", "... done.")
     else:
         logger.error(
@@ -39,7 +39,7 @@ def verify_branch_does_not_exist(repo: Repo, branch: str) -> None:
         raise PyadrGitBranchAlreadyExistsError(branch)
 
 
-def verify_main_branch_exists(repo: Repo, branch: str = "master") -> None:
+def verify_main_branch_exists(repo: Repo, branch: str = "main") -> None:
     logger.info(f"Verifying branch '{branch}' exists... ")
     if branch in repo.heads:
         logger.log("VERBOSE", "... done.")
@@ -48,7 +48,7 @@ def verify_main_branch_exists(repo: Repo, branch: str = "master") -> None:
             "... branch '{branch}' does not exist. {supplement}"
             "Correct before running command."
         )
-        if branch == "master":
+        if branch == "main":
             supplement = ""
         else:
             supplement = "Your repo is empty or it was deleted. "
@@ -69,8 +69,8 @@ def get_verified_repo_client(repo_workdir: Path) -> Repo:
 
 
 def create_feature_branch_and_checkout(repo: Repo, branch_name: str) -> None:
-    logger.info("Switching to 'master'...")
-    repo.heads.master.checkout()
+    logger.info("Switching to 'main'...")
+    repo.heads.main.checkout()
     logger.log("VERBOSE", "... done.")
 
     logger.info(f"Creating branch '{branch_name}' and switching to it...")
