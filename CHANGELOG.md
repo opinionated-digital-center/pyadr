@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.18.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.6...v0.18.0) (2021-10-21)
+
+
+### Bug Fixes
+
+* **deps:** general dependencies upgrade ([0b9d55e](https://github.com/opinionated-digital-center/pyadr/commit/0b9d55e3b6c4e3aedd4c0b32528f05de2d443f85))
+
+
+### Features
+
+* deprecate use of master branch and use main instead ([437521f](https://github.com/opinionated-digital-center/pyadr/commit/437521ff713bbde2e5fe91b3db9f10b6fca09d84))
+
 ## [0.17.6](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.5...v0.17.6) (2021-01-14)
 
 
