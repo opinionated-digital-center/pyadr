@@ -1,7 +1,7 @@
 Feature: Git steps reused throughout the features
 
     Scenario: Create a starting repo
-        Given a starting git repo
+        Given a starting git repo with "main" as initial branch
         Then a git repo should exist
         And the file named "initial_commit_file" should exist
         And the file "initial_commit_file" should contain

@@ -46,7 +46,7 @@ Feature: Create a new ADR - Git included
             """
 
     Scenario: Fail when no main branch
-        Given an empty git repo
+        Given an empty git repo with "main" as initial branch
         And a directory named "docs/adr/"
         When I run "git adr new My ADR Title"
         Then it should fail with:

@@ -18,7 +18,7 @@ Feature: Initialise a git ADR repository
             """
 
     Scenario: Create and commit initial ADR files on empty git repo
-        Given an empty git repo
+        Given an empty git repo with "main" as initial branch
         When I run "git adr init"
         Then it should pass with
             """
@@ -39,7 +39,7 @@ Feature: Initialise a git ADR repository
         And the file "docs/adr/0001-use-markdown-architectural-decision-records.md" should be committed in the last commit
 
     Scenario: Initialise for ADR only repo
-        Given an empty git repo
+        Given an empty git repo with "main" as initial branch
         When I run "git adr init --adr-only-repo"
         Then it should pass
         And the head commit message should be
@@ -48,7 +48,7 @@ Feature: Initialise a git ADR repository
             """
 
     Scenario: Create and commit initial ADR files on a non-empty git repo
-        Given a starting git repo
+        Given a starting git repo with "main" as initial branch
         When I run "git adr init"
         Then it should pass with
             """
@@ -59,7 +59,7 @@ Feature: Initialise a git ADR repository
         And there should be 1 commit between head and the branch "main"
 
     Scenario: Fail when index dirty
-        Given a starting git repo
+        Given a starting git repo with "main" as initial branch
         And a file named "foo" with
             """
             bar
@@ -73,7 +73,7 @@ Feature: Initialise a git ADR repository
             """
 
     Scenario: Fail when init branch exists
-        Given an empty git repo
+        Given an empty git repo with "main" as initial branch
         And a file named "foo" with
             """
             bar
