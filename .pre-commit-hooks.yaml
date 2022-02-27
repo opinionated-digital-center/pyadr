@@ -1,0 +1,14 @@
+-   id: generate-toc
+    name: Generate ADR TOC
+    description: Generates a table of contents based on architecture decision register items
+    language: python
+    entry: pyadr toc --no-interaction
+    files: \d{4}-.*\.md$
+    pass_filenames: false
+-   id: check-adr
+    name: Check repository ADR
+    description: Perform sanity checks typically required on ADR files before merging a Pull Request
+    language: python
+    entry: pyadr check-adr-repo --no-interaction
+    files: \d{4}-.*\.md$
+    pass_filenames: false
