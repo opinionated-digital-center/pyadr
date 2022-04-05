@@ -1,5 +1,21 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base"
+    "config:base",
+    "group:all",
+    ":rebaseStalePrs"
+  ],
+  "gitAuthor": "Renovate Bot <renovate.bot@veolia.com>",
+  "branchPrefix": "feature/renovate/",
+  "onboardingBranch": "feature/renovate/configure",
+  "prHourlyLimit": 0,
+  "rollbackPrs" : true,
+  "packageRules": [
+    {
+      "groupName": "Automerge devDeps",
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true,
+      "platformAutomerge": true
+    }
   ]
 }
