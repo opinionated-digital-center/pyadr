@@ -205,7 +205,7 @@ jobs:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-release-${{ hashFiles('**/poetry.lock') }}
       - name: Semantic Release
-        uses: cycjimmy/semantic-release-action@v2.7.0
+        uses: cycjimmy/semantic-release-action@v3.0.0
         with:
           semantic_version: 17.0.4
           extra_plugins: |
