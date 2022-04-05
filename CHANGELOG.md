@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.19.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.18.0...v0.19.0) (2022-04-05)
+
+
+### Features
+
+* release new deps and add py39 ([243005d](https://github.com/opinionated-digital-center/pyadr/commit/243005d69353b39c454cd314c0e975e351e3eb5a))
+
 ## [0.18.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.17.6...v0.18.0) (2021-10-21)
 
 
