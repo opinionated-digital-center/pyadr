@@ -82,7 +82,7 @@ help:
 	@echo "GIT TARGETS:"
 	@echo "\tprune-branches - prune obsolete local tracking branches and local branches"
 	@echo "\tprune-branches-force|pbf - as above but force delete local branches"
-	@echo "\tpost-PR-merge-sync|pms - switch to master, pull and run pbf target"
+	@echo "\tpost-PR-merge-sync|pms - switch to main, pull and run pbf target"
 
 
 #################################################################
@@ -382,7 +382,7 @@ prune-branches-force:
 pbf: prune-branches-force
 
 post-PR-merge-sync-step-1:
-	git switch master
+	git switch main
 	git pull
 
 post-PR-merge-sync: post-PR-merge-sync-step-1 prune-branches-force

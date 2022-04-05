@@ -3,7 +3,7 @@ name: Test and make release
 on:
   push:
     branches:
-      - master
+      - main
     paths-ignore:
       - 'docs/**'
       - '*.rst'
@@ -168,7 +168,7 @@ jobs:
       - lint
       - type
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js 12.x
