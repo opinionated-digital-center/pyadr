@@ -1,40 +1,36 @@
 fail_fast: false
 repos:
   - repo: https://github.com/psf/black
-    rev: 21.9b0
+    rev: 22.1.0
     hooks:
       - id: black
         args: [ --safe ]
-        language_version: python3.7
-  - repo: https://github.com/asottile/blacken-docs
-    rev: v1.11.0
-    hooks:
-      - id: blacken-docs
-        additional_dependencies: [ black==20.8b1 ]
-        language_version: python3.7
-  - repo: https://github.com/asottile/seed-isort-config
-    rev: v2.2.0
-    hooks:
-      - id: seed-isort-config
-        args: [ --application-directories, "src:." ]
+        language_version: python3.9
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.9.3
     hooks:
       - id: isort
         args: [ --profile, "black" ]
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.9.2
+    rev: 4.0.1
     hooks:
       - id: flake8
-        additional_dependencies: [ "flake8-bugbear == 20.1.4" ]
-        language_version: python3.7
+        additional_dependencies:
+          - flake8-bugbear
+          - flake8-comprehensions
+          - flake8-simplify
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.1.0
     hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
+      - id: check-docstring-first
+      - id: check-json
       - id: check-yaml
+        exclude: .gitlab-ci*.yml$
+      - id: end-of-file-fixer
       - id: debug-statements
+      - id: name-tests-test
+        args: ["--django"]
+      - id: trailing-whitespace
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.9.0
     hooks:
