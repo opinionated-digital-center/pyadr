@@ -24,9 +24,9 @@ classifiers = [
     "Operating System :: MacOS :: MacOS X",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Topic :: Software Development :: Libraries",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -53,7 +53,6 @@ mypy = {version = "^0", optional = true}
 types-python-slugify = {version = "^5", optional = true}
 # Optional dependencies to be part of `format` extra
 isort = {version = "^5", optional = true}
-seed-isort-config = {version = "^2.2", optional = true}
 black = {version = "stable", optional = true, allow-prereleases = true}
 # Optional dependencies to be part of `docs` extra
 sphinx = {version = "^4.2", optional = true}
@@ -83,7 +82,7 @@ test = ["pytest", "pytest-cov", "pytest-mock", "pytest-html", "pytest-asyncio", 
 bdd = ["behave4git", "PyHamcrest"]
 lint = ["flake8", "flake8-bugbear", "pydocstyle", "pylint", "yapf"]
 type = ["mypy", "types-python-slugify"]
-format = ["isort", "seed-isort-config", "black"]
+format = ["isort", "black"]
 docs= ["m2r", "sphinx", "sphinx-autodoc-typehints", "sphinx-autobuild", "sphinx_rtd_theme"]
 repl = ["bpython"]
 
@@ -91,19 +90,20 @@ repl = ["bpython"]
 pyadr = "pyadr.cli:main"
 git-adr = "pyadr.git.cli:main"
 
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "--cov=pyadr --cov-report=html --cov-report=term"
+testpaths = [
+    "tests",
+]
+
 [tool.isort]
 # following black's doc for compatibility
-# See https://github.com/psf/black#how-black-wraps-lines
-multi_line_output = 3
-include_trailing_comma = true
-use_parentheses = true
-force_grid_wrap = 0
-line_length = 88
-known_third_party = ["behave", "behave4cli", "behave4git", "cleo", "clikit", "git", "gitdb", "hamcrest", "loguru", "pytest", "six", "slugify", "toml"]
+# See https://black.readthedocs.io/en/stable/guides/using_black_with_other_tools.html#isort
+profile = "black"
 
 [tool.black]
-line-length = 88
-target_version = ["py37"]
+target_version = ["py39"]
 
 [build-system]
 requires = ["poetry==1.1.4"]

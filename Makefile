@@ -66,14 +66,14 @@ help:
 	@echo "INDIVIDUAL TOX TARGETS:"
 	@echo "\ttox-test-default-version|tox-test - run unit tests with the default Python"
 	@echo "\ttox-test-all-versions|tox-test-all - run unit tests on each Python version declared"
+	@echo "\ttox-test-py39 - run unit tests with Python 3.9"
 	@echo "\ttox-test-py38 - run unit tests with Python 3.8"
 	@echo "\ttox-test-py37 - run unit tests with Python 3.7"
-	@echo "\ttox-test-py36 - run unit tests with Python 3.6"
 	@echo "\ttox-bdd-default-version|tox-bdd - run bdd tests with the default Python"
 	@echo "\ttox-bdd-all-versions|tox-bdd-all - run bdd tests on every Python version declared"
+	@echo "\ttox-bdd-py39 - run bdd tests with Python 3.9"
 	@echo "\ttox-bdd-py38 - run bdd tests with Python 3.8"
 	@echo "\ttox-bdd-py37 - run bdd tests with Python 3.7"
-	@echo "\ttox-bdd-py36 - run bdd tests with Python 3.6"
 	@echo "\ttox-lint - check style with flake8"
 	@echo "\ttox-format - check format for correctness with isort and black"
 	@echo "\ttox-type - checks Python typing"
@@ -212,16 +212,13 @@ tox-lint:
 # formating
 #################################################################
 
-seed-isort:
-	poetry run seed-isort-config
-
 isort:
 	poetry run isort --profile black $(PACKAGE_DIR) tests features
 
 black:
 	poetry run black $(PACKAGE_DIR) tests features
 
-format: seed-isort isort black
+format: isort black
 
 format-check:
 	poetry run isort -c --profile black $(PACKAGE_DIR) tests features
@@ -252,6 +249,10 @@ tox-test: tox-py
 tox-py:
 	poetry run tox -e py
 
+tox-test-py39: tox-py39
+tox-py39:
+	poetry run tox -e py39
+
 tox-test-py38: tox-py38
 tox-py38:
 	poetry run tox -e py38
@@ -260,13 +261,9 @@ tox-test-py37: tox-py37
 tox-py37:
 	poetry run tox -e py37
 
-tox-test-py36: tox-py36
-tox-py36:
-	poetry run tox -e py36
-
 tox-test-all-versions: tox-test-all
 tox-test-all:
-	poetry run tox -e py38,py37,py36
+	poetry run tox -e py39,py38,py37
 
 
 #################################################################
@@ -280,18 +277,18 @@ tox-bdd-default-version: tox-bdd
 tox-bdd:
 	poetry run tox -e bdd
 
+tox-bdd-py39:
+	poetry run tox -e bdd-py39
+
 tox-bdd-py38:
 	poetry run tox -e bdd-py38
 
 tox-bdd-py37:
 	poetry run tox -e bdd-py37
 
-tox-bdd-py36:
-	poetry run tox -e bdd-py36
-
 tox-bdd-all-versions: tox-bdd-all
 tox-bdd-all:
-	poetry run tox -e bdd-py38,bdd-py37,bdd-py36
+	poetry run tox -e bdd-py39,bdd-py38,bdd-py37
 
 #################################################################
 # coverage
