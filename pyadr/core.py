@@ -153,8 +153,14 @@ class AdrCore(object):
         adr_path = Path(self.config["adr"]["records-dir"], f"XXXX-{slugify(title)}.md")
 
         logger.info(f"Creating ADR '{adr_path}'...")
+
+        template = Path(self.config["adr"]["records-dir"], "template.md")
         with adr_path.open("w") as f:
-            f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
+            if template.exists():
+                with template.open("r") as t:
+                    f.write(t.read())
+            else:
+                f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
         update_adr(adr_path, title=title, status=STATUS_PROPOSED)
         logger.log("VERBOSE", "... done.")
 
@@ -358,9 +364,9 @@ class AdrCore(object):
     def _check_adr_numbers_unique(self, adr_files: List[Path]) -> None:
         rex = re.compile(VALID_ADR_FILENAME_WITH_ID_REGEX)
         adrs_with_valid_filenames = [file for file in adr_files if rex.match(file.name)]
-        unique_numbers = set(
-            [file.stem.split("-", 1)[0] for file in adrs_with_valid_filenames]
-        )
+        unique_numbers = {
+            file.stem.split("-", 1)[0] for file in adrs_with_valid_filenames
+        }
         adrs_aggregated_by_number = [
             [file for file in adrs_with_valid_filenames if file.stem.startswith(number)]
             for number in unique_numbers
