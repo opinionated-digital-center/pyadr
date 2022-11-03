@@ -153,9 +153,14 @@ class AdrCore(object):
         adr_path = Path(self.config["adr"]["records-dir"], f"XXXX-{slugify(title)}.md")
 
         logger.info(f"Creating ADR '{adr_path}'...")
+
+        template = Path(self.config["adr"]["records-dir"], "template.md")
         with adr_path.open("w") as f:
-            f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore
-        update_adr(adr_path, title=title, status=STATUS_PROPOSED)
+            if template.exists():
+                with template.open("r") as t:
+                    f.write(t.read())
+            else:
+                f.write(pkg_resources.read_text(assets, "madr-template.md"))  # type: ignore        update_adr(adr_path, title=title, status=STATUS_PROPOSED)
         logger.log("VERBOSE", "... done.")
 
         return adr_path
