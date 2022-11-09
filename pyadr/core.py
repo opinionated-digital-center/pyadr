@@ -1,7 +1,6 @@
 import re
 import shutil
 from pathlib import Path
-from tkinter import W
 from typing import List, Optional, Tuple
 
 from loguru import logger
