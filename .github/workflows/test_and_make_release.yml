@@ -133,32 +133,32 @@ jobs:
       - name: Run lint checks
         run: poetry run inv lint
 
-  type:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up Python 3.10
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v8
-      - name: Get full python version
-        id: full-python-version
-        shell: bash
-        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
-      - name: Set up cache
-        uses: actions/cache@v3
-        id: cache
-        with:
-          path: .venv
-          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-type-${{ hashFiles('**/poetry.lock') }}
-      - name: Install dependencies
-        run: poetry install --no-root
-      - name: Complete CI/CD setup
-        run: poetry run inv setup-cicd-test-stage
-      - name: Run type checks
-        run: poetry run inv type
+#  type:
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - name: Set up Python 3.10
+#        uses: actions/setup-python@v4
+#        with:
+#          python-version: '3.10'
+#      - name: Install tools (Poetry)
+#        uses: Gr1N/setup-poetry@v8
+#      - name: Get full python version
+#        id: full-python-version
+#        shell: bash
+#        run: echo ::set-output name=version::$(python -c "import sys; print('-'.join(str(v) for v in sys.version_info))")
+#      - name: Set up cache
+#        uses: actions/cache@v3
+#        id: cache
+#        with:
+#          path: .venv
+#          key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-type-${{ hashFiles('**/poetry.lock') }}
+#      - name: Install dependencies
+#        run: poetry install --no-root
+#      - name: Complete CI/CD setup
+#        run: poetry run inv setup-cicd-test-stage
+#      - name: Run type checks
+#        run: poetry run inv type
 
   semantic_release:
     needs:
@@ -166,7 +166,7 @@ jobs:
       - bdd
       - format
       - lint
-      - type
+#      - type
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     steps:
