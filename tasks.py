@@ -262,7 +262,7 @@ def prune_branches(context):
         "git branch -vv | "
         "grep ': gone]'| "
         "grep -v '\\*' | "
-        "awk '{ print $$1; }' | "
+        "awk '{ print $1; }' | "
         "xargs git branch -d"
     )
 
@@ -274,17 +274,17 @@ def prune_branches_force(context):
         "git branch -vv | "
         "grep ': gone]'| "
         "grep -v '\\*' | "
-        "awk '{ print $$1; }' | "
+        "awk '{ print $1; }' | "
         "xargs git branch -D"
     )
 
 
 @task
-def post_PR_merge_sync_step_1(context):
+def post_pr_merge_sync_step_1(context):
     context.run("git switch main")
     context.run("git pull")
 
 
-@task(post_PR_merge_sync_step_1, prune_branches_force, aliases=["pms"])
-def post_PR_merge_sync(context):
+@task(post_pr_merge_sync_step_1, prune_branches_force, aliases=["pms"])
+def post_pr_merge_sync(context):
     pass
