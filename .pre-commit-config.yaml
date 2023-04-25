@@ -1,18 +1,18 @@
 fail_fast: false
 repos:
   - repo: https://github.com/psf/black
-    rev: 22.1.0
+    rev: 23.3.0
     hooks:
       - id: black
         args: [ --safe ]
         language_version: python3.9
   - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.9.3
+    rev: v5.10.1
     hooks:
       - id: isort
         args: [ --profile, "black" ]
-  - repo: https://gitlab.com/pycqa/flake8
-    rev: 4.0.1
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
     hooks:
       - id: flake8
         additional_dependencies:
@@ -20,7 +20,7 @@ repos:
           - flake8-comprehensions
           - flake8-simplify
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.1.0
+    rev: v4.4.0
     hooks:
       - id: check-docstring-first
       - id: check-json
@@ -32,6 +32,6 @@ repos:
         args: ["--django"]
       - id: trailing-whitespace
   - repo: https://github.com/pre-commit/pygrep-hooks
-    rev: v1.9.0
+    rev: v1.10.0
     hooks:
       - id: rst-backticks

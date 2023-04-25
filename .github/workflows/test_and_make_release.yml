@@ -23,15 +23,15 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, 3.8, 3.7]
+        python-version: ['3.11', '3.10', '3.9', '3.8']
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v7
+        uses: Gr1N/setup-poetry@v8
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -42,26 +42,26 @@ jobs:
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-test-${{ hashFiles('**/poetry.lock') }}
-      - name: Complete CI/CD setup
-        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make install-test-dependencies
+        run: poetry install --no-root
+      - name: Complete CI/CD setup
+        run: poetry run inv setup-cicd-test-stage
       - name: Run unit tests
-        run: make test
+        run: poetry run inv test
 
   bdd:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [3.9, 3.8, 3.7]
+        python-version: ['3.11', '3.10', '3.9', '3.8']
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v7
+        uses: Gr1N/setup-poetry@v8
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -72,23 +72,23 @@ jobs:
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-bdd-${{ hashFiles('**/poetry.lock') }}
-      - name: Complete CI/CD setup
-        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make install-bdd-dependencies
-      - name: Run bdd tests
-        run: make bdd
+        run: poetry install
+      - name: Complete CI/CD setup
+        run: poetry run inv setup-cicd-test-stage
+      - name: Run unit tests
+        run: poetry run inv bdd
 
   format:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: '3.10'
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v7
+        uses: Gr1N/setup-poetry@v8
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -99,23 +99,23 @@ jobs:
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-format-${{ hashFiles('**/poetry.lock') }}
-      - name: Complete CI/CD setup
-        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make install-format-dependencies
+        run: poetry install --no-root
+      - name: Complete CI/CD setup
+        run: poetry run inv setup-cicd-test-stage
       - name: Run format checks
-        run: make format-check
+        run: poetry run inv format-check
 
   lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: '3.10'
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v7
+        uses: Gr1N/setup-poetry@v8
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -126,23 +126,23 @@ jobs:
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-lint-${{ hashFiles('**/poetry.lock') }}
-      - name: Complete CI/CD setup
-        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make install-lint-dependencies
+        run: poetry install --no-root
+      - name: Complete CI/CD setup
+        run: poetry run inv setup-cicd-test-stage
       - name: Run lint checks
-        run: make lint
+        run: poetry run inv lint
 
   type:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: '3.10'
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v7
+        uses: Gr1N/setup-poetry@v8
       - name: Get full python version
         id: full-python-version
         shell: bash
@@ -153,12 +153,12 @@ jobs:
         with:
           path: .venv
           key: venv-${{ runner.os }}-${{ steps.full-python-version.outputs.version }}-type-${{ hashFiles('**/poetry.lock') }}
-      - name: Complete CI/CD setup
-        run: make setup-cicd-test-stage
       - name: Install dependencies
-        run: make install-type-dependencies
+        run: poetry install --no-root
+      - name: Complete CI/CD setup
+        run: poetry run inv setup-cicd-test-stage
       - name: Run type checks
-        run: make type
+        run: poetry run inv type
 
   semantic_release:
     needs:
@@ -186,12 +186,12 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
-      - name: Set up Python 3.8
-        uses: actions/setup-python@v3
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v4
         with:
-          python-version: 3.8
+          python-version: '3.10'
       - name: Install tools (Poetry)
-        uses: Gr1N/setup-poetry@v7
+        uses: Gr1N/setup-poetry@v8
       - name: Complete CI/CD setup
         run: make setup-cicd-release-stage
       - name: Get full python version
