@@ -6,7 +6,7 @@
 
 [tool.poetry]
 name = "pyadr"
-version = "0.19.0"
+version = "0.20.0"
 description = "CLI to help with an ADR process lifecycle (proposal/approval/rejection/deprecation/superseeding), which used git."
 license = "MIT"
 homepage = "https://github.com/opinionated-digital-center/pyadr"

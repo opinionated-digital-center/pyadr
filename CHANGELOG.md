@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.20.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.19.0...v0.20.0) (2023-04-26)
+
+
+### Features
+
+* create new ADR from template file if exists ([902e68b](https://github.com/opinionated-digital-center/pyadr/commit/902e68bb92281e00ea33b356063b728715a96e08))
+
 ## [0.19.0](https://github.com/opinionated-digital-center/pyadr/compare/v0.18.0...v0.19.0) (2022-04-05)
 
 
