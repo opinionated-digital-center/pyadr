@@ -214,7 +214,7 @@ jobs:
             @semantic-release/git@"^9.0.0"
             @semantic-release/github@"^7.0.5"
         env:
-          GITHUB_TOKEN: ${{ secrets.SELF_SET_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GIT_AUTHOR_NAME: ${{ secrets.GIT_AUTHOR_NAME }}
           GIT_AUTHOR_EMAIL: ${{ secrets.GIT_AUTHOR_EMAIL }}
           GIT_COMMITTER_NAME: ${{ secrets.GIT_COMMITTER_NAME }}
