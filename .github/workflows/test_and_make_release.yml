@@ -76,7 +76,7 @@ jobs:
         run: poetry install
       - name: Complete CI/CD setup
         run: poetry run inv setup-cicd-test-stage
-      - name: Run unit tests
+      - name: Run bdd tests
         run: poetry run inv bdd
 
   format:
