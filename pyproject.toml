@@ -42,7 +42,7 @@ python-slugify = "^8.0.1"
 loguru = "^0"
 gitpython = "^3.1"
 
-[tool.poetry.group.dev.dependencies]
+[tool.poetry.dev-dependencies]
 tox = "^3.14"
 tox-pyenv = "^1.1"
 rope = "^0"
