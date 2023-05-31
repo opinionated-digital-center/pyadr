@@ -15,6 +15,7 @@
       "groupName": "Python Poetry Dev Dependencies",
       "matchLanguages": ["python"],
       "matchDepTypes": ["dev-dependencies"],
+      "matchPackagePatterns": ["*"],
       "automerge": true,
       "platformAutomerge": true,
       "labels": ["python"]
@@ -23,6 +24,7 @@
       "groupName": "Python Poetry Major Dependencies",
       "matchLanguages": ["python"],
       "matchDepTypes": ["dependencies"],
+      "matchPackagePatterns": ["*"],
       "matchUpdateTypes": ["major"],
       "automerge": true,
       "platformAutomerge": true,
@@ -32,6 +34,7 @@
       "groupName": "Python Poetry Non-Major Dependencies",
       "matchLanguages": ["python"],
       "matchDepTypes": ["dependencies"],
+      "matchPackagePatterns": ["*"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
       "platformAutomerge": true,
