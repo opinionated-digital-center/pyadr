@@ -5,8 +5,14 @@
     ":dependencyDashboard",
     ":python",
     ":javascript",
-    ":github-actions"
+    ":github-actions",
+    ":rebaseStalePrs"
   ],
+  "gitAuthor": "Renovate Bot <renovate.bot@veolia.com>",
+  "branchPrefix": "feature/renovate/",
+  "onboardingBranch": "feature/renovate/configure",
+  "prHourlyLimit": 0,
+  "rollbackPrs" : true,
   "python": {
     "packageRules": [
       {
