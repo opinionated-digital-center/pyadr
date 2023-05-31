@@ -2,20 +2,46 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:base",
-    "group:all",
-    ":rebaseStalePrs"
+    ":python",
+    ":javascript",
+    ":github-actions"
   ],
-  "gitAuthor": "Renovate Bot <renovate.bot@veolia.com>",
-  "branchPrefix": "feature/renovate/",
-  "onboardingBranch": "feature/renovate/configure",
-  "prHourlyLimit": 0,
-  "rollbackPrs" : true,
+  "python": {
+    "packageRules": [
+      {
+        "matchPaths": ["**/*.py"],
+        "automerge": true
+      }
+    ]
+  },
+  "javascript": {
+    "packageRules": [
+      {
+        "matchPaths": ["**/*.js", "**/*.jsx"],
+        "automerge": true
+      }
+    ]
+  },
+  "githubActions": {
+    "enabled": true,
+    "automerge": true,
+    "labels": ["dependencies"],
+    "prTitle": "Update GitHub Actions",
+    "prBody": "This pull request updates the GitHub Actions workflow files."
+  },
   "packageRules": [
     {
-      "groupName": "Automerge devDeps",
-      "matchDepTypes": ["devDependencies"],
-      "automerge": true,
-      "platformAutomerge": true
+      "matchLanguage": "python",
+      "automerge": true
+    },
+    {
+      "matchLanguage": "javascript",
+      "automerge": true
     }
-  ]
+  ],
+  "pullRequest": {
+    "labels": ["dependencies"],
+    "title": "Update {dependencyLanguage} dependencies",
+    "body": "This pull request updates {dependencyLanguage} dependencies."
+  }
 }
