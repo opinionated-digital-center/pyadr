@@ -13,7 +13,7 @@
   "packageRules": [
     {
       "groupName": "Python Poetry Dev Dependencies",
-      "matchDepTypes": ["dev-dependencies", "devDependencies"],
+      "matchDepTypes": ["dev"],
       "automerge": true,
       "platformAutomerge": true
     },
@@ -31,6 +31,5 @@
       "automerge": true,
       "platformAutomerge": true
     }
-  ],
-  "separateMajorMinor": true
+  ]
 }
