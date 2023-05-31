@@ -17,6 +17,11 @@
     "managerBranchPrefix": "python-",
     "labels": ["python"]
   },
+  "poetry": {
+    "enabled": true,
+    "managerBranchPrefix": "poetry-",
+    "labels": ["python"]
+  },
   "github-actions": {
     "managerBranchPrefix": "github-actions-",
     "labels": ["github-actions"]
