@@ -9,13 +9,13 @@
   "branchPrefix": "feature/renovate/",
   "onboardingBranch": "feature/renovate/configure",
   "prHourlyLimit": 0,
-  "rollbackPrs" : true,
   "packageRules": [
     {
       "groupName": "Python Poetry Dev Dependencies",
       "matchDepTypes": ["dev"],
       "automerge": true,
-      "platformAutomerge": true
+      "platformAutomerge": true,
+      "separateMajorMinor": true
     },
     {
       "groupName": "Python Poetry Major Dependencies",
