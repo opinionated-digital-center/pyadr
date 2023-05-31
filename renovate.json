@@ -5,28 +5,36 @@
     ":dependencyDashboard",
     ":rebaseStalePrs"
   ],
+  "gitAuthor{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base",
+    "group:all",
+    ":rebaseStalePrs"
+  ],
   "gitAuthor": "Renovate Bot <renovate.bot@veolia.com>",
   "branchPrefix": "feature/renovate/",
   "onboardingBranch": "feature/renovate/configure",
+  "js": {
+    "managerBranchPrefix": "js-",
+    "labels": ["javascript"]
+  },
+  "python": {
+    "managerBranchPrefix": "python-",
+    "labels": ["python"]
+  },
+  "github-actions": {
+    "managerBranchPrefix": "github-actions-",
+    "labels": ["github-actions"]
+  },
   "prHourlyLimit": 0,
   "rollbackPrs" : true,
   "packageRules": [
     {
-      "matchPaths": ["**/*.py"],
+      "groupName": "Automerge devDeps",
+      "matchDepTypes": ["devDependencies"],
       "automerge": true,
-      "labels": ["python"]
-    },
-    {
-      "matchPaths": ["**/*.js", "**/*.jsx"],
-      "automerge": true,
-      "labels": ["javascript"]
+      "platformAutomerge": true
     }
-  ],
-  "github-actions": {
-    "enabled": true,
-    "automerge": true,
-    "labels": ["github-actions"],
-    "prTitle": "Update GitHub Actions",
-    "prBody": "This pull request updates the GitHub Actions workflow files."
-  }
+  ]
 }
