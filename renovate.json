@@ -13,32 +13,29 @@
   "packageRules": [
     {
       "groupName": "Python Poetry Dev Dependencies",
-      "matchManagers": ["poetry"],
       "matchLanguages": ["python"],
       "matchDepTypes": ["dev-dependencies"],
       "automerge": true,
       "platformAutomerge": true,
-      "labels": ["python", "poetry"]
+      "labels": ["python"]
     },
     {
       "groupName": "Python Poetry Major Dependencies",
-      "matchManagers": ["poetry"],
       "matchLanguages": ["python"],
       "matchDepTypes": ["dependencies"],
       "matchUpdateTypes": ["major"],
       "automerge": true,
       "platformAutomerge": true,
-      "labels": ["python", "poetry"]
+      "labels": ["python"]
     },
     {
       "groupName": "Python Poetry Non-Major Dependencies",
-      "matchManagers": ["poetry"],
       "matchLanguages": ["python"],
       "matchDepTypes": ["dependencies"],
       "matchUpdateTypes": ["minor", "patch"],
       "automerge": true,
       "platformAutomerge": true,
-      "labels": ["python", "poetry"]
+      "labels": ["python"]
     }
   ]
 }
