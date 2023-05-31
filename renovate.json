@@ -3,12 +3,6 @@
   "extends": [
     "config:base",
     ":dependencyDashboard",
-    ":rebaseStalePrs"
-  ],
-  "gitAuthor{
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:base",
     "group:all",
     ":rebaseStalePrs"
   ],
