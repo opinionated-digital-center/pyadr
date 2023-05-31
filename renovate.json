@@ -8,23 +8,6 @@
   "gitAuthor": "Renovate Bot <renovate.bot@veolia.com>",
   "branchPrefix": "feature/renovate/",
   "onboardingBranch": "feature/renovate/configure",
-  "js": {
-    "managerBranchPrefix": "js-",
-    "labels": ["javascript"]
-  },
-  "python": {
-    "managerBranchPrefix": "python-",
-    "labels": ["python"]
-  },
-  "poetry": {
-    "enabled": true,
-    "managerBranchPrefix": "poetry-",
-    "labels": ["python", "poetry"]
-  },
-  "github-actions": {
-    "managerBranchPrefix": "github-actions-",
-    "labels": ["github-actions"]
-  },
   "prHourlyLimit": 0,
   "rollbackPrs" : true,
   "packageRules": [
