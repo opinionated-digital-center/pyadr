@@ -3,9 +3,6 @@
   "extends": [
     "config:base",
     ":dependencyDashboard",
-    ":python",
-    ":javascript",
-    ":github-actions",
     ":rebaseStalePrs"
   ],
   "gitAuthor": "Renovate Bot <renovate.bot@veolia.com>",
@@ -13,42 +10,23 @@
   "onboardingBranch": "feature/renovate/configure",
   "prHourlyLimit": 0,
   "rollbackPrs" : true,
-  "python": {
-    "packageRules": [
-      {
-        "matchPaths": ["**/*.py"],
-        "automerge": true
-      }
-    ]
-  },
-  "javascript": {
-    "packageRules": [
-      {
-        "matchPaths": ["**/*.js", "**/*.jsx"],
-        "automerge": true
-      }
-    ]
-  },
-  "githubActions": {
-    "enabled": true,
-    "automerge": true,
-    "labels": ["dependencies"],
-    "prTitle": "Update GitHub Actions",
-    "prBody": "This pull request updates the GitHub Actions workflow files."
-  },
   "packageRules": [
     {
-      "matchLanguage": "python",
-      "automerge": true
+      "matchPaths": ["**/*.py"],
+      "automerge": true,
+      "labels": ["python"]
     },
     {
-      "matchLanguage": "javascript",
-      "automerge": true
+      "matchPaths": ["**/*.js", "**/*.jsx"],
+      "automerge": true,
+      "labels": ["javascript"]
     }
   ],
-  "pullRequest": {
-    "labels": ["dependencies"],
-    "title": "Update {dependencyLanguage} dependencies",
-    "body": "This pull request updates {dependencyLanguage} dependencies."
+  "github-actions": {
+    "enabled": true,
+    "automerge": true,
+    "labels": ["github-actions"],
+    "prTitle": "Update GitHub Actions",
+    "prBody": "This pull request updates the GitHub Actions workflow files."
   }
 }
