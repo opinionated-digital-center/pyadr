@@ -26,7 +26,7 @@
   "packageRules": [
     {
       "groupName": "Automerge devDeps",
-      "matchDepTypes": ["devDependencies"],
+      "matchDepTypes": ["devDependencies", "dev-dependencies"],
       "automerge": true,
       "platformAutomerge": true
     }
