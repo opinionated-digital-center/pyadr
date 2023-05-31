@@ -3,7 +3,6 @@
   "extends": [
     "config:base",
     ":dependencyDashboard",
-    "group:all",
     ":rebaseStalePrs"
   ],
   "gitAuthor": "Renovate Bot <renovate.bot@veolia.com>",
@@ -20,7 +19,7 @@
   "poetry": {
     "enabled": true,
     "managerBranchPrefix": "poetry-",
-    "labels": ["python"]
+    "labels": ["python", "poetry"]
   },
   "github-actions": {
     "managerBranchPrefix": "github-actions-",
@@ -30,10 +29,30 @@
   "rollbackPrs" : true,
   "packageRules": [
     {
-      "groupName": "Automerge devDeps",
-      "matchDepTypes": ["devDependencies", "dev-dependencies"],
+      "groupName": "Python Poetry Dev Dependencies",
+      "matchManagers": ["poetry"],
+      "matchDepTypes": ["dev-dependencies"],
       "automerge": true,
-      "platformAutomerge": true
+      "platformAutomerge": true,
+      "labels": ["python", "poetry"]
+    },
+    {
+      "groupName": "Python Poetry Major Dependencies",
+      "matchManagers": ["poetry"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["major"],
+      "automerge": true,
+      "platformAutomerge": true,
+      "labels": ["python", "poetry"]
+    },
+    {
+      "groupName": "Python Poetry Non-Major Dependencies",
+      "matchManagers": ["poetry"],
+      "matchDepTypes": ["dependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "automerge": true,
+      "platformAutomerge": true,
+      "labels": ["python", "poetry"]
     }
   ]
 }
