@@ -15,7 +15,7 @@
       "matchDepTypes": ["dev"],
       "automerge": true,
       "platformAutomerge": true,
-      "separateMajorMinor": true
+      "separateMultipleMajor": true
     },
     {
       "groupName": "Python Poetry Major Dependencies",
