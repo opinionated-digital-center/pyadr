@@ -1840,20 +1840,6 @@ docs = ["furo (>=2023.5.20)", "sphinx (>=7.0.1)", "sphinx-argparse-cli (>=1.11)"
 testing = ["build[virtualenv] (>=0.10)", "covdefaults (>=2.3)", "devpi-process (>=0.3)", "diff-cover (>=7.5)", "distlib (>=0.3.6)", "flaky (>=3.7)", "hatch-vcs (>=0.3)", "hatchling (>=1.17)", "psutil (>=5.9.5)", "pytest (>=7.3.1)", "pytest-cov (>=4.1)", "pytest-mock (>=3.10)", "pytest-xdist (>=3.3.1)", "re-assert (>=1.1)", "time-machine (>=2.9)", "wheel (>=0.40)"]
 
 [[package]]
-name = "tox-pyenv"
-version = "1.1.0"
-description = "tox plugin that makes tox use `pyenv which` to find python executables"
-optional = false
-python-versions = "*"
-files = [
-    {file = "tox-pyenv-1.1.0.tar.gz", hash = "sha256:916c2213577aec0b3b5452c5bfb32fd077f3a3196f50a81ad57d7ef3fc2599e4"},
-    {file = "tox_pyenv-1.1.0-py2.py3-none-any.whl", hash = "sha256:e470c18af115fe52eeff95e7e3cdd0793613eca19709966fc2724b79d55246cb"},
-]
-
-[package.dependencies]
-tox = ">=2.0"
-
-[[package]]
 name = "types-python-slugify"
 version = "8.0.0.2"
 description = "Typing stubs for python-slugify"
@@ -2053,4 +2039,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.1, <3.12"
-content-hash = "e7782c33bf92a726607a1a628d26780859e757041856ced274ff393c452c14b8"
+content-hash = "f137c687e52df30c4bf7edfbf95857248cb9d070b31be303eb3f898572b897b2"
