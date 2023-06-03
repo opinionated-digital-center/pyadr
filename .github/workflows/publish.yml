@@ -24,6 +24,6 @@ jobs:
       - name: Install dependencies
         run: poetry install
       - name: Install remaining CI/CD tools and dependencies
-        run: poetry run inv setup-cicd-publish-stage
+        run: poetry run inv cicd-setup.setup-test-stage
       - name: Publish to repository
         run: poetry run inv publish

@@ -1,4 +1,4 @@
-from invoke import task
+from invoke import Collection, task
 
 PACKAGE_DIR = "pyadr"
 
@@ -244,7 +244,7 @@ def tox_test(context):
 
 
 @task(aliases=["tox-py311"])
-def tox_test_py11(context):
+def tox_test_py311(context):
     """
     Run unit tests with Python 3.11
     """
@@ -357,6 +357,15 @@ def cicd_release(context):
     context.run("npx semantic-release")
 
 
+@task(clean)
+def publish(context):
+    context.run("poetry run python scripts/verify_pypi_env_variables.py")
+    context.run(
+        '[ -z $$PYPI_REPOSITORY_NAME ] || repo_arg="-r $$PYPI_REPOSITORY_NAME" '
+        "&& poetry publish --build $$repo_arg"
+    )
+
+
 #################################################################
 # git targets
 #################################################################
@@ -399,3 +408,86 @@ def post_pr_merge_sync(context):
     """
     context.run("git switch main")
     context.run("git pull")
+
+
+#################################################################
+# Run all local tests and checks
+#################################################################
+
+
+@task(format, lint)
+def all_checks(context):
+    """
+    Run all checks
+    """
+    pass
+
+
+@task(test, bdd, all_checks)
+def all_locals(context):
+    """
+    Run all local tests and checks
+    """
+    pass
+
+
+#################################################################
+# Tasks organization in namespaces
+#################################################################
+
+
+namespace = Collection()
+
+namespace_dev_env_setup = Collection("dev_env_setup")
+namespace_dev_env_setup.add_task(setup_dev_host)
+namespace_dev_env_setup.add_task(setup_pre_commit_hooks)
+namespace_dev_env_setup.add_task(setup_release_tools)
+
+namespace_cicd_setup = Collection("cicd_setup")
+namespace_cicd_setup.add_task(setup_cicd_test_stage, "setup_test_stage")
+namespace_cicd_setup.add_task(setup_cicd_release_stage, "setup_release_stage")
+namespace_cicd_setup.add_task(setup_cicd_publish_stage, "setup_publish_stage")
+
+namespace_tox = Collection("tox_")
+namespace_tox.add_task(tox_test)
+namespace_tox.add_task(tox_test_all)
+namespace_tox.add_task(tox_test_py311)
+namespace_tox.add_task(tox_test_py310)
+namespace_tox.add_task(tox_test_py39)
+namespace_tox.add_task(tox_test_py38)
+namespace_tox.add_task(tox_bdd)
+namespace_tox.add_task(tox_bdd_all)
+namespace_tox.add_task(tox_bdd_py311)
+namespace_tox.add_task(tox_bdd_py310)
+namespace_tox.add_task(tox_bdd_py39)
+namespace_tox.add_task(tox_bdd_py38)
+
+namespace_cicd = Collection("cicd")
+namespace_cicd.add_task(cicd_release, name="release")
+
+namespace_git = Collection("git")
+namespace_git.add_task(prune_branches)
+namespace_git.add_task(prune_branches_force)
+namespace_git.add_task(post_pr_merge_sync)
+
+namespace.add_collection(namespace_dev_env_setup)
+namespace.add_collection(namespace_cicd_setup)
+namespace.add_collection(namespace_cicd)
+namespace.add_collection(namespace_tox)
+namespace.add_collection(namespace_git)
+
+namespace.add_task(clean)
+namespace.add_task(clean_venv)
+namespace.add_task(all_checks)
+namespace.add_task(all_locals)
+namespace.add_task(test)
+namespace.add_task(bdd)
+namespace.add_task(isort)
+namespace.add_task(black)
+namespace.add_task(format)
+namespace.add_task(format_check)
+namespace.add_task(lint)
+namespace.add_task(type)
+namespace.add_task(repl)
+namespace.add_task(tox)
+namespace.add_task(tox_p)
