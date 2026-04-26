@@ -74,7 +74,7 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.14'
           cache: 'poetry'
       - name: Verify python version
         run: poetry run python -V
@@ -94,7 +94,7 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.14'
           cache: 'poetry'
       - name: Verify python version
         run: poetry run python -V
@@ -145,7 +145,7 @@ jobs:
       - name: Set up Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.14'
           cache: 'poetry'
       - name: Verify python version
         run: poetry run python -V
