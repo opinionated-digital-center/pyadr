@@ -30,13 +30,25 @@ def update_adr_content_title_and_status(
     today = datetime.today().strftime("%Y-%m-%d")
     updated_content = content
     if title:
-        updated_content = re.sub(
+        updated_content, title_count = re.subn(
             r"^# .*$", f"# {title}", updated_content, 1, re.MULTILINE
         )
+        if not title_count:
+            raise PyadrNoLineWithSuffixError(
+                "No line found with suffix '# ' in ADR content"
+            )
     if status:
-        updated_content = re.sub(
-            r"^\* Status: .*$", f"* Status: {status}", updated_content, 1, re.MULTILINE
+        updated_content, status_count = re.subn(
+            r"^\* Status: .*$",
+            f"* Status: {status}",
+            updated_content,
+            1,
+            re.MULTILINE,
         )
+        if not status_count:
+            raise PyadrNoLineWithSuffixError(
+                "No line found with suffix '* Status:' in ADR content"
+            )
     updated_content = re.sub(
         r"^\* Date: .*$", f"* Date: {today}", updated_content, 1, re.MULTILINE
     )

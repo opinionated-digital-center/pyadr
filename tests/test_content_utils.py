@@ -13,6 +13,7 @@ from pyadr.exceptions import (
     PyadrAdrDateNotFoundError,
     PyadrAdrStatusNotFoundError,
     PyadrAdrTitleNotFoundError,
+    PyadrNoLineWithSuffixError,
 )
 
 
@@ -79,6 +80,34 @@ def test_update_adr_content_status(sample_adr_content):
     # Then
     assert_that(result_text, not_(contains_string("\n* Status: any_status\n")))
     assert_that(result_text, contains_string("\n* Status: another_status\n"))
+
+
+def test_update_adr_content_status_throws_error_when_no_status_line():
+    # Given
+    content_without_status = "# My ADR Title\n\n## Context\n\n[..]\n"
+
+    # When
+    # Then
+    assert_that(
+        calling(content_utils.update_adr_content_status).with_args(
+            content_without_status, "another_status"
+        ),
+        raises(PyadrNoLineWithSuffixError),
+    )
+
+
+def test_update_adr_content_title_throws_error_when_no_title_line():
+    # Given
+    content_without_title = "* Status: any_status\n\n## Context\n\n[..]\n"
+
+    # When
+    # Then
+    assert_that(
+        calling(content_utils.update_adr_content_title).with_args(
+            content_without_title, "My New Title"
+        ),
+        raises(PyadrNoLineWithSuffixError),
+    )
 
 
 def test_get_adr_title_slug_from_content_stream(adr_tmp_path):
